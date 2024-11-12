@@ -3,147 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investment-Calculator im Windows 10 Stil</title>
+    <title>Investment Calculator</title>
     <style>
-        /* Design-Einstellungen im Windows 10-Stil */
+        /* Grundlegender Stil für die Seite */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f3f3f3;
-            color: #333;
+            font-family: Arial, sans-serif;
+            background-color: #F3F4F6;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+        }
+
+        /* Navigation-Stil */
+        .navbar {
+            background-color: #0078D7;
+            padding: 10px;
             display: flex;
+            gap: 10px;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
         }
-
-        .calculator-container {
-            background-color: #ffffff;
-            border-radius: 8px;
-            padding: 20px;
-            width: 300px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            color: #0078d4;
-            text-align: center;
-            font-size: 1.5em;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.9em;
-            color: #0078d4;
-            margin-bottom: 5px;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1em;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            background-color: #0078d4;
+        
+        .navbar button {
+            background-color: #333;
             color: #fff;
-            padding: 10px;
             border: none;
-            border-radius: 4px;
-            font-size: 1em;
+            padding: 10px 20px;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            font-size: 1rem;
+            border-radius: 3px;
+        }
+        
+        .navbar button.active {
+            background-color: #0078D7;
+            color: white;
+            font-weight: bold;
         }
 
-        button:hover {
-            background-color: #005a9e;
-        }
-
-        .result-container {
-            background-color: #e1ecf4;
-            border-radius: 4px;
-            padding: 10px;
+        /* Kachel-Stil für die Container */
+        .container {
+            display: none;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
-            text-align: center;
-            font-size: 1.1em;
-            color: #333;
+        }
+
+        .container.active {
+            display: block;
+        }
+
+        /* Stil für Eingabefelder und Buttons */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .input-group input {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .calculate-btn {
+            background-color: #0078D7;
+            color: white;
+            padding: 10px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .calculate-btn:hover {
+            background-color: #005BB5;
         }
     </style>
 </head>
 <body>
 
-    <!-- Calculator Container -->
-    <div class="calculator-container">
-        <h2>Investment-Calculator</h2>
+    <!-- Navigationsmenü -->
+    <div class="navbar">
+        <button class="nav-button active" onclick="showContainer('investment')">Investment Calculator</button>
+        <button class="nav-button" onclick="showContainer('daily')">Daily Profit</button>
+    </div>
 
-        <!-- Eingabefelder -->
-        <label for="principal">Investitionsbetrag (USD):</label>
-        <input type="number" id="principal" placeholder="z.B. 1000">
-
-        <label for="rate">Jährlicher Zinssatz (%):</label>
-        <input type="number" id="rate" placeholder="z.B. 5">
-
-        <label for="startDate">Startdatum:</label>
-        <input type="date" id="startDate">
-
-        <label for="endDate">Enddatum:</label>
-        <input type="date" id="endDate">
-
-        <!-- Berechnen-Button -->
-        <button onclick="calculate()">Berechnen</button>
-
-        <!-- Ergebnisanzeige -->
-        <div id="result" class="result-container">
-            Hier erscheint dein Ergebnis.
+    <!-- Investment Calculator Seite -->
+    <div id="investment" class="container active">
+        <h2>Investment Calculator</h2>
+        <div class="input-group">
+            <label for="principal">Startkapital:</label>
+            <input type="number" id="principal" placeholder="Betrag in USD">
         </div>
+        <div class="input-group">
+            <label for="rate">Jährlicher Zinssatz (%):</label>
+            <input type="number" id="rate" placeholder="Zinssatz in %">
+        </div>
+        <div class="input-group">
+            <label for="years">Anlagedauer (Jahre):</label>
+            <input type="number" id="years" placeholder="Dauer in Jahren">
+        </div>
+        <button class="calculate-btn" onclick="calculateInvestment()">Berechnen</button>
+        <p id="investment-result"></p>
+    </div>
+
+    <!-- Daily Profit Seite -->
+    <div id="daily" class="container">
+        <h2>Daily Profit Calculator</h2>
+        <div class="input-group">
+            <label for="daily-rate">Täglicher Zinssatz (%):</label>
+            <input type="number" id="daily-rate" placeholder="Täglicher Zinssatz" value="0.1">
+        </div>
+        <div class="input-group">
+            <label for="days">Anzahl Tage:</label>
+            <input type="number" id="days" placeholder="Tage" value="30">
+        </div>
+        <div class="input-group">
+            <label for="initial-investment">Startkapital:</label>
+            <input type="number" id="initial-investment" placeholder="Betrag in USD" value="1000">
+        </div>
+        <div class="input-group">
+            <label for="daily-profit">Täglicher Profit:</label>
+            <input type="number" id="daily-profit" placeholder="Berechneter Profit" readonly>
+        </div>
+        <div class="input-group">
+            <label for="monthly-profit">Monatlicher Profit (geschätzt):</label>
+            <input type="number" id="monthly-profit" placeholder="Berechneter Profit" readonly>
+        </div>
+        <button class="calculate-btn" onclick="calculateDailyProfit()">Berechnen</button>
     </div>
 
     <script>
-        function calculate() {
-            // Eingabewerte auslesen
-            let principal = parseFloat(document.getElementById("principal").value);
-            let rate = parseFloat(document.getElementById("rate").value);
-            let startDate = new Date(document.getElementById("startDate").value);
-            let endDate = new Date(document.getElementById("endDate").value);
+        // Funktion zum Wechseln der sichtbaren Seite
+        function showContainer(id) {
+            document.querySelectorAll('.container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.getElementById(id).classList.add('active');
 
-            // Berechnung der täglichen Zinsen
-            let dailyRate = rate / 100 / 365;
-            let currentPrincipal = principal;
-            let resultText = "";
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelector(`.nav-button[onclick="showContainer('${id}')"]`).classList.add('active');
+        }
 
-            let currentDate = new Date(startDate);
-            let monthlyInterest = 0;
-            let currentMonth = currentDate.getMonth();
+        // Funktion zur Berechnung des Investment Calculators
+        function calculateInvestment() {
+            const principal = parseFloat(document.getElementById('principal').value);
+            const rate = parseFloat(document.getElementById('rate').value) / 100;
+            const years = parseFloat(document.getElementById('years').value);
 
-            while (currentDate <= endDate) {
-                // Tageszins berechnen und zum monatlichen Zinsbetrag hinzufügen
-                let dailyInterest = currentPrincipal * dailyRate;
-                monthlyInterest += dailyInterest;
-                currentPrincipal += dailyInterest; // Zinseszins anwenden
+            const result = principal * Math.pow(1 + rate, years);
+            document.getElementById('investment-result').textContent = `Endkapital: ${result.toFixed(2)} USD`;
+        }
 
-                // Monatsende erreicht? Dann monatlichen Zins ausgeben und zurücksetzen
-                if (currentDate.getMonth() !== currentMonth || currentDate.getTime() === endDate.getTime()) {
-                    let monthYear = `${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;
-                    resultText += `Zinsen für ${monthYear}: $${monthlyInterest.toFixed(2)}<br>`;
-                    monthlyInterest = 0; // Zinsbetrag zurücksetzen
-                    currentMonth = currentDate.getMonth();
-                }
+        // Funktion zur Berechnung des Daily Profit Calculators
+        function calculateDailyProfit() {
+            const dailyRate = parseFloat(document.getElementById('daily-rate').value) / 100;
+            const days = parseInt(document.getElementById('days').value);
+            const initialInvestment = parseFloat(document.getElementById('initial-investment').value);
 
-                // Zum nächsten Tag wechseln
-                currentDate.setDate(currentDate.getDate() + 1);
-            }
+            const dailyProfit = initialInvestment * dailyRate;
+            const monthlyProfit = dailyProfit * days;
 
-            // Ergebnis im HTML anzeigen
-            document.getElementById("result").innerHTML = resultText;
+            document.getElementById('daily-profit').value = dailyProfit.toFixed(2);
+            document.getElementById('monthly-profit').value = monthlyProfit.toFixed(2);
         }
     </script>
-
 </body>
 </html>
