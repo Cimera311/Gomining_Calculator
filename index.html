@@ -179,5 +179,12 @@
             document.getElementById('monthly-profit').value = monthlyProfit.toFixed(2);
         }
     </script>
+    // Entfernt den Fokus von Eingabefeldern, wenn man außerhalb klickt
+document.addEventListener('click', function(event) {
+    const isInput = event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA';
+    if (!isInput) {
+        document.activeElement.blur(); // Entfernt den Fokus
+    }
+});
 </body>
 </html>
