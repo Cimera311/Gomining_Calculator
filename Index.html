@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment-Calculator im Windows 10 Stil</title>
+    <style>
+        /* Design-Einstellungen im Windows 10-Stil */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f3f3;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .calculator-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #0078d4;
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9em;
+            color: #0078d4;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            background-color: #0078d4;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #005a9e;
+        }
+
+        .result-container {
+            background-color: #e1ecf4;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.1em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Calculator Container -->
+    <div class="calculator-container">
+        <h2>Investment-Calculator</h2>
+
+        <!-- Eingabefelder -->
+        <label for="principal">Investitionsbetrag (USD):</label>
+        <input type="number" id="principal" placeholder="z.B. 1000">
+
+        <label for="rate">Jährlicher Zinssatz (%):</label>
+        <input type="number" id="rate" placeholder="z.B. 5">
+
+        <label for="startDate">Startdatum:</label>
+        <input type="date" id="startDate">
+
+        <label for="endDate">Enddatum:</label>
+        <input type="date" id="endDate">
+
+        <!-- Berechnen-Button -->
+        <button onclick="calculate()">Berechnen</button>
+
+        <!-- Ergebnisanzeige -->
+        <div id="result" class="result-container">
+            Hier erscheint dein Ergebnis.
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            // Eingabewerte auslesen
+            let principal = parseFloat(document.getElementById("principal").value);
+            let rate = parseFloat(document.getElementById("rate").value);
+            let startDate = new Date(document.getElementById("startDate").value);
+            let endDate = new Date(document.getElementById("endDate").value);
+
+            // Berechnung der täglichen Zinsen
+            let dailyRate = rate / 100 / 365;
+            let currentPrincipal = principal;
+            let resultText = "";
+
+            let currentDate = new Date(startDate);
+            let monthlyInterest = 0;
+            let currentMonth = currentDate.getMonth();
+
+            while (currentDate <= endDate) {
+                // Tageszins berechnen und zum monatlichen Zinsbetrag hinzufügen
+                let dailyInterest = currentPrincipal * dailyRate;
+                monthlyInterest += dailyInterest;
+                currentPrincipal += dailyInterest; // Zinseszins anwenden
+
+                // Monatsende erreicht? Dann monatlichen Zins ausgeben und zurücksetzen
+                if (currentDate.getMonth() !== currentMonth || currentDate.getTime() === endDate.getTime()) {
+                    let monthYear = `${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;
+                    resultText += `Zinsen für ${monthYear}: $${monthlyInterest.toFixed(2)}<br>`;
+                    monthlyInterest = 0; // Zinsbetrag zurücksetzen
+                    currentMonth = currentDate.getMonth();
+                }
+
+                // Zum nächsten Tag wechseln
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+
+            // Ergebnis im HTML anzeigen
+            document.getElementById("result").innerHTML = resultText;
+        }
+    </script>
+
+</body>
+</html>
