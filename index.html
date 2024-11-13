@@ -150,8 +150,6 @@
                 <input type="number" id="miner-efficiency" placeholder="z.B. 25">
                 <label for="miner-th">Miner TH:</label>
                 <input type="number" id="miner-th" placeholder="z.B. 8">
-                <label for="electricity-cost">Electricity Cost ($ per kWh):</label>
-                <input type="number" id="electricity-cost" placeholder="z.B. 0.05">
                 <button onclick="calculateElectricityCost()">Berechnen</button>
                 <p id="electricity-cost-result"></p>
             </div>
@@ -200,7 +198,7 @@
         function calculateElectricityCost() {
             const efficiency = parseFloat(document.getElementById('miner-efficiency').value);
             const th = parseFloat(document.getElementById('miner-th').value);
-            const costPerKWh = parseFloat(document.getElementById('electricity-cost').value);
+            const costPerKWh = '0,05';
 
             if (!efficiency || !th || !costPerKWh) {
                 document.getElementById('electricity-cost-result').innerText = "Bitte alle Felder ausfüllen!";
