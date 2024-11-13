@@ -1,190 +1,204 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investment Calculator</title>
+    <title>Gomining Calculator</title>
     <style>
-        /* Grundlegender Stil für die Seite */
+        /* Allgemeine Dark-Mode-Einstellungen */
         body {
+            background-color: #1a1a1a; /* Dark background */
+            color: #e6e6e6; /* Helles Grau für Text */
             font-family: Arial, sans-serif;
-            background-color: #F3F4F6;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Navigation-Stil */
-        .navbar {
-            background-color: #0078D7;
-            padding: 10px;
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-        
-        .navbar button {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 1rem;
-            border-radius: 3px;
-        }
-        
-        .navbar button.active {
-            background-color: #0078D7;
-            color: white;
-            font-weight: bold;
-        }
-
-        /* Kachel-Stil für die Container */
-        .container {
-            display: none;
-            padding: 20px;
-            max-width: 600px;
-            margin: auto;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-        }
-
-        .container.active {
-            display: block;
-        }
-
-        /* Stil für Eingabefelder und Buttons */
-        .input-group {
             display: flex;
             flex-direction: column;
-            margin-bottom: 15px;
-        }
-        
-        .input-group label {
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        .input-group input {
-            padding: 10px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 3px;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
         }
 
-        .calculate-btn {
-            background-color: #0078D7;
+        /* Zentraler Container für Inhalte */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Inhalte horizontal zentrieren */
+            width: 100%;
+            max-width: 800px; /* Begrenzung der Breite */
+            margin: auto;
+            padding: 20px;
+        }
+
+        /* Stil für die Tab-Navigation */
+        .tab-navigation {
+            display: flex;
+            justify-content: center; /* Navigation zentrieren */
+            align-items: center;
+            width: 100%;
+            margin: 0 auto 20px;
+        }
+
+        .tab-arrow {
+            background-color: rgb(103, 45, 236); /* Akzentfarbe */
+            border: none;
             color: white;
             padding: 10px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 3px;
             cursor: pointer;
-            margin-top: 10px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            margin: 0 15px;
+            transition: background-color 0.3s;
         }
 
-        .calculate-btn:hover {
-            background-color: #005BB5;
+        .tab-arrow:hover {
+            background-color: rgb(123, 65, 256); /* Hellerer Effekt beim Hover */
+        }
+
+        #tab-name {
+            font-weight: bold;
+            font-size: 1.5em;
+            color: #e6e6e6;
+        }
+
+        /* Stile für die Tab-Inhalte */
+        .tab-page {
+            display: none; /* Standardmäßig ausgeblendet */
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #333; /* Tab-Hintergrundfarbe */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .tab-page.active {
+            display: block; /* Sichtbarer Tab */
+        }
+
+        /* Eingabefelder und Labels */
+        label, input {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #555;
+            border-radius: 4px;
+            width: 100%; /* Eingabefelder füllen die Breite */
+            max-width: 300px;
+            background-color: #2a2a2a; /* Dunkler Hintergrund */
+            color: #e6e6e6; /* Helle Schrift */
+        }
+
+        label {
+            margin-top: 15px;
+            color: #e6e6e6; /* Helle Farbe */
         }
     </style>
 </head>
 <body>
+    <!-- Hauptcontainer -->
+    <div class="main-container">
+        <!-- Tab-Navigationsleiste -->
+        <div class="tab-navigation">
+            <button class="tab-arrow" onclick="switchTab(-1)">&#9664;</button>
+            <span id="tab-name">Investment Calculator</span>
+            <button class="tab-arrow" onclick="switchTab(1)">&#9654;</button>
+        </div>
 
-    <!-- Navigationsmenü -->
-    <div class="navbar">
-        <button class="nav-button active" onclick="showContainer('investment')">Investment Calculator</button>
-        <button class="nav-button" onclick="showContainer('daily')">Daily Profit</button>
-    </div>
+        <!-- Tab-Inhalte -->
+        <div id="tab-content">
+            <!-- Investment Calculator Tab -->
+            <div class="tab-page active" id="investment-calculator">
+                <h2>Investment Calculator</h2>
+                <label for="investment-amount">Investitionsbetrag ($):</label>
+                <input type="number" id="investment-amount" placeholder="z.B. 1000">
+                <label for="investment-rate">Jährlicher Zinssatz (%):</label>
+                <input type="number" id="investment-rate" placeholder="z.B. 5">
+                <label for="investment-years">Anlagedauer (Jahre):</label>
+                <input type="number" id="investment-years" placeholder="z.B. 3">
+                <button onclick="calculateInvestment()">Berechnen</button>
+                <p id="investment-result"></p>
+            </div>
 
-    <!-- Investment Calculator Seite -->
-    <div id="investment" class="container active">
-        <h2>Investment Calculator</h2>
-        <div class="input-group">
-            <label for="principal">Startkapital:</label>
-            <input type="number" id="principal" placeholder="Betrag in USD">
+            <!-- Gomining Verdienst Tab -->
+            <div class="tab-page" id="gomining-verdienst">
+                <h2>Gomining Verdienst</h2>
+                <label for="bitcoin-price">Bitcoinpreis ($):</label>
+                <input type="number" id="bitcoin-price" placeholder="z.B. 60000">
+                <label for="gmt-price">GMT-Token Preis ($):</label>
+                <input type="number" id="gmt-price" placeholder="z.B. 0.4">
+                <button onclick="fetchPrices()">Aktualisieren</button>
+                <p id="gomining-result"></p>
+            </div>
         </div>
-        <div class="input-group">
-            <label for="rate">Jährlicher Zinssatz (%):</label>
-            <input type="number" id="rate" placeholder="Zinssatz in %">
-        </div>
-        <div class="input-group">
-            <label for="years">Anlagedauer (Jahre):</label>
-            <input type="number" id="years" placeholder="Dauer in Jahren">
-        </div>
-        <button class="calculate-btn" onclick="calculateInvestment()">Berechnen</button>
-        <p id="investment-result"></p>
-    </div>
-
-    <!-- Daily Profit Seite -->
-    <div id="daily" class="container">
-        <h2>Daily Profit Calculator</h2>
-        <div class="input-group">
-            <label for="daily-rate">Täglicher Zinssatz (%):</label>
-            <input type="number" id="daily-rate" placeholder="Täglicher Zinssatz" value="0.1">
-        </div>
-        <div class="input-group">
-            <label for="days">Anzahl Tage:</label>
-            <input type="number" id="days" placeholder="Tage" value="30">
-        </div>
-        <div class="input-group">
-            <label for="initial-investment">Startkapital:</label>
-            <input type="number" id="initial-investment" placeholder="Betrag in USD" value="1000">
-        </div>
-        <div class="input-group">
-            <label for="daily-profit">Täglicher Profit:</label>
-            <input type="number" id="daily-profit" placeholder="Berechneter Profit" readonly>
-        </div>
-        <div class="input-group">
-            <label for="monthly-profit">Monatlicher Profit (geschätzt):</label>
-            <input type="number" id="monthly-profit" placeholder="Berechneter Profit" readonly>
-        </div>
-        <button class="calculate-btn" onclick="calculateDailyProfit()">Berechnen</button>
     </div>
 
     <script>
-        // Funktion zum Wechseln der sichtbaren Seite
-        function showContainer(id) {
-            document.querySelectorAll('.container').forEach(container => {
-                container.classList.remove('active');
-            });
-            document.getElementById(id).classList.add('active');
+        // Tab-Daten und aktueller Tab-Index
+        const tabs = [
+            { name: "Investment Calculator", id: "investment-calculator" },
+            { name: "Gomining Verdienst", id: "gomining-verdienst" }
+        ];
+        let currentTab = 0;
 
-            document.querySelectorAll('.nav-button').forEach(button => {
-                button.classList.remove('active');
-            });
-            document.querySelector(`.nav-button[onclick="showContainer('${id}')"]`).classList.add('active');
+        // Funktion zum Wechseln der Tabs
+        function switchTab(direction) {
+            // Aktuellen Tab-Inhalt ausblenden
+            document.getElementById(tabs[currentTab].id).classList.remove("active");
+
+            // Tab-Index aktualisieren
+            currentTab = (currentTab + direction + tabs.length) % tabs.length;
+
+            // Neuen Tab-Titel und Inhalt anzeigen
+            document.getElementById("tab-name").innerText = tabs[currentTab].name;
+            document.getElementById(tabs[currentTab].id).classList.add("active");
         }
 
-        // Funktion zur Berechnung des Investment Calculators
+        // Beispiel-Funktion für den Investment Calculator
         function calculateInvestment() {
-            const principal = parseFloat(document.getElementById('principal').value);
-            const rate = parseFloat(document.getElementById('rate').value) / 100;
-            const years = parseFloat(document.getElementById('years').value);
+            const amount = parseFloat(document.getElementById('investment-amount').value);
+            const rate = parseFloat(document.getElementById('investment-rate').value) / 100;
+            const years = parseFloat(document.getElementById('investment-years').value);
 
-            const result = principal * Math.pow(1 + rate, years);
-            document.getElementById('investment-result').textContent = `Endkapital: ${result.toFixed(2)} USD`;
+            if (!amount || !rate || !years) {
+                document.getElementById('investment-result').innerText = "Bitte alle Felder ausfüllen!";
+                return;
+            }
+
+            const result = amount * Math.pow(1 + rate, years);
+            document.getElementById('investment-result').innerText = `Endkapital: ${result.toFixed(2)} USD`;
         }
 
-        // Funktion zur Berechnung des Daily Profit Calculators
-        function calculateDailyProfit() {
-            const dailyRate = parseFloat(document.getElementById('daily-rate').value) / 100;
-            const days = parseInt(document.getElementById('days').value);
-            const initialInvestment = parseFloat(document.getElementById('initial-investment').value);
-
-            const dailyProfit = initialInvestment * dailyRate;
-            const monthlyProfit = dailyProfit * days;
-
-            document.getElementById('daily-profit').value = dailyProfit.toFixed(2);
-            document.getElementById('monthly-profit').value = monthlyProfit.toFixed(2);
+        // Beispiel-Funktion zum Abrufen der Preise
+// Beispiel-Funktion zum Abrufen der Preise
+async function fetchPrices() {
+    try {
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+        if (!response.ok) {
+            throw new Error(`HTTP-Fehler! Status: ${response.status}`);
         }
-            // Entfernt den Fokus von Eingabefeldern, wenn man außerhalb klickt
-document.addEventListener('click', function(event) {
-    const isInput = event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA';
-    if (!isInput) {
-        document.activeElement.blur(); // Entfernt den Fokus
+
+        const data = await response.json();
+
+        // Werte aus der API-Antwort extrahieren
+        const bitcoinPrice = data.bitcoin?.usd || "Preis nicht verfügbar";
+        const gmtPrice = data["gomining-token"]?.usd || "Preis nicht verfügbar";
+
+        // Werte in die Eingabefelder einfügen
+        document.getElementById('bitcoin-price').value = bitcoinPrice;
+        document.getElementById('gmt-price').value = gmtPrice;
+
+        // Erfolgsmeldung
+        document.getElementById('gomining-result').innerText = "Preise erfolgreich aktualisiert!";
+    } catch (error) {
+        // Fehler anzeigen
+        console.error("Fehler beim Abrufen der Preise:", error);
+        document.getElementById('gomining-result').innerText = "Fehler beim Abrufen der Preise.";
     }
-})
+}
+
     </script>
 </body>
 </html>
