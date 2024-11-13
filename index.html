@@ -7,14 +7,14 @@
     <style>
         /* Allgemeine Dark-Mode-Einstellungen */
         body {
-            background-color: #1a1a1a; /* Darker background */
+            background-color: #1a1a1a; /* Dark background */
             color: #e6e6e6; /* Helles Grau für Text */
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            //justify-content: center;
+            //align-items: center;
             min-height: 100vh;
         }
 
@@ -22,7 +22,7 @@
         .main-container {
             width: 100%;
             max-width: 800px; /* Begrenzte Breite */
-            margin: auto; /* Zentrierung */
+            margin: 0 auto; /* Zentrierung */
             padding: 20px;
             box-sizing: border-box; /* Innenabstand berücksichtigen */
         }
@@ -142,13 +142,27 @@
                 <button onclick="fetchPrices()">Aktualisieren</button>
                 <p id="gomining-result"></p>
             </div>
+
+            <!-- Maintenance Solo Mining Tab -->
+            <div class="tab-page" id="maintenance-solo-mining">
+                <h2>Maintenance Solo Mining</h2>
+                <label for="miner-efficiency">Miner Efficiency (W/TH):</label>
+                <input type="number" id="miner-efficiency" placeholder="z.B. 25">
+                <label for="miner-th">Miner TH:</label>
+                <input type="number" id="miner-th" placeholder="z.B. 8">
+                <label for="electricity-cost">Electricity Cost ($ per kWh):</label>
+                <input type="number" id="electricity-cost" placeholder="z.B. 0.05">
+                <button onclick="calculateElectricityCost()">Berechnen</button>
+                <p id="electricity-cost-result"></p>
+            </div>
         </div>
     </div>
 
     <script>
         const tabs = [
             { name: "Investment Calculator", id: "investment-calculator" },
-            { name: "Gomining Verdienst", id: "gomining-verdienst" }
+            { name: "Gomining Verdienst", id: "gomining-verdienst" },
+            { name: "Maintenance Solo Mining", id: "maintenance-solo-mining" }
         ];
         let currentTab = 0;
 
@@ -181,6 +195,20 @@
             } catch (error) {
                 document.getElementById('gomining-result').innerText = "Fehler beim Abrufen der Preise.";
             }
+        }
+
+        function calculateElectricityCost() {
+            const efficiency = parseFloat(document.getElementById('miner-efficiency').value);
+            const th = parseFloat(document.getElementById('miner-th').value);
+            const costPerKWh = parseFloat(document.getElementById('electricity-cost').value);
+
+            if (!efficiency || !th || !costPerKWh) {
+                document.getElementById('electricity-cost-result').innerText = "Bitte alle Felder ausfüllen!";
+                return;
+            }
+
+            const dailyCost = (efficiency * th * costPerKWh * 24) / 1000;
+            document.getElementById('electricity-cost-result').innerText = `Tägliche Stromkosten: $${dailyCost.toFixed(2)}`;
         }
     </script>
 </body>
