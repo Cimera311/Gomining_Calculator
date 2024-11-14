@@ -106,6 +106,23 @@
         button:hover {
             background-color: rgb(123, 65, 256);
         }
+		table {
+			border-spacing: 0;
+			width: 100%;
+			background-color: #2a2a2a;
+			color: #e6e6e6;
+		}
+
+		th {
+			background-color: #444;
+			color: #fff;
+			font-weight: bold;
+		}
+
+		td {
+			text-align: right;
+		}
+
     </style>
 </head>
 <body>
@@ -113,33 +130,63 @@
         <!-- Navigationsleiste -->
         <div class="tab-navigation">
             <button class="tab-arrow" onclick="switchTab(-1)">&#9664;</button>
-            <span id="tab-name">Investment Calculator</span>
+            <span id="tab-name">Calc</span>
             <button class="tab-arrow" onclick="switchTab(1)">&#9654;</button>
         </div>
 
         <!-- Tab Inhalte -->
         <div id="tab-content">
             <!-- Investment Calculator Tab -->
-            <div class="tab-page active" id="investment-calculator">
-                <h2>Investment Calculator</h2>
-                <label for="investment-amount">Investitionsbetrag ($):</label>
-                <input type="number" id="investment-amount" placeholder="z.B. 1000">
-                <label for="investment-rate">Jährlicher Zinssatz (%):</label>
-                <input type="number" id="investment-rate" placeholder="z.B. 5">
-                <label for="investment-years">Anlagedauer (Jahre):</label>
-                <input type="number" id="investment-years" placeholder="z.B. 3">
-                <button onclick="calculateInvestment()">Berechnen</button>
-                <p id="investment-result"></p>
+            <div class="tab-page active" id="Calc">
+			    <button onclick="fetchPrices()">Get BTC Price</button>
+				<label for="bitcoin-price">Bitcoinpreis ($):</label>
+                <input type="number" id="bitcoin-price" placeholder="z.B. 60000">
+                <label for="My_TH">My TH:</label>
+                <input type="number" id="My_TH" value="133" placeholder="10">
+                <label for="Energy-efficiency">Energy-efficiency (W/TH):</label>
+                <input type="number" id="Energy-efficiency" value="24.41" placeholder="z.B. 20">
+				<label for="Daily-Reward">My Daily Reward:</label>
+                <input type="number" id="Daily-Reward" value="8616" placeholder="z.B. 6500">
+                <label for="Satoshi-per-TH">Satoshi per TH (sat/TH):</label>
+                <input type="number" id="Satoshi-per-TH" value="62" placeholder="z.B. 64">
+				
+                <button onclick="calculateCost()">Berechnen</button>
+				<table id="results-table" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+					<thead>
+						<tr>
+							<th style="border: 1px solid #555; padding: 10px; text-align: left;"></th>
+							<th style="border: 1px solid #555; padding: 10px; text-align: right;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="border: 1px solid #555; padding: 10px;">Daily Rewards</td>
+							<td id="daily-rewards" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+						</tr>
+						<tr>
+							<td style="border: 1px solid #555; padding: 10px;">Electricity Cost</td>
+							<td id="electricity-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+						</tr>
+						<tr>
+							<td style="border: 1px solid #555; padding: 10px;">Service Cost</td>
+							<td id="service-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+						</tr>
+						<tr>
+							<td style="border: 1px solid #555; padding: 10px;">Maintenance cost in %</td>
+							<td id="maintenance" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+						</tr>
+					</tbody>
+				</table>
+
             </div>
 
             <!-- Gomining Verdienst Tab -->
-            <div class="tab-page" id="gomining-verdienst">
-                <h2>Gomining Verdienst</h2>
-                <label for="bitcoin-price">Bitcoinpreis ($):</label>
-                <input type="number" id="bitcoin-price" placeholder="z.B. 60000">
-                <label for="gmt-price">GMT-Token Preis ($):</label>
-                <input type="number" id="gmt-price" placeholder="z.B. 0.4">
-                <button onclick="fetchPrices()">Aktualisieren</button>
+            <div class="tab-page" id="worth">
+				<label for="TH">TH:</label>
+                <input type="number" id="TH" value="10" placeholder="10">
+                <label for="Energy-efficiency">Energy-efficiency (W/TH):</label>
+                <input type="number" id="Energy-efficiency" value="35" placeholder="z.B. 20">
+                <button onclick="fetchPrices()">Get BTC Price</button>
                 <p id="gomining-result"></p>
             </div>
 
@@ -150,17 +197,18 @@
                 <input type="number" id="miner-efficiency" placeholder="z.B. 25">
                 <label for="miner-th">Miner TH:</label>
                 <input type="number" id="miner-th" placeholder="z.B. 8">
-                <button onclick="calculateElectricityCost()">Berechnen</button>
+                <button onclick="calculateCost()">Berechnen</button>
                 <p id="electricity-cost-result"></p>
-            </div>
+				<p id="service-cost-result"></p>
+            </div>-->
         </div>
     </div>
 
     <script>
         const tabs = [
-            { name: "Investment Calculator", id: "investment-calculator" },
-            { name: "Gomining Verdienst", id: "gomining-verdienst" },
-            { name: "Maintenance Solo Mining", id: "maintenance-solo-mining" }
+            { name: "Calc", id: "Calc" },
+            { name: "worth it ?", id: "worth" },
+            //{ name: "Maintenance Solo Mining", id: "maintenance-solo-mining" }
         ];
         let currentTab = 0;
 
@@ -171,17 +219,7 @@
             document.getElementById(tabs[currentTab].id).classList.add("active");
         }
 
-        function calculateInvestment() {
-            const amount = parseFloat(document.getElementById('investment-amount').value);
-            const rate = parseFloat(document.getElementById('investment-rate').value) / 100;
-            const years = parseFloat(document.getElementById('investment-years').value);
-            if (!amount || !rate || !years) {
-                document.getElementById('investment-result').innerText = "Bitte alle Felder ausfüllen!";
-                return;
-            }
-            const result = amount * Math.pow(1 + rate, years);
-            document.getElementById('investment-result').innerText = `Endkapital: ${result.toFixed(2)} USD`;
-        }
+
 
         async function fetchPrices() {
             try {
@@ -195,19 +233,112 @@
             }
         }
 
-        function calculateElectricityCost() {
-            const efficiency = parseFloat(document.getElementById('miner-efficiency').value);
-            const th = parseFloat(document.getElementById('miner-th').value);
-            const costPerKWh = '0,05';
+       
+	function calculateCost() {
+    const efficiency = parseFloat(document.getElementById('Energy-efficiency').value);
+    const BTC = parseFloat(document.getElementById('bitcoin-price').value);
+    const th = parseFloat(document.getElementById('My_TH').value);
+    const dailyReward = parseFloat(document.getElementById('Daily-Reward').value);
+    const costPerKWh = 0.05;
+    const daily_cost = 0.0089;
 
-            if (!efficiency || !th || !costPerKWh) {
-                document.getElementById('electricity-cost-result').innerText = "Bitte alle Felder ausfüllen!";
+    if (isNaN(efficiency) || isNaN(th) || isNaN(BTC) || isNaN(dailyReward)) {
+        alert("Bitte alle Felder ausfüllen!");
+        return;
+    }
+
+    const dailyElectricityCost = (efficiency * th * costPerKWh * 24) / 1000;
+    const dailyRewardsInUSD = (dailyReward * 0.00000001) * BTC;
+    const dailyServiceCost = th * daily_cost;
+
+    const totalCosts = dailyServiceCost + dailyElectricityCost;
+    const costPercentage = (totalCosts / dailyRewardsInUSD) * 100;
+	
+    // Ergebnisse in die Tabelle einfügen
+    document.getElementById('daily-rewards').innerText = `${dailyRewardsInUSD.toFixed(2)} $`;
+    document.getElementById('electricity-cost').innerText = `${dailyElectricityCost.toFixed(2)} $`;
+    document.getElementById('service-cost').innerText = `${dailyServiceCost.toFixed(2)} $`;
+	document.getElementById('maintenance').innerText = `$${costPercentage.toFixed(2)}%`;
+
+}
+
+
+		function calculateServiceCost() {
+            //const efficiency = parseFloat(document.getElementById('Energy-efficiency').value);
+
+
+            if ( !th || !daily_cost) {
+                document.getElementById('service-cost-result').innerText = "Bitte alle Felder ausfüllen!";
                 return;
             }
 
-            const dailyCost = (efficiency * th * costPerKWh * 24) / 1000;
-            document.getElementById('electricity-cost-result').innerText = `Tägliche Stromkosten: $${dailyCost.toFixed(2)}`;
+            const dailyService = ( th * daily_cost );
+            document.getElementById('service-cost-result').innerText = `daily service cost: $${dailyService.toFixed(2)}`;
         }
+		async function getBTCPrice() {
+				const BTC = await fetchPrices();
+				console.log(BTC); // Verwende den Wert hier
+			}
+
+					// Füge einen Event Listener hinzu, der das Feld "Daily-Reward" überwacht
+			document.getElementById('Daily-Reward').addEventListener('input', function () {
+				const dailyReward = parseFloat(document.getElementById('Daily-Reward').value); // Wert des Daily-Reward-Feldes
+				const myTH = parseFloat(document.getElementById('My_TH').value); // Wert des My_TH-Feldes
+
+				// Überprüfe, ob beide Werte gültig sind, um eine Division durch 0 zu vermeiden
+				if (!isNaN(dailyReward) && !isNaN(myTH) && myTH > 0) {
+					const satoshiPerTH = dailyReward / myTH; // Berechnung
+					document.getElementById('Satoshi-per-TH').value = satoshiPerTH.toFixed(2); // Ergebnis einfügen
+				} else {
+					document.getElementById('Satoshi-per-TH').value = ''; // Leeren, falls ungültig
+				}
+			});
+					// Füge einen Event Listener hinzu, der das Feld "Daily-Reward" überwacht
+			document.getElementById('Satoshi-per-TH').addEventListener('input', function () {
+				const satpTH = parseFloat(document.getElementById('Satoshi-per-TH').value); // Wert des Daily-Reward-Feldes
+				const myTH = parseFloat(document.getElementById('My_TH').value); // Wert des My_TH-Feldes
+
+				// Überprüfe, ob beide Werte gültig sind, um eine Division durch 0 zu vermeiden
+				if (!isNaN(satpTH) && !isNaN(myTH) && myTH > 0) {
+					const dailyReward = satpTH * myTH; // Berechnung
+					document.getElementById('Daily-Reward').value = dailyReward.toFixed(2); // Ergebnis einfügen
+				} else {
+					document.getElementById('Daily-Reward').value = '0'; // Leeren, falls ungültig
+				}
+			});	
+					// Füge einen Event Listener hinzu, der das Feld "Daily-Reward" überwacht
+			document.getElementById('My_TH').addEventListener('input', function () {
+				const satpTH = parseFloat(document.getElementById('Satoshi-per-TH').value); // Wert des Daily-Reward-Feldes
+				const myTH = parseFloat(document.getElementById('My_TH').value); // Wert des My_TH-Feldes
+
+				// Überprüfe, ob beide Werte gültig sind, um eine Division durch 0 zu vermeiden
+				if (!isNaN(satpTH) && !isNaN(myTH) && myTH > 0) {
+					const dailyReward = satpTH * myTH; // Berechnung
+					document.getElementById('Daily-Reward').value = dailyReward.toFixed(2); // Ergebnis einfügen
+				} else {
+					document.getElementById('Daily-Reward').value = '0'; // Leeren, falls ungültig
+				}
+			});				
+			document.addEventListener('DOMContentLoaded', () => {
+			// Füge einen Event Listener für alle Eingabefelder hinzu
+			const inputs = document.querySelectorAll('input');
+
+			inputs.forEach((input, index) => {
+				input.addEventListener('keydown', (event) => {
+					if (event.key === 'Enter') {
+						event.preventDefault(); // Verhindere das Standardverhalten (z. B. Form-Submission)
+						const nextInput = inputs[index + 1]; // Nächstes Feld suchen
+
+						if (nextInput) {
+							nextInput.focus(); // Fokus auf das nächste Feld setzen
+						} else {
+							input.blur(); // Letztes Feld: Tastatur schließen
+						}
+					}
+				});
+			});
+		});
+
     </script>
 </body>
 </html>
