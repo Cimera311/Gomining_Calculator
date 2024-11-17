@@ -122,6 +122,57 @@
 		td {
 			text-align: right;
 		}
+		/* Slider-Spur */
+		input[type="range"] {
+			-webkit-appearance: none;
+			width: 100%; /* Slider-Breite */
+			height: 0.2px; /* Sehr dünne Linie */
+			background: #e6e6e6; /* Leicht graue Linie */
+			border-radius: 1px; /* Ganz leicht abgerundet */
+			outline: none; /* Keine Umrandung bei Fokus */
+			transition: opacity 0.2s; /* Sanfter Effekt */
+		}
+
+		/* Hover-Effekt für die Spur */
+		input[type="range"]:hover {
+			background: #ffffff; /* Spur wird weiß beim Hover */
+		}
+
+		/* Slider-Thumb (Punkt) */
+		input[type="range"]::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			width: 16px; /* Größe des Punktes */
+			height: 16px; /* Größe des Punktes */
+			border-radius: 50%; /* Kreisform */
+			background: #673dec; /* Farbe des Punktes */
+			cursor: pointer; /* Zeiger beim Hover */
+			box-shadow: 0px 0px 5px rgba(103, 61, 236, 0.7); /* Dezenter Leuchteffekt */
+			transition: background 0.3s, box-shadow 0.3s; /* Sanfter Übergang */
+		}
+
+		/* Hover-Effekt für den Punkt */
+		input[type="range"]::-webkit-slider-thumb:hover {
+			background: #ffffff; /* Punkt wird weiß beim Hover */
+			box-shadow: 0px 0px 8px rgba(103, 61, 236, 1); /* Intensiver Leuchteffekt */
+		}
+
+		/* Für Firefox
+		input[type="range"]::-moz-range-thumb {
+			width: 16px;
+			height: 16px;
+			border: none;
+			border-radius: 50%;
+			background: #673dec;
+			cursor: pointer;
+			box-shadow: 0px 0px 5px rgba(103, 61, 236, 0.7);
+			transition: background 0.3s, box-shadow 0.3s;
+		} */
+
+		input[type="range"]::-moz-range-progress {
+			background-color: transparent; /* Keine Fortschrittsanzeige */
+		}
+
+
 
     </style>
 </head>
@@ -140,7 +191,10 @@
             <div class="tab-page active" id="Calc">
 			    <button onclick="fetchPrices()">Get BTC Price</button>
 				<label for="bitcoin-price">Bitcoinpreis ($):</label>
-                <input type="number" id="bitcoin-price" placeholder="z.B. 60000">
+                <input type="number" id="bitcoin-price" oninput="syncSliderWithInput()" placeholder="z.B. 60000" >
+
+				<input type="range" id="btc-slider" min="60000" max="150000" step="1000" value="60000" oninput="updateSliderValue()">
+				<!-- <span id="btc-slider-value">60000</span>-->
                 <label for="My_TH">My TH:</label>
                 <input type="number" id="My_TH" value="133" placeholder="10">
                 <label for="Energy-efficiency">Energy-efficiency (W/TH):</label>
@@ -226,39 +280,58 @@
                 const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
                 const data = await response.json();
                 const bitcoinPrice = data.bitcoin.usd || "Nicht verfügbar";
+				const slider = document.getElementById('btc-slider');
+				const valueDisplay = document.getElementById('btc-slider-value');
+				const minPrice = parseInt(slider.min);
+				const maxPrice = parseInt(slider.max);
+				
                 document.getElementById('bitcoin-price').value = bitcoinPrice;
                 document.getElementById('gomining-result').innerText = "Preise erfolgreich aktualisiert!";
+				        // Wert in Slider setzen, falls im Bereich
+				slider.value = bitcoinPrice; 
+				if (bitcoinPrice >= minPrice && bitcoinPrice <= maxPrice) {
+					slider.value = bitcoinPrice; // Slider-Wert setzen
+					valueDisplay.innerText = bitcoinPrice; // Wert anzeigen
+				} else {
+					valueDisplay.innerText = 150000;
+				}
             } catch (error) {
                 document.getElementById('gomining-result').innerText = "Fehler beim Abrufen der Preise.";
             }
         }
 
-       
-	function calculateCost() {
-    const efficiency = parseFloat(document.getElementById('Energy-efficiency').value);
-    const BTC = parseFloat(document.getElementById('bitcoin-price').value);
-    const th = parseFloat(document.getElementById('My_TH').value);
-    const dailyReward = parseFloat(document.getElementById('Daily-Reward').value);
-    const costPerKWh = 0.05;
-    const daily_cost = 0.0089;
+			function updateSliderValue() {
+				const slider = document.getElementById('btc-slider');
+				const BTCFeld = document.getElementById('bitcoin-price');
+				BTCFeld.value = slider.value; // Den Slider-Wert im Feld anzeigen
 
-    if (isNaN(efficiency) || isNaN(th) || isNaN(BTC) || isNaN(dailyReward)) {
-        alert("Bitte alle Felder ausfüllen!");
-        return;
-    }
+			}
 
-    const dailyElectricityCost = (efficiency * th * costPerKWh * 24) / 1000;
-    const dailyRewardsInUSD = (dailyReward * 0.00000001) * BTC;
-    const dailyServiceCost = th * daily_cost;
+			function calculateCost() {
+			const efficiency = parseFloat(document.getElementById('Energy-efficiency').value);
+			const BTC = parseFloat(document.getElementById('bitcoin-price').value);
+			const th = parseFloat(document.getElementById('My_TH').value);
+			const dailyReward = parseFloat(document.getElementById('Daily-Reward').value);
+			const costPerKWh = 0.05;
+			const daily_cost = 0.0089;
 
-    const totalCosts = dailyServiceCost + dailyElectricityCost;
-    const costPercentage = (totalCosts / dailyRewardsInUSD) * 100;
-	
-    // Ergebnisse in die Tabelle einfügen
-    document.getElementById('daily-rewards').innerText = `${dailyRewardsInUSD.toFixed(2)} $`;
-    document.getElementById('electricity-cost').innerText = `${dailyElectricityCost.toFixed(2)} $`;
-    document.getElementById('service-cost').innerText = `${dailyServiceCost.toFixed(2)} $`;
-	document.getElementById('maintenance').innerText = `$${costPercentage.toFixed(2)}%`;
+			if (isNaN(efficiency) || isNaN(th) || isNaN(BTC) || isNaN(dailyReward)) {
+				alert("Bitte alle Felder ausfüllen!");
+				return;
+			}
+
+			const dailyElectricityCost = (efficiency * th * costPerKWh * 24) / 1000;
+			const dailyRewardsInUSD = (dailyReward * 0.00000001) * BTC;
+			const dailyServiceCost = th * daily_cost;
+
+			const totalCosts = dailyServiceCost + dailyElectricityCost;
+			const costPercentage = (totalCosts / dailyRewardsInUSD) * 100;
+			
+			// Ergebnisse in die Tabelle einfügen
+			document.getElementById('daily-rewards').innerText = `${dailyRewardsInUSD.toFixed(2)} $`;
+			document.getElementById('electricity-cost').innerText = `${dailyElectricityCost.toFixed(2)} $`;
+			document.getElementById('service-cost').innerText = `${dailyServiceCost.toFixed(2)} $`;
+			document.getElementById('maintenance').innerText = `$${costPercentage.toFixed(2)}%`;
 
 }
 
