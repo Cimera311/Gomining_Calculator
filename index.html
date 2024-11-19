@@ -122,55 +122,80 @@
 		td {
 			text-align: right;
 		}
-		/* Slider-Spur */
-		input[type="range"] {
-			-webkit-appearance: none;
-			width: 100%; /* Slider-Breite */
-			height: 0.2px; /* Sehr dünne Linie */
-			background: #e6e6e6; /* Leicht graue Linie */
-			border-radius: 1px; /* Ganz leicht abgerundet */
-			outline: none; /* Keine Umrandung bei Fokus */
-			transition: opacity 0.2s; /* Sanfter Effekt */
-		}
+		/* Stil für beide Slider (Standard-Styling) */
+input[type="range"] {
+    -webkit-appearance: none; /* Entfernt das Standard-Slider-Design */
+    width: calc(100% - 40px); /* Breite anpassen */
+    max-width: 600px;
+    margin: 10px auto;
+    cursor: pointer;
+}
 
-		/* Hover-Effekt für die Spur */
-		input[type="range"]:hover {
-			background: #ffffff; /* Spur wird weiß beim Hover */
-		}
+/* Slider-Spur */
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px; /* Breitere Linie */
+    background: #673dec; /* Lila Farbe */
+    border-radius: 2px; /* Leicht abgerundet */
+}
 
-		/* Slider-Thumb (Punkt) */
-		input[type="range"]::-webkit-slider-thumb {
-			-webkit-appearance: none;
-			width: 16px; /* Größe des Punktes */
-			height: 16px; /* Größe des Punktes */
-			border-radius: 50%; /* Kreisform */
-			background: #673dec; /* Farbe des Punktes */
-			cursor: pointer; /* Zeiger beim Hover */
-			box-shadow: 0px 0px 5px rgba(103, 61, 236, 0.7); /* Dezenter Leuchteffekt */
-			transition: background 0.3s, box-shadow 0.3s; /* Sanfter Übergang */
-		}
+/* Slider-Punkt (Thumb) */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Entfernt Standard-Styling */
+    width: 16px; /* Punktbreite */
+    height: 16px; /* Punkthöhe */
+    background: #ffffff; /* Weißer Punkt */
+    border: 2px solid #673dec; /* Lila Rand */
+    border-radius: 50%; /* Kreisform */
+    cursor: pointer; /* Zeiger beim Hover */
+    box-shadow: 0px 0px 5px rgba(103, 61, 236, 0.7); /* Dezenter Leuchteffekt */
+    margin-top: -6px; /* Vertikale Zentrierung */
+}
 
-		/* Hover-Effekt für den Punkt */
-		input[type="range"]::-webkit-slider-thumb:hover {
-			background: #ffffff; /* Punkt wird weiß beim Hover */
-			box-shadow: 0px 0px 8px rgba(103, 61, 236, 1); /* Intensiver Leuchteffekt */
-		}
+/* Hover-Effekt für Slider-Punkt */
+input[type="range"]::-webkit-slider-thumb:hover {
+    background: #673dec; /* Lila Punkt beim Hover */
+    border: 2px solid #ffffff; /* Weißer Rand beim Hover */
+    box-shadow: 0px 0px 10px rgba(103, 61, 236, 1); /* Stärkerer Leuchteffekt */
+}
 
-		/* Für Firefox
-		input[type="range"]::-moz-range-thumb {
-			width: 16px;
-			height: 16px;
-			border: none;
-			border-radius: 50%;
-			background: #673dec;
-			cursor: pointer;
-			box-shadow: 0px 0px 5px rgba(103, 61, 236, 0.7);
-			transition: background 0.3s, box-shadow 0.3s;
-		} */
+/* Für Firefox */
+input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    border: 2px solid #673dec;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px rgba(103, 61, 236, 0.7);
+}
 
-		input[type="range"]::-moz-range-progress {
-			background-color: transparent; /* Keine Fortschrittsanzeige */
-		}
+/* Spur für Firefox */
+input[type="range"]::-moz-range-track {
+    height: 4px;
+    background: #673dec;
+    border-radius: 2px;
+}
+
+/* Für IE */
+input[type="range"]::-ms-thumb {
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    border: 2px solid #673dec;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px rgba(103, 61, 236, 0.7);
+    margin-top: -6px;
+}
+
+/* Spur für IE */
+input[type="range"]::-ms-track {
+    height: 4px;
+    background: #673dec;
+    border-radius: 2px;
+    border: none;
+}
+
 
 
 
@@ -199,38 +224,74 @@
                 <input type="number" id="My_TH" value="133" placeholder="10">
                 <label for="Energy-efficiency">Energy-efficiency (W/TH):</label>
                 <input type="number" id="Energy-efficiency" value="24.41" placeholder="z.B. 20">
+                <label for="gomining-discount">Gomining Maintenance Discount (%):</label>
+                <input type="number" id="gomining-discount" value="0" min="0" max="20" step="1" oninput="updateDiscountSlider()" placeholder="0%">
+                <input type="range" id="gomining-discount-slider" min="0" max="20" step="0.1" value="0" oninput="updateDiscountField(); calculateCost();">
 				<label for="Daily-Reward">My Daily Reward:</label>
                 <input type="number" id="Daily-Reward" value="8616" placeholder="z.B. 6500">
                 <label for="Satoshi-per-TH">Satoshi per TH (sat/TH):</label>
                 <input type="number" id="Satoshi-per-TH" value="62" placeholder="z.B. 64">
 				
                 <button onclick="calculateCost()">Berechnen</button>
-				<table id="results-table" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
-					<thead>
-						<tr>
-							<th style="border: 1px solid #555; padding: 10px; text-align: left;"></th>
-							<th style="border: 1px solid #555; padding: 10px; text-align: right;"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td style="border: 1px solid #555; padding: 10px;">Daily Rewards</td>
-							<td id="daily-rewards" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-						</tr>
-						<tr>
-							<td style="border: 1px solid #555; padding: 10px;">Electricity Cost</td>
-							<td id="electricity-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-						</tr>
-						<tr>
-							<td style="border: 1px solid #555; padding: 10px;">Service Cost</td>
-							<td id="service-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-						</tr>
-						<tr>
-							<td style="border: 1px solid #555; padding: 10px;">Maintenance cost in %</td>
-							<td id="maintenance" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-						</tr>
-					</tbody>
-				</table>
+                <table id="results-table" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="border: 1px solid #555; padding: 10px; text-align: left;">Description</th>
+                            <th style="border: 1px solid #555; padding: 10px; text-align: right;">Value ($)</th>
+                            <th style="border: 1px solid #555; padding: 10px; text-align: right;">Value (BTC)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border: 1px solid #555; padding: 10px;">Daily Revenue</td>
+                            <td id="daily-rewards" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                            <td id="daily-rewards-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #555; padding: 10px;">Daily Electricity Cost</td>
+                            <td id="electricity-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                            <td id="electricity-cost-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #555; padding: 10px;">Daily Service Cost</td>
+                            <td id="service-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                            <td id="service-cost-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #555; padding: 10px;">Daily Total Maintenance Cost</td>
+                            <td id="daily-maintenance-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                            <td id="daily-maintenance-cost-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #555; padding: 10px;">Daily Net Profit</td>
+                            <td id="daily-net-profit" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                            <td id="daily-net-profit-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #555; padding: 10px;">Monthly Revenue</td>
+                            <td id="monthly-rewards" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                            <td id="monthly-rewards-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #555; padding: 10px;">Monthly Total Maintenance Cost</td>
+                            <td id="monthly-maintenance-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                            <td id="monthly-maintenance-cost-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #555; padding: 10px;">Monthly Net Profit</td>
+                            <td id="monthly-net-profit" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                            <td id="monthly-net-profit-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #555; padding: 10px;">Maintenance Cost (%)</td>
+                            <td id="maintenance" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                            <td style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+                
+                
 
             </div>
 
@@ -306,34 +367,79 @@
 				BTCFeld.value = slider.value; // Den Slider-Wert im Feld anzeigen
 
 			}
+            function updateDiscountField() {
+                // Synchronisiert den Slider-Wert mit dem Eingabefeld
+                const slider = document.getElementById('gomining-discount-slider');
+                const field = document.getElementById('gomining-discount');
+                field.value = slider.value; // Setzt den Wert des Feldes auf den Slider-Wert
+            }
 
-			function calculateCost() {
-			const efficiency = parseFloat(document.getElementById('Energy-efficiency').value);
-			const BTC = parseFloat(document.getElementById('bitcoin-price').value);
-			const th = parseFloat(document.getElementById('My_TH').value);
-			const dailyReward = parseFloat(document.getElementById('Daily-Reward').value);
-			const costPerKWh = 0.05;
-			const daily_cost = 0.0089;
+            function updateDiscountSlider() {
+                // Synchronisiert das Eingabefeld mit dem Slider-Wert
+                const slider = document.getElementById('gomining-discount-slider');
+                const field = document.getElementById('gomining-discount');
+                slider.value = field.value; // Setzt den Slider-Wert auf den Feld-Wert
+            }
 
-			if (isNaN(efficiency) || isNaN(th) || isNaN(BTC) || isNaN(dailyReward)) {
-				alert("Bitte alle Felder ausfüllen!");
-				return;
-			}
+            function calculateCost() {
+                const efficiency = parseFloat(document.getElementById('Energy-efficiency').value);
+                const BTC = parseFloat(document.getElementById('bitcoin-price').value);
+                const th = parseFloat(document.getElementById('My_TH').value);
+                const dailyReward = parseFloat(document.getElementById('Daily-Reward').value);
+                const costPerKWh = 0.05;
+                const daily_cost = 0.0089;
+                const discount = parseFloat(document.getElementById('gomining-discount').value);
+                if (isNaN(efficiency) || isNaN(th) || isNaN(BTC) || isNaN(dailyReward)) {
+                    alert("Please fill out all fields!");
+                    return;
+                }
 
-			const dailyElectricityCost = (efficiency * th * costPerKWh * 24) / 1000;
-			const dailyRewardsInUSD = (dailyReward * 0.00000001) * BTC;
-			const dailyServiceCost = th * daily_cost;
+                // Daily calculations
+                const dailyElectricityCost = (efficiency * th * costPerKWh * 24 / 1000) * ((100 - discount) / 100);
+                const dailyServiceCost = th * daily_cost * ((100 - discount) / 100);
+                const dailyTotalMaintenanceCost = dailyElectricityCost + dailyServiceCost;
+                const dailyRewardsInUSD = (dailyReward * 0.00000001) * BTC;
+                const dailyNetProfitInUSD = dailyRewardsInUSD - dailyTotalMaintenanceCost;
 
-			const totalCosts = dailyServiceCost + dailyElectricityCost;
-			const costPercentage = (totalCosts / dailyRewardsInUSD) * 100;
-			
-			// Ergebnisse in die Tabelle einfügen
-			document.getElementById('daily-rewards').innerText = `${dailyRewardsInUSD.toFixed(2)} $`;
-			document.getElementById('electricity-cost').innerText = `${dailyElectricityCost.toFixed(2)} $`;
-			document.getElementById('service-cost').innerText = `${dailyServiceCost.toFixed(2)} $`;
-			document.getElementById('maintenance').innerText = `$${costPercentage.toFixed(2)}%`;
+                // Monthly calculations
+                const monthlyRewardsInUSD = dailyRewardsInUSD * 30;
+                const monthlyMaintenanceCostInUSD = dailyTotalMaintenanceCost * 30;
+                const monthlyNetProfitInUSD = monthlyRewardsInUSD - monthlyMaintenanceCostInUSD;
 
-}
+                // BTC values
+                const dailyRewardsInBTC = dailyReward * 0.00000001;
+                const dailyElectricityCostInBTC = dailyElectricityCost / BTC;
+                const dailyServiceCostInBTC = dailyServiceCost / BTC;
+                const dailyMaintenanceCostInBTC = dailyTotalMaintenanceCost / BTC;
+                const dailyNetProfitInBTC = dailyNetProfitInUSD / BTC;
+                const monthlyRewardsInBTC = dailyRewardsInBTC * 30;
+                const monthlyMaintenanceCostInBTC = monthlyMaintenanceCostInUSD / BTC;
+                const monthlyNetProfitInBTC = monthlyNetProfitInUSD / BTC;
+                const totalCosts = dailyElectricityCost + dailyServiceCost; // Gesamtkosten (Strom + Service)
+                const costPercentage = (totalCosts / dailyRewardsInUSD) * 100; // Prozentuale Kosten
+
+
+
+
+                // Update table
+                document.getElementById('daily-rewards').innerText = `${dailyRewardsInUSD.toFixed(2)}`;
+                document.getElementById('daily-rewards-btc').innerText = `${dailyRewardsInBTC.toFixed(8)}`;
+                document.getElementById('electricity-cost').innerText = `${dailyElectricityCost.toFixed(2)}`;
+                document.getElementById('electricity-cost-btc').innerText = `${dailyElectricityCostInBTC.toFixed(8)}`;
+                document.getElementById('service-cost').innerText = `${dailyServiceCost.toFixed(2)}`;
+                document.getElementById('service-cost-btc').innerText = `${dailyServiceCostInBTC.toFixed(8)}`;
+                document.getElementById('daily-maintenance-cost').innerText = `${dailyTotalMaintenanceCost.toFixed(2)}`;
+                document.getElementById('daily-maintenance-cost-btc').innerText = `${dailyMaintenanceCostInBTC.toFixed(8)}`;
+                document.getElementById('daily-net-profit').innerText = `${dailyNetProfitInUSD.toFixed(2)}`;
+                document.getElementById('daily-net-profit-btc').innerText = `${dailyNetProfitInBTC.toFixed(8)}`;
+                document.getElementById('monthly-rewards').innerText = `${monthlyRewardsInUSD.toFixed(2)}`;
+                document.getElementById('monthly-rewards-btc').innerText = `${monthlyRewardsInBTC.toFixed(8)}`;
+                document.getElementById('monthly-maintenance-cost').innerText = `${monthlyMaintenanceCostInUSD.toFixed(2)}`;
+                document.getElementById('monthly-maintenance-cost-btc').innerText = `${monthlyMaintenanceCostInBTC.toFixed(8)}`;
+                document.getElementById('monthly-net-profit').innerText = `${monthlyNetProfitInUSD.toFixed(2)}`;
+                document.getElementById('monthly-net-profit-btc').innerText = `${monthlyNetProfitInBTC.toFixed(8)}`;
+                document.getElementById('maintenance').innerText = `${costPercentage.toFixed(2)} %`; // Wert aktualisieren
+            }
 
 
 		function calculateServiceCost() {
