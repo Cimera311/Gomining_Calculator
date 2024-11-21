@@ -511,7 +511,7 @@ input[type="range"]::-ms-track {
 				const dailyServiceCostPerTHInGMT = dailyServiceCostPerTHInUSD / GMTPrice; // Servicekosten in GMT
 
 				const wthValues = [35, 30, 25, 20, 15]; // Effizienzstufen
-				const th = 100; // 1 TH für die Berechnung
+				const th = document.getElementById('My_TH').value; // 1 TH für die Berechnung
 
 				// Tabellenkopf generieren
 				const thead = document.getElementById('revenue-summary').querySelector('thead');
