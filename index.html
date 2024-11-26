@@ -195,6 +195,39 @@ input[type="range"]::-ms-track {
     border-radius: 2px;
     border: none;
 }
+.card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 90%; /* Optimiert für Smartphones */
+    margin: 0 auto;
+}
+
+.card {
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card-header {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #673dec;
+}
+
+.card-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1em;
+}
+
+.card-row span {
+    font-weight: bold;
+}
 
 
 
@@ -298,10 +331,82 @@ input[type="range"]::-ms-track {
                     </tbody>
                 </table>
                 
+                <footer style="margin-top: 20px; padding: 10px; background-color: #2a2a2a; color: #e6e6e6; font-size: 0.9em; text-align: left; border-top: 1px solid #555;">
+                    <h3 style="margin-bottom: 10px; color: #673dec;">Formulas Used</h3>
+                    <ul style="list-style-type: none; padding: 0;">
+                        <li>
+                            <strong>Revenue:</strong> <code>(SAT per TH * BTC Price) / 1e8 * TH</code>
+                        </li>
+                        <li>
+                            <strong>Electricity Cost:</strong> <code>(Efficiency (W/TH) * TH * Cost per kWh * 24) / 1000</code>
+                        </li>
+                        <li>
+                            <strong>Service Cost:</strong> <code>0.0089 $ / BTC Price * TH</code>
+                        </li>
+                        <li>
+                            <strong>Net Revenue:</strong> <code>Revenue - (Electricity Cost + Service Cost)</code>
+                        </li>
+                        <li>
+                            <strong>Net Revenue %:</strong> <code>(Net Revenue / Revenue) * 100</code>
+                        </li>
+                    </ul>
+                </footer>
                 
-
             </div>
-
+            <div class="tab-page" id="MobileView">
+                <h2>Mobile Optimized View</h2>
+                <div class="card-container">
+                    <!-- Daily Revenue Card -->
+                    <div class="card">
+                        <div class="card-header">Daily</div>
+                        <div class="card-row">
+                            <span>Revenue:</span>
+                            <span id="daily-revenue">$123.45</span>
+                        </div>
+                        <div class="card-row">
+                            <span>Maintenance:</span>
+                            <span id="daily-maintenance">$23.45</span>
+                        </div>
+                        <div class="card-row">
+                            <span>Net Revenue:</span>
+                            <span id="daily-net">$100.00</span>
+                        </div>
+                    </div>
+                    <!-- Weekly Revenue Card -->
+                    <div class="card">
+                        <div class="card-header">Weekly</div>
+                        <div class="card-row">
+                            <span>Revenue:</span>
+                            <span id="weekly-revenue">$863.15</span>
+                        </div>
+                        <div class="card-row">
+                            <span>Maintenance:</span>
+                            <span id="weekly-maintenance">$164.15</span>
+                        </div>
+                        <div class="card-row">
+                            <span>Net Revenue:</span>
+                            <span id="weekly-net">$699.00</span>
+                        </div>
+                    </div>
+                    <!-- Monthly Revenue Card -->
+                    <div class="card">
+                        <div class="card-header">Monthly</div>
+                        <div class="card-row">
+                            <span>Revenue:</span>
+                            <span id="monthly-revenue">$3703.50</span>
+                        </div>
+                        <div class="card-row">
+                            <span>Maintenance:</span>
+                            <span id="monthly-maintenance">$704.50</span>
+                        </div>
+                        <div class="card-row">
+                            <span>Net Revenue:</span>
+                            <span id="monthly-net">$2999.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Gomining Verdienst Tab -->
             <div class="tab-page" id="worth">
 				<div style="text-align: center; margin-bottom: 20px;">
@@ -346,6 +451,7 @@ input[type="range"]::-ms-track {
 
         const tabs = [
             { name: "Calc", id: "Calc" },
+            { name: "Mobile View", id: "MobileView" },
             { name: "worth it ?", id: "worth" },
             //{ name: "Maintenance Solo Mining", id: "maintenance-solo-mining" }
         ];
@@ -444,7 +550,11 @@ input[type="range"]::-ms-track {
 				const field = document.getElementById('gomining-price');
 				field.value = slider.value; // Aktualisiert das Eingabefeld basierend auf dem Slider-Wert
 			}
-
+            function syncSliderWithInput() {				
+                const slider = document.getElementById('btc-slider');
+				const field = document.getElementById('bitcoin-price');
+				slider.value = field.value; // Aktualisiert den Slider basierend auf dem Eingabefeld-Wert
+            }
 			function syncGominingSlider() {
 				const slider = document.getElementById('gomining-slider');
 				const field = document.getElementById('gomining-price');
@@ -477,14 +587,22 @@ input[type="range"]::-ms-track {
                     alert("Please fill out all fields!");
                     return;
                 }
-
+                
                 // Daily calculations
-                const dailyElectricityCost = (efficiency * th * costPerKWh * 24 / 1000) * ((100 - discount) / 100);
-                const dailyServiceCost = th * daily_cost * ((100 - discount) / 100);
+                const dailyElectricityCostBTC = (costPerKWh * 24) / 1000 / BTC * efficiency * th 
+                const dailyElectricityCost = dailyElectricityCostBTC * BTC * ((100 - discount) / 100);
+                const dailyServiceCostBTC = (daily_cost / BTC )* th ;
+                const dailyServiceCost = dailyServiceCostBTC * BTC * ((100 - discount) / 100);
                 const dailyTotalMaintenanceCost = dailyElectricityCost + dailyServiceCost;
                 const dailyRewardsInUSD = (dailyReward * 0.00000001) * BTC;
                 const dailyNetProfitInUSD = dailyRewardsInUSD - dailyTotalMaintenanceCost;
-
+                
+                // Daily calculations
+                //const dailyElectricityCost = (efficiency * th * costPerKWh * 24 / 1000) * ((100 - discount) / 100);
+                //const dailyServiceCost = th * daily_cost * ((100 - discount) / 100);
+                //const dailyTotalMaintenanceCost = dailyElectricityCost + dailyServiceCost;
+                //const dailyRewardsInUSD = (dailyReward * 0.00000001) * BTC;
+                //const dailyNetProfitInUSD = dailyRewardsInUSD - dailyTotalMaintenanceCost;
                 // Monthly calculations
                 const monthlyRewardsInUSD = dailyRewardsInUSD * 30;
                 const monthlyMaintenanceCostInUSD = dailyTotalMaintenanceCost * 30;
@@ -524,6 +642,32 @@ input[type="range"]::-ms-track {
                 document.getElementById('monthly-net-profit-btc').innerText = `${monthlyNetProfitInBTC.toFixed(8)}`;
                 document.getElementById('maintenance').innerText = `${costPercentage.toFixed(2)} %`; // Wert aktualisieren
             }
+            function calculateMobileView() {
+                const dailyRevenue = parseFloat(document.getElementById('daily-revenue').textContent.replace('$', ''));
+                const dailyMaintenance = parseFloat(document.getElementById('daily-maintenance').textContent.replace('$', ''));
+                const dailyNet = dailyRevenue - dailyMaintenance;
+
+                // Wöchentliche Werte
+                const weeklyRevenue = dailyRevenue * 7;
+                const weeklyMaintenance = dailyMaintenance * 7;
+                const weeklyNet = dailyNet * 7;
+
+                // Monatliche Werte (30 Tage)
+                const monthlyRevenue = dailyRevenue * 30;
+                const monthlyMaintenance = dailyMaintenance * 30;
+                const monthlyNet = dailyNet * 30;
+
+                // Werte aktualisieren
+                document.getElementById('daily-net').textContent = `$${dailyNet.toFixed(2)}`;
+                document.getElementById('weekly-revenue').textContent = `$${weeklyRevenue.toFixed(2)}`;
+                document.getElementById('weekly-maintenance').textContent = `$${weeklyMaintenance.toFixed(2)}`;
+                document.getElementById('weekly-net').textContent = `$${weeklyNet.toFixed(2)}`;
+                document.getElementById('monthly-revenue').textContent = `$${monthlyRevenue.toFixed(2)}`;
+                document.getElementById('monthly-maintenance').textContent = `$${monthlyMaintenance.toFixed(2)}`;
+                document.getElementById('monthly-net').textContent = `$${monthlyNet.toFixed(2)}`;
+            }
+
+
 
 			function generateRevenueTable(btcPrice, satPerTH, GMTPrice) {
 				const tbody = document.getElementById('revenue-summary').querySelector('tbody');
