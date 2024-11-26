@@ -218,21 +218,26 @@ input[type="range"]::-ms-track {
 
 				<label for="bitcoin-price">Bitcoinpreis ($):</label>
                 <input type="number" id="bitcoin-price" oninput="syncSliderWithInput()" placeholder="z.B. 60000" >
-				<input type="range" id="btc-slider" min="60000" max="150000" step="1000" value="60000" oninput="updateSliderValue()">
+				<input type="range" id="btc-slider" min="60000" max="150000" step="1000" value="60000" oninput="updateSliderValue(); calculateCost();">
 				<label for="gomining-price">Gomining Token Price ($):</label>
 				<input type="number" id="gomining-price" oninput="syncGominingSlider()" placeholder="e.g., 0.4000">
-				<input type="range" id="gomining-slider" min="0.0001" max="1.0000" step="0.0001" value="0.4000" oninput="updateGominingField()">
+				<input type="range" id="gomining-slider" min="0.0001" max="1.0000" step="0.0001" value="0.4000" oninput="updateGominingField(); calculateCost();">
                 <label for="My_TH">My TH:</label>
-                <input type="number" id="My_TH" value="133" placeholder="10">
+                <input type="number" id="My_TH" value="200" placeholder="10">
+				<input type="range" id="th-slider" min="1" max="5000" step="1" value="200" oninput="syncTHWithSlider(); calculateCost();">
                 <label for="Energy-efficiency">Energy-efficiency (W/TH):</label>
-                <input type="number" id="Energy-efficiency" value="24.41" placeholder="z.B. 20">
+                <input type="number" id="Energy-efficiency" value="27.71" placeholder="z.B. 20">
+				<input type="range" id="efficiency-slider" min="15" max="35" step="0.01" value="27.71" oninput="syncEfficiencyWithSlider(); calculateCost();">
                 <label for="gomining-discount">Gomining Maintenance Discount (%):</label>
                 <input type="number" id="gomining-discount" value="0" min="0" max="20" step="1" oninput="updateDiscountSlider()" placeholder="0%">
                 <input type="range" id="gomining-discount-slider" min="0" max="20" step="0.1" value="0" oninput="updateDiscountField(); calculateCost();">
 				<label for="Daily-Reward">My Daily Reward:</label>
-                <input type="number" id="Daily-Reward" value="8616" placeholder="z.B. 6500">
+                <input type="number" id="Daily-Reward" value="12400" placeholder="z.B. 6500">
                 <label for="Satoshi-per-TH">Satoshi per TH (sat/TH):</label>
                 <input type="number" id="Satoshi-per-TH" value="62" placeholder="z.B. 64">
+
+
+
 				
                 <button onclick="calculateCost()">Berechnen</button>
                 <table id="results-table" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
@@ -408,6 +413,25 @@ input[type="range"]::-ms-track {
 					alert('Failed to fetch Gomining Token Price. Please try again later.');
 				}
 			}
+			function syncTHWithSlider() {
+					const sliderValue = document.getElementById('th-slider').value;
+					document.getElementById('My_TH').value = sliderValue;
+				}
+
+			function syncEfficiencyWithSlider() {
+				const sliderValue = document.getElementById('efficiency-slider').value;
+				document.getElementById('Energy-efficiency').value = sliderValue;
+			}
+
+			document.getElementById('My_TH').addEventListener('input', function () {
+				const inputValue = this.value;
+				document.getElementById('th-slider').value = inputValue;
+			});
+
+			document.getElementById('Energy-efficiency').addEventListener('input', function () {
+				const inputValue = this.value;
+				document.getElementById('efficiency-slider').value = inputValue;
+			});
 
 			function updateSliderValue() {
 				const slider = document.getElementById('btc-slider');
