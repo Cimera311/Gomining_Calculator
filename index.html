@@ -259,7 +259,7 @@ input[type="range"]::-ms-track {
                 <input type="number" id="My_TH" value="200" placeholder="10">
 				<input type="range" id="th-slider" min="1" max="5000" step="1" value="200" oninput="syncTHWithSlider(); calculateCost();">
                 <label for="Energy-efficiency">Energy-efficiency (W/TH):</label>
-                <input type="number" id="Energy-efficiency" value="27.71" placeholder="z.B. 20">
+                <input type="number" id="Energy-efficiency" value="27.95" placeholder="z.B. 20">
 				<input type="range" id="efficiency-slider" min="15" max="35" step="0.01" value="27.71" oninput="syncEfficiencyWithSlider(); calculateCost();">
                 <label for="gomining-discount">Gomining Maintenance Discount (%):</label>
                 <input type="number" id="gomining-discount" value="0" min="0" max="20" step="1" oninput="updateDiscountSlider()" placeholder="0%">
@@ -353,6 +353,48 @@ input[type="range"]::-ms-track {
                 </footer>
                 
             </div>
+		<div class="tab-page active" id="ROI">
+				<button onclick="fetchPrices(); fetchGominingPrice();">Get Prices</button>
+
+				<label for="bitcoin-price_ROI">Bitcoinpreis ($):</label>
+				<input type="number" id="bitcoin-price_ROI" oninput="syncFieldAndSlider(event, 'bitcoin-price_ROI', 'btc-slider_ROI')" placeholder="z.B. 60000">
+				<input type="range" id="btc-slider_ROI" min="60000" max="150000" step="1000" value="60000" oninput="syncFieldAndSlider(event, 'bitcoin-price_ROI', 'btc-slider_ROI'); calculateROI();">
+
+				<label for="gomining-price_ROI">Gomining Token Price ($):</label>
+				<input type="number" id="gomining-price_ROI" oninput="syncFieldAndSlider(event, 'gomining-price_ROI', 'gomining-slider_ROI')" placeholder="e.g., 0.4000">
+				<input type="range" id="gomining-slider_ROI" min="0.0001" max="1.0000" step="0.0001" value="0.4000" oninput="syncFieldAndSlider(event, 'gomining-price_ROI', 'gomining-slider_ROI')"; calculateROI();">
+
+				<label for="My_TH_ROI">My TH:</label>
+				<input type="number" id="My_TH_ROI" value="1" placeholder="10" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI')">
+				<input type="range" id="th-slider_ROI" min="1" max="5000" step="1" value="200" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI'); calculateROI();">
+                <label for="Satoshi-per-TH_ROI">Satoshi per TH (sat/TH):</label>
+                <input type="number" id="Satoshi-per-TH_ROI" value="63" placeholder="z.B. 63">
+				<label for="Energy-efficiency_ROI">Energy-efficiency (W/TH):</label>
+				<input type="number" id="Energy-efficiency_ROI" value="20" placeholder="z.B. 20" oninput="syncFieldAndSlider(event, 'Energy-efficiency_ROI', 'efficiency-slider_ROI')">
+				<input type="range" id="efficiency-slider_ROI" min="15" max="35" step="0.01" value="27.71" oninput="syncFieldAndSlider(event, 'Energy-efficiency_ROI', 'efficiency-slider_ROI'); calculateROI();">
+
+				<label for="gomining-discount_ROI">Gomining Maintenance Discount (%):</label>
+				<input type="number" id="gomining-discount_ROI" value="0" min="0" max="20" step="1" oninput="syncFieldAndSlider(event, 'gomining-discount_ROI', 'gomining-discount-slider_ROI')">
+				<input type="range" id="gomining-discount-slider_ROI" min="0" max="20" step="0.1" value="0" oninput="updateDiscountField(); calculateROI();">
+
+				<label for="price-per-TH_ROI">Price per TH ($):</label>
+				<input type="number" id="price-per-th_ROI" value="22.93" placeholder="e.g., 22.93">
+
+				<button onclick="calculateROI();">Calculate ROI</button>
+
+				<!-- ROI Results -->
+				<div class="results-container" style="margin-top: 20px;">
+					<p><strong>Total Investment:</strong> <span id="total-investment_ROI">$0.00</span></p>
+					<p><strong>Daily Profit:</strong> <span id="daily-profit_ROI">$0.00</span></p>
+					<p><strong>Monthly Profit:</strong> <span id="monthly-profit_ROI">$0.00</span></p>
+					<p><strong>Yearly Profit:</strong> <span id="yearly-profit_ROI">$0.00</span></p>
+					<p><strong>Days of ROI:</strong> <span id="days-of-roi_ROI">0 Days</span></p>
+					<p><strong>% of ROI (for a year):</strong> <span id="roi-percentage_ROI">0%</span></p>
+					<p><strong>Yearly Net BTC:</strong> <span id="yearly-net-btc_ROI">0.00000000 BTC</span></p>
+
+				</div>
+			</div>
+
             <div class="tab-page" id="MobileView">
                 <h2>Mobile Optimized View</h2>
                 <div class="card-container">
@@ -451,6 +493,7 @@ input[type="range"]::-ms-track {
 
         const tabs = [
             { name: "Calc", id: "Calc" },
+			{ name: "ROI", id: "ROI" },
             { name: "Mobile View", id: "MobileView" },
             { name: "worth it ?", id: "worth" },
             //{ name: "Maintenance Solo Mining", id: "maintenance-solo-mining" }
@@ -475,8 +518,9 @@ input[type="range"]::-ms-track {
 				const valueDisplay = document.getElementById('btc-slider-value');
 				const minPrice = parseInt(slider.min);
 				const maxPrice = parseInt(slider.max);
-				
+
 				document.getElementById('bitcoin-price').value = btcPrice;
+				document.getElementById('bitcoin-price_ROI').value = btcPrice;
 				//BitcoinPrice = parseFloat(data.quotes.USD.price).toFixed(0);// Speichere den Preis in der globalen Variable
 				//console.log(`Bitcoin Price fetched and stored: $${BitcoinPrice}`);
 				
@@ -503,6 +547,7 @@ input[type="range"]::-ms-track {
 
 					// Wert in Feld und Slider setzen
 					document.getElementById('gomining-price').value = gominingPrice;
+					document.getElementById('gomining-price_ROI').value = gominingPrice;
 					//GMTPrice = parseFloat(data.quotes.BTC.price); // Speichere den Preis in der globalen Variable
 					//console.log(`Gomining Token Price in BTC fetched and stored: ${GMTPrice}`);
 									
@@ -561,6 +606,17 @@ input[type="range"]::-ms-track {
 				slider.value = field.value; // Aktualisiert den Slider basierend auf dem Eingabefeld-Wert
 			}
 
+			function syncFieldAndSlider(event, fieldId, sliderId) {
+				const field = document.getElementById(fieldId);
+				const slider = document.getElementById(sliderId);
+
+				if (event.target === field) {
+					slider.value = field.value; // Aktualisiert den Slider basierend auf dem Eingabefeld
+				} else if (event.target === slider) {
+					field.value = slider.value; // Aktualisiert das Eingabefeld basierend auf dem Slider
+				}
+			}
+
             function updateDiscountField() {
                 // Synchronisiert den Slider-Wert mit dem Eingabefeld
                 const slider = document.getElementById('gomining-discount-slider');
@@ -596,14 +652,7 @@ input[type="range"]::-ms-track {
                 const dailyTotalMaintenanceCost = dailyElectricityCost + dailyServiceCost;
                 const dailyRewardsInUSD = (dailyReward * 0.00000001) * BTC;
                 const dailyNetProfitInUSD = dailyRewardsInUSD - dailyTotalMaintenanceCost;
-                
-                // Daily calculations
-                //const dailyElectricityCost = (efficiency * th * costPerKWh * 24 / 1000) * ((100 - discount) / 100);
-                //const dailyServiceCost = th * daily_cost * ((100 - discount) / 100);
-                //const dailyTotalMaintenanceCost = dailyElectricityCost + dailyServiceCost;
-                //const dailyRewardsInUSD = (dailyReward * 0.00000001) * BTC;
-                //const dailyNetProfitInUSD = dailyRewardsInUSD - dailyTotalMaintenanceCost;
-                // Monthly calculations
+               
                 const monthlyRewardsInUSD = dailyRewardsInUSD * 30;
                 const monthlyMaintenanceCostInUSD = dailyTotalMaintenanceCost * 30;
                 const monthlyNetProfitInUSD = monthlyRewardsInUSD - monthlyMaintenanceCostInUSD;
@@ -667,6 +716,48 @@ input[type="range"]::-ms-track {
                 document.getElementById('monthly-net').textContent = `$${monthlyNet.toFixed(2)}`;
             }
 
+			function calculateROI() {
+				// Eingabefelder abrufen
+				const bitcoinPrice = parseFloat(document.getElementById('bitcoin-price_ROI').value);
+				const gominingPrice = parseFloat(document.getElementById('gomining-price_ROI').value);
+				const myTH = parseFloat(document.getElementById('My_TH_ROI').value);
+				const energyEfficiency = parseFloat(document.getElementById('Energy-efficiency_ROI').value);
+				const gominingDiscount = parseFloat(document.getElementById('gomining-discount_ROI').value);
+				const pricePerTH = parseFloat(document.getElementById('price-per-th_ROI').value);
+				const satoshiPerTH = parseFloat(document.getElementById('Satoshi-per-TH_ROI').value);
+				// Validierung der Eingaben Satoshi-per-TH_ROI
+				if (
+					isNaN(bitcoinPrice) || isNaN(gominingPrice) ||
+					isNaN(myTH) || isNaN(energyEfficiency) ||
+					isNaN(gominingDiscount) || isNaN(pricePerTH)
+				) {
+					alert("Please ensure all fields are filled correctly.");
+					return;
+				}
+
+				// Berechnungen
+				const totalInvestment = pricePerTH * myTH;
+				const dailyRevenue = (satoshiPerTH * myTH * bitcoinPrice) / 1e8; // 
+				const electricityCost = (energyEfficiency * myTH * 0.05 * 24) / 1000; // Kosten für Strom
+				const serviceCost = (0.0089 / bitcoinPrice) * myTH; // Servicekosten pro TH
+				const totalMaintenanceCost = (electricityCost + serviceCost) * ((100 - gominingDiscount) / 100);
+				const dailyProfit = dailyRevenue - totalMaintenanceCost;
+
+				const monthlyProfit = dailyProfit * 30; // Monatlicher Gewinn
+				const yearlyProfit = dailyProfit * 365; // Jährlicher Gewinn
+				const daysOfROI = totalInvestment / dailyProfit; // ROI in Tagen
+				const roiPercentage = (yearlyProfit / totalInvestment) * 100; // ROI in %
+				const yearlyNetBTC = dailyProfit / bitcoinPrice * 365; // Daily Profit in BTC * 365 Tage
+
+				// Ergebnisse in der UI anzeigen
+				document.getElementById('total-investment_ROI').textContent = `$${totalInvestment.toFixed(2)}`;
+				document.getElementById('daily-profit_ROI').textContent = `$${dailyProfit.toFixed(2)}`;
+				document.getElementById('monthly-profit_ROI').textContent = `$${monthlyProfit.toFixed(2)}`;
+				document.getElementById('yearly-profit_ROI').textContent = `$${yearlyProfit.toFixed(2)}`;
+				document.getElementById('days-of-roi_ROI').textContent = `${Math.ceil(daysOfROI)} Days`;
+				document.getElementById('roi-percentage_ROI').textContent = `${roiPercentage.toFixed(2)}%`;
+				document.getElementById('yearly-net-btc_ROI').textContent = `${yearlyNetBTC.toFixed(8)} BTC`;
+			}
 
 
 			function generateRevenueTable(btcPrice, satPerTH, GMTPrice) {
