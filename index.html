@@ -901,6 +901,21 @@ input[type="range"]::-ms-track {
 					document.getElementById('Satoshi-per-TH').value = ''; // Leeren, falls ungültig
 				}
 			});
+            function copyWalletAddress() {
+    const walletInput = document.querySelector('footer input[type="text"]');
+    walletInput.select();
+    navigator.clipboard.writeText(walletInput.value).then(
+        () => {
+            alert("Wallet address copied to clipboard!");
+        },
+        () => {
+            alert("Failed to copy wallet address.");
+        }
+    );
+}
+            
+            
+            
 					// Füge einen Event Listener hinzu, der das Feld "Daily-Reward" überwacht
 			document.getElementById('Satoshi-per-TH').addEventListener('input', function () {
 				const satpTH = parseFloat(document.getElementById('Satoshi-per-TH').value); // Wert des Daily-Reward-Feldes
