@@ -963,7 +963,20 @@ input[type="range"]::-ms-track {
 				} else {
 					document.getElementById('Daily-Reward').value = '0'; // Leeren, falls ungültig
 				}
-			});				
+			});
+	    					// Füge einen Event Listener hinzu, der das Feld "Daily-Reward" überwacht
+			document.getElementById('th-slider').addEventListener('input', function () {
+				const satpTH = parseFloat(document.getElementById('Satoshi-per-TH').value); // Wert des Daily-Reward-Feldes
+				const myTH = parseFloat(document.getElementById('My_TH').value); // Wert des My_TH-Feldes
+
+				// Überprüfe, ob beide Werte gültig sind, um eine Division durch 0 zu vermeiden
+				if (!isNaN(satpTH) && !isNaN(myTH) && myTH > 0) {
+					const dailyReward = satpTH * myTH; // Berechnung
+					document.getElementById('Daily-Reward').value = dailyReward.toFixed(2); // Ergebnis einfügen
+				} else {
+					document.getElementById('Daily-Reward').value = '0'; // Leeren, falls ungültig
+				}
+			});
 			document.addEventListener('DOMContentLoaded', () => {
 			// Füge einen Event Listener für alle Eingabefelder hinzu
 			const inputs = document.querySelectorAll('input');
