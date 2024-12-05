@@ -241,6 +241,14 @@ select {
 select:hover {
     background-color: #3a3a3a;
 }
+button:hover {
+    background-color: #8a5eff; /* Helleres Lila beim Hover */
+    box-shadow: 0px 4px 8px rgba(103, 61, 236, 0.3);
+}
+
+button:active {
+    background-color: #5526c6; /* Dunkleres Lila beim Klick */
+}
 
 
 
@@ -410,16 +418,21 @@ select:hover {
                 <label for="Satoshi-per-TH_ROI">Satoshi per TH (sat/TH):</label>
                 <input type="number" id="Satoshi-per-TH_ROI" value="63" placeholder="z.B. 63">
 
-                <label for="miner-type_ROI">New Miner:</label>
-                <div style="display: flex; align-items: center; gap: 10px;">
-
-                    <select id="miner-type_ROI" onchange="updateMinerFields()">
-                        <option value="15">15 W/TH</option>
-                        <option value="20">20 W/TH</option>
-                        <option value="28">28 W/TH</option>
-                        <option value="35">35 W/TH</option>
-                    </select>
+                <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                    <button onclick="setMinerValues(15)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                        15 W/TH
+                    </button>
+                    <button onclick="setMinerValues(20)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                        20 W/TH
+                    </button>
+                    <button onclick="setMinerValues(28)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                        28 W/TH
+                    </button>
+                    <button onclick="setMinerValues(35)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                        35 W/TH
+                    </button>
                 </div>
+                
                 
 
 				<label for="Energy-efficiency_ROI">Energy-efficiency (W/TH):</label>
@@ -981,27 +994,27 @@ select:hover {
 				});
 			});
 		});
-        function updateMinerFields() {
-            const minerType = document.getElementById('miner-type_ROI').value;
-            const pricePerTHField = document.getElementById('price-per-th_ROI');
-            const efficiencyField = document.getElementById('Energy-efficiency_ROI');
+        function setMinerValues(watt) {
+                const pricePerTHField = document.getElementById('price-per-th_ROI');
+                const efficiencyField = document.getElementById('Energy-efficiency_ROI');
 
-            // Zuordnung der Werte basierend auf dem Miner-Typ
-            const minerData = {
-                "15": { pricePerTH: 36.99, efficiency: 15 },
-                "20": { pricePerTH: 26.99, efficiency: 20 },
-                "28": { pricePerTH: 16.30, efficiency: 28 },
-                "35": { pricePerTH: 9.38, efficiency: 35 }
-            };
+                // Preise basierend auf Watt-Stufe
+                const minerData = {
+                    15: { pricePerTH: 31.57, efficiency: 15 },
+                    20: { pricePerTH: 23.17, efficiency: 20 },
+                    28: { pricePerTH: 14.50, efficiency: 28 },
+                    35: { pricePerTH: 8.00, efficiency: 35 }
+                };
 
-            if (minerData[minerType]) {
-                pricePerTHField.value = minerData[minerType].pricePerTH;
-                efficiencyField.value = minerData[minerType].efficiency;
-            } else {
-                pricePerTHField.value = '';
-                efficiencyField.value = '';
-            }
-        }
+                if (minerData[watt]) {
+                    pricePerTHField.value = minerData[watt].pricePerTH.toFixed(2);
+                    efficiencyField.value = minerData[watt].efficiency;
+                } else {
+                    pricePerTHField.value = '';
+                    efficiencyField.value = '';
+                }
+                }
+
 
 
     </script>
