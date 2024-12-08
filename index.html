@@ -1,9 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gomining Calculator</title>
+    <script type="module" src="config.js"></script>
+
+    <title>HashSense</title>
     <style>
         /* Allgemeine Dark-Mode-Einstellungen */
         body {
@@ -13,8 +16,8 @@
             margin: 0;
             padding: 0;
             display: flex;
-            //justify-content: center;
-            //align-items: center;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
         }
 
@@ -60,13 +63,17 @@
 
         /* Inhalt des Containers */
         .tab-page {
-            display: none; /* Standardmäßig ausgeblendet */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Elemente linksbündig */
+            gap: 15px; /* Abstand zwischen den Elementen */
             padding: 20px;
             border-radius: 8px;
-            background-color: #333; /* Dunkler Container */
+            background-color: #333;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-            text-align: center; /* Inhalte zentrieren */
+            text-align: left;
         }
+
 
         .tab-page.active {
             display: block; /* Sichtbarer Tab */
@@ -230,6 +237,90 @@ input[type="range"]::-ms-track {
     font-weight: bold;
 }
 
+select {
+    padding: 10px;
+    background-color: #2a2a2a;
+    color: #e6e6e6;
+    border: 1px solid #555;
+    border-radius: 4px;
+    font-size: 1em;
+}
+select:hover {
+    background-color: #3a3a3a;
+}
+button:hover {
+    background-color: #8a5eff; /* Helleres Lila beim Hover */
+    box-shadow: 0px 4px 8px rgba(103, 61, 236, 0.3);
+}
+
+button:active {
+    background-color: #5526c6; /* Dunkleres Lila beim Klick */
+}
+.question-circle {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: #673dec;
+    color: white;
+    font-size: 0.8em;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.question-circle:hover {
+    background-color: #8a5eff; /* Hellerer Lila beim Hover */
+}
+
+header {
+    display: flex;
+    align-items: center; /* Zentriert alle Kinder vertikal */
+    gap: 15px; /* Abstand zwischen Elementen */
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #333;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.header img {
+    width: 20px;
+    height: 20px;
+}
+
+.header select,
+.header span {
+    height: 40px;
+    line-height: 40px; /* Vertikale Zentrierung von Text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    border-radius: 4px;
+    background-color: #444;
+    color: white;
+}
+
+.circular-button {
+    background-color: #673dec;
+    border: none;
+    border-radius: 50%; /* Rund */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    margin: 0; /* Entfernt zusätzliche Abstände */
+    vertical-align: middle; /* Gleiche Basislinie wie Text */
+}
+
+.circular-button:hover {
+    background-color: #8a5eff; /* Hover-Effekt */
+}
 
 
 
@@ -238,6 +329,47 @@ input[type="range"]::-ms-track {
 <body>
     <div class="main-container">
         <!-- Navigationsleiste -->
+
+            <!-- Bitcoin Preis Dropdown -->
+            <header class="header">
+                <!-- Bitcoin Preis Dropdown -->
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="https://github.com/Cimera311/Gomining_Calculator/raw/main/Bitcoin.svg.png" alt="BTC">
+                    <select id="bitcoin-price-dropdown" >
+                        <option value="60000">60,000 $</option>
+                        <option value="70000">70,000 $</option>
+                        <option value="80000">80,000 $</option>
+                        <option value="90000">90,000 $</option>
+                        <option value="100000">100,000 $</option>
+                        <option value="110000">110,000 $</option>
+                        <option value="120000">120,000 $</option>
+                        <option value="130000">130,000 $</option>
+                        <option value="140000">140,000 $</option>
+                        <option value="150000">150,000 $</option>
+                        <option value="160000">160,000 $</option>
+                        <option value="200000">200,000 $</option>
+                    </select>
+                </div>
+            
+                
+                    <!-- GMT Token Preis -->
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img src="https://github.com/Cimera311/Gomining_Calculator/raw/main/GoMining_Logo.webp" alt="GMT">
+                        <input value="0.400" id="gmt-token-price"  placeholder="0,400"/>
+                        <span>$</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <label for="sat-TH" title="satoshiPerTH">sat per TH:</label>
+                        <input  value=62 id="sat-TH"></input>
+
+                    </div>
+                    <!-- Aktualisierungssymbol -->
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button class="circular-button" onclick="fetchBTCPrice();fetchGMTPrice();">&#x21BB;</button>
+                    </div>
+            </header>
+                
+        
         <div class="tab-navigation">
             <button class="tab-arrow" onclick="switchTab(-1)">&#9664;</button>
             <span id="tab-name">Calc</span>
@@ -248,30 +380,25 @@ input[type="range"]::-ms-track {
         <div id="tab-content">
             <!-- Investment Calculator Tab -->
             <div class="tab-page active" id="Calc">
-			    <button onclick="fetchPrices(); fetchGominingPrice();">Get Prices</button>
 
-				<label for="bitcoin-price">Bitcoinpreis ($):</label>
-                <input type="number" id="bitcoin-price" oninput="syncSliderWithInput()" placeholder="z.B. 60000" >
-				<input type="range" id="btc-slider" min="60000" max="150000" step="1000" value="60000" oninput="updateSliderValue(); calculateCost();">
-				<label for="gomining-price">Gomining Token Price ($):</label>
-				<input type="number" id="gomining-price" oninput="syncGominingSlider()" placeholder="e.g., 0.4000">
-				<input type="range" id="gomining-slider" min="0.0001" max="1.0000" step="0.0001" value="0.4000" oninput="updateGominingField(); calculateCost();">
-                <label for="My_TH">My TH:</label>
-                <input type="number" id="My_TH" value="200" placeholder="10">
-				<input type="range" id="th-slider" min="1" max="5000" step="1" value="200" oninput="syncTHWithSlider(); calculateCost();">
+                
+                
+                <label for="My_TH" title="Die Anzahl der Terahashes, die dein Miner produziert.">My TH: 
+                        <span class="question-circle"
+                            title="Die Anzahl der Terahashes, die dein Miner produziert.">
+                            ?
+                        </span>
+                </label>    
+                <input type="number" id="My_TH" value="216" placeholder="10"oninput="syncFieldAndSlider(event, 'th-slider', 'My_TH'); calculateCost();">
+				<input type="range" id="th-slider" min="1" max="5000" step="1" value="200" oninput="syncFieldAndSlider(event, 'th-slider', 'My_TH'); calculateCost();">
                 <label for="Energy-efficiency">Energy-efficiency (W/TH):</label>
-                <input type="number" id="Energy-efficiency" value="27.95" placeholder="z.B. 20">
-				<input type="range" id="efficiency-slider" min="15" max="35" step="0.01" value="27.71" oninput="syncEfficiencyWithSlider(); calculateCost();">
+                <input type="number" id="Energy-efficiency" value="26.14" placeholder="z.B. 20" oninput="syncFieldAndSlider(event, 'Energy-efficiency', 'efficiency-slider')">
+				<input type="range" id="efficiency-slider" min="15" max="35" step="0.01" value="27.71" oninput="syncFieldAndSlider(event, 'Energy-efficiency', 'efficiency-slider'); calculateCost();">
                 <label for="gomining-discount">Gomining Maintenance Discount (%):</label>
-                <input type="number" id="gomining-discount" value="0" min="0" max="20" step="1" oninput="updateDiscountSlider()" placeholder="0%">
-                <input type="range" id="gomining-discount-slider" min="0" max="20" step="0.1" value="0" oninput="updateDiscountField(); calculateCost();">
+                <input type="number" id="gomining-discount" value="0" min="0" max="20" step="1" oninput="syncFieldAndSlider(event, 'gomining-discount', 'gomining-discount-slider')" placeholder="0%">
+                <input type="range" id="gomining-discount-slider" min="0" max="20" step="0.1" value="0" oninput="syncFieldAndSlider(event, 'gomining-discount', 'gomining-discount-slider'); calculateCost();">
 				<label for="Daily-Reward">My Daily Reward:</label>
                 <input type="number" id="Daily-Reward" value="12400" placeholder="z.B. 6500">
-                <label for="Satoshi-per-TH">Satoshi per TH (sat/TH):</label>
-                <input type="number" id="Satoshi-per-TH" value="62" placeholder="z.B. 64">
-
-
-
 				
                 <button onclick="calculateCost()">Berechnen</button>
                 <table id="results-table" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
@@ -351,80 +478,114 @@ input[type="range"]::-ms-track {
                             <strong>Net Revenue %:</strong> <code>(Net Revenue / Revenue) * 100</code>
                         </li>
                     </ul>
+
+
                 </footer>
                 <footer style="margin-top: 20px; padding: 20px; background-color: #2a2a2a; color: #e6e6e6; text-align: center; border-top: 1px solid #555;">
-    <h3 style="color: #673dec;">Support Us</h3>
-    <p>If you like our work, feel free to support us by sending GMT tokens:</p>
-    <div style="margin: 10px 0;">
-        <strong>Wallet Address:</strong>
-        <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 5px;">
-            <input
-                type="text"
-                readonly
-                value="0x3229E3118F803d8EaCB52D5f598395F5bf888bad"
-                style="background-color: #1a1a1a; color: #e6e6e6; border: 1px solid #555; padding: 5px; width: 300px; text-align: center;"
-            />
-            <button
-                onclick="copyWalletAddress()"
-                style="background-color: #673dec; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;"
-            >
-                Copy
-            </button>
-        </div>
-    </div>
-    <p>Or join us through our referral link:</p>
-    <a href="https://gomining.com/?ref=ICjK3" target="_blank" style="display: inline-block; margin: 10px;">
-        <img
-            src="https://gomining.com/images/logo.png"
-            alt="GoMining Referral"
-            style="width: 150px; height: auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);"
-        />
-    </a>
-</footer>
-                
+                    <h3 style="color: #673dec;">Support Us</h3>
+                    <p>If you like our work, feel free to support us by sending GMT tokens:</p>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
+
+                        <!-- Wallet-Adresse -->
+                        <span
+                            onclick="copyWalletAddress()"
+                            style="cursor: pointer; color: #673dec; font-weight: bold; font-size: 1.1em; text-decoration: underline;"
+                            title="Click to copy wallet address"
+                        >
+                            0x3229E3118F803d8EaCB52D5f598395F5bf888bad
+                        </span>
+                    </div>
+
+                    <p>Or join us through our referral link:</p>
+                    <a href="https://gomining.com/?ref=ICjK3" target="_blank" style="display: inline-block; margin: 10px;">
+                        <img
+                            src="https://cimera311.github.io/Gomining_Calculator/Gomining.jpg" 
+                                alt="GoMining Referral"
+                                style="width: 150px; height: auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);"
+                        />
+                    </a>
+                    <p>&copy; 2024 HashSense. All rights reserved.</p>
+                    <p>This website is for informational purposes only.</p>
+                </footer>
             </div>
-		<div class="tab-page" id="ROI">
-				<button onclick="fetchPrices(); fetchGominingPrice();">Get Prices</button>
+            
+            <div class="tab-page" id="ROI">
 
-				<label for="bitcoin-price_ROI">Bitcoinpreis ($):</label>
-				<input type="number" id="bitcoin-price_ROI" oninput="syncFieldAndSlider(event, 'bitcoin-price_ROI', 'btc-slider_ROI')" placeholder="z.B. 60000">
-				<input type="range" id="btc-slider_ROI" min="60000" max="150000" step="1000" value="60000" oninput="syncFieldAndSlider(event, 'bitcoin-price_ROI', 'btc-slider_ROI'); calculateROI();">
+                    <label for="My_TH_ROI">My TH:</label>
+                    <input type="number" id="My_TH_ROI" value="1" placeholder="10" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI')">
+                    <input type="range" id="th-slider_ROI" min="1" max="5000" step="1" value="200" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI'); calculateROI();">
+                    <label for="Satoshi-per-TH_ROI">Satoshi per TH (sat/TH):</label>
+                    <input type="number" id="Satoshi-per-TH_ROI" value="63" placeholder="z.B. 63">
 
-				<label for="gomining-price_ROI">Gomining Token Price ($):</label>
-				<input type="number" id="gomining-price_ROI" oninput="syncFieldAndSlider(event, 'gomining-price_ROI', 'gomining-slider_ROI')" placeholder="e.g., 0.4000">
-				<input type="range" id="gomining-slider_ROI" min="0.0001" max="1.0000" step="0.0001" value="0.4000" oninput="syncFieldAndSlider(event, 'gomining-price_ROI', 'gomining-slider_ROI')"; calculateROI();">
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                        <button onclick="setMinerValues(15)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                            15 W/TH
+                        </button>
+                        <button onclick="setMinerValues(20)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                            20 W/TH
+                        </button>
+                        <button onclick="setMinerValues(28)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                            28 W/TH
+                        </button>
+                        <button onclick="setMinerValues(35)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                            35 W/TH
+                        </button>
+                    </div>
+                    
+                    
 
-				<label for="My_TH_ROI">My TH:</label>
-				<input type="number" id="My_TH_ROI" value="1" placeholder="10" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI')">
-				<input type="range" id="th-slider_ROI" min="1" max="5000" step="1" value="200" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI'); calculateROI();">
-                <label for="Satoshi-per-TH_ROI">Satoshi per TH (sat/TH):</label>
-                <input type="number" id="Satoshi-per-TH_ROI" value="63" placeholder="z.B. 63">
-				<label for="Energy-efficiency_ROI">Energy-efficiency (W/TH):</label>
-				<input type="number" id="Energy-efficiency_ROI" value="20" placeholder="z.B. 20" oninput="syncFieldAndSlider(event, 'Energy-efficiency_ROI', 'efficiency-slider_ROI')">
-				<input type="range" id="efficiency-slider_ROI" min="15" max="35" step="0.01" value="27.71" oninput="syncFieldAndSlider(event, 'Energy-efficiency_ROI', 'efficiency-slider_ROI'); calculateROI();">
+                    <label for="Energy-efficiency_ROI">Energy-efficiency (W/TH):</label>
+                    <input type="number" id="Energy-efficiency_ROI" value="20" placeholder="z.B. 20" oninput="syncFieldAndSlider(event, 'Energy-efficiency_ROI', 'efficiency-slider_ROI')">
+                    <input type="range" id="efficiency-slider_ROI" min="15" max="35" step="0.01" value="27.71" oninput="syncFieldAndSlider(event, 'Energy-efficiency_ROI', 'efficiency-slider_ROI'); calculateROI();">
 
-				<label for="gomining-discount_ROI">Gomining Maintenance Discount (%):</label>
-				<input type="number" id="gomining-discount_ROI" value="0" min="0" max="20" step="1" oninput="syncFieldAndSlider(event, 'gomining-discount_ROI', 'gomining-discount-slider_ROI')">
-				<input type="range" id="gomining-discount-slider_ROI" min="0" max="20" step="0.1" value="0" oninput="updateDiscountField(); calculateROI();">
+                    <label for="gomining-discount_ROI">Gomining Maintenance Discount (%):</label>
+                    <input type="number" id="gomining-discount_ROI" value="0" min="0" max="20" step="1" oninput="syncFieldAndSlider(event, 'gomining-discount_ROI', 'gomining-discount-slider_ROI')">
+                    <input type="range" id="gomining-discount-slider_ROI" min="0" max="20" step="0.1" value="0" oninput="syncFieldAndSlider(event, 'gomining-discount_ROI', 'gomining-discount-slider_ROI'); calculateROI();">
 
-				<label for="price-per-TH_ROI">Price per TH ($):</label>
-				<input type="number" id="price-per-th_ROI" value="22.93" placeholder="e.g., 22.93">
+                    <label for="price-per-TH_ROI">Price per TH ($):</label>
+                    <input type="number" id="price-per-th_ROI" value="22.93" placeholder="e.g., 22.93">
 
-				<button onclick="calculateROI();">Calculate ROI</button>
+                    <button onclick="calculateROI();">Calculate ROI</button>
 
-				<!-- ROI Results -->
-				<div class="results-container" style="margin-top: 20px;">
-					<p><strong>Total Investment:</strong> <span id="total-investment_ROI">$0.00</span></p>
-					<p><strong>Daily Profit:</strong> <span id="daily-profit_ROI">$0.00</span></p>
-					<p><strong>Monthly Profit:</strong> <span id="monthly-profit_ROI">$0.00</span></p>
-					<p><strong>Yearly Profit:</strong> <span id="yearly-profit_ROI">$0.00</span></p>
-					<p><strong>Days of ROI:</strong> <span id="days-of-roi_ROI">0 Days</span></p>
-					<p><strong>% of ROI (for a year):</strong> <span id="roi-percentage_ROI">0%</span></p>
-					<p><strong>Yearly Net BTC:</strong> <span id="yearly-net-btc_ROI">0.00000000 BTC</span></p>
+                    <!-- ROI Results -->
+                    <div class="results-container" style="margin-top: 20px;">
+                        <p><strong>Total Investment:</strong> <span id="total-investment_ROI">$0.00</span></p>
+                        <p><strong>Daily Profit:</strong> <span id="daily-profit_ROI">$0.00</span></p>
+                        <p><strong>Monthly Profit:</strong> <span id="monthly-profit_ROI">$0.00</span></p>
+                        <p><strong>Yearly Profit:</strong> <span id="yearly-profit_ROI">$0.00</span></p>
+                        <p><strong>Days of ROI:</strong> <span id="days-of-roi_ROI">0 Days</span></p>
+                        <p><strong>% of ROI (for a year):</strong> <span id="roi-percentage_ROI">0%</span></p>
+                        <p><strong>Yearly Net BTC:</strong> <span id="yearly-net-btc_ROI">0.00000000 BTC</span></p>
 
-				</div>
-			</div>
-
+                    </div>
+                    <footer style="margin-top: 20px; padding: 20px; background-color: #2a2a2a; color: #e6e6e6; text-align: center; border-top: 1px solid #555;">
+                        <h3 style="color: #673dec;">Support Us</h3>
+                        <p>If you like our work, feel free to support us by sending GMT tokens:</p>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
+                    
+                        <!-- Wallet-Adresse -->
+                        <span
+                            onclick="copyWalletAddress()"
+                            style="cursor: pointer; color: #673dec; font-weight: bold; font-size: 1.1em; text-decoration: underline;"
+                            title="Click to copy wallet address"
+                        >
+                            0x3229E3118F803d8EaCB52D5f598395F5bf888bad
+                        </span>
+                    </div>
+                    
+                        <p>Or join us through our referral link:</p>
+                        <a href="https://gomining.com/?ref=ICjK3" target="_blank" style="display: inline-block; margin: 10px;">
+                            <img
+                                src="https://cimera311.github.io/Gomining_Calculator/Gomining.jpg" 
+                                    alt="GoMining Referral"
+                                    style="width: 150px; height: auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);"
+                            />
+                        </a>
+                        <p>&copy; 2024 HashSense. All rights reserved.</p>
+                        <p>This website is for informational purposes only.</p>
+                    </footer>
+            </div>
+        
             <div class="tab-page" id="MobileView">
                 <h2>Mobile Optimized View</h2>
                 <div class="card-container">
@@ -498,19 +659,10 @@ input[type="range"]::-ms-track {
             </div>
 
             <!-- Maintenance Solo Mining Tab -->
-            <div class="tab-page" id="maintenance-solo-mining">
-                <h2>Maintenance Solo Mining</h2>
-                <label for="miner-efficiency">Miner Efficiency (W/TH):</label>
-                <input type="number" id="miner-efficiency" placeholder="z.B. 25">
-                <label for="miner-th">Miner TH:</label>
-                <input type="number" id="miner-th" placeholder="z.B. 8">
-                <button onclick="calculateCost()">Berechnen</button>
-                <p id="electricity-cost-result"></p>
-				<p id="service-cost-result"></p>
-            </div>
+
+        
         </div>
     </div>
-
     <script>
 		let BitcoinPrice = null; // Speichert den Bitcoin-Preis
 		let GMTPrice = null; // Speichert den Gomining-Token-Preis
@@ -538,6 +690,37 @@ input[type="range"]::-ms-track {
         }
 
 
+
+		async function fetchBTCPrice() {
+			try {
+                const dropdown = document.getElementById('bitcoin-price-dropdown');
+				const response = await fetch('https://api.coinpaprika.com/v1/tickers/btc-bitcoin');
+				const data = await response.json();
+				btcPrice = parseFloat(data.quotes.USD.price).toFixed(0); // Speichere den gefetcheten Bitcoin-Preis in der globalen Variable
+                const selectedOption = dropdown.options[dropdown.selectedIndex];
+                selectedOption.value = btcPrice;
+                selectedOption.text = `${parseInt(btcPrice).toLocaleString()} $`;         
+			} catch (error) {
+				console.error('Error fetching BTC Price:', error);
+				alert('Failed to fetch BTC Price. Please try again later.');
+			}
+		}
+        
+		async function fetchGMTPrice() {
+				try {
+					const response = await fetch('https://api.coinpaprika.com/v1/tickers/gmt-gomining-token');
+					const data = await response.json();
+					const gominingPrice = parseFloat(data.quotes.USD.price).toFixed(4); // Abrufen des Preises in USD
+
+
+					// Wert in Feld und Slider setzen
+					document.getElementById('gmt-token-price').value = gominingPrice;
+					console.log(`Gomining Price: $${gominingPrice}`);
+				} catch (error) {
+					console.error('Error fetching Gomining Token Price:', error);
+					alert('Failed to fetch Gomining Token Price. Please try again later.');
+				}
+			}
 
 		async function fetchPrices() {
 			try {
@@ -594,47 +777,10 @@ input[type="range"]::-ms-track {
 					alert('Failed to fetch Gomining Token Price. Please try again later.');
 				}
 			}
-			function syncTHWithSlider() {
-					const sliderValue = document.getElementById('th-slider').value;
-					document.getElementById('My_TH').value = sliderValue;
-				}
 
-			function syncEfficiencyWithSlider() {
-				const sliderValue = document.getElementById('efficiency-slider').value;
-				document.getElementById('Energy-efficiency').value = sliderValue;
-			}
 
-			document.getElementById('My_TH').addEventListener('input', function () {
-				const inputValue = this.value;
-				document.getElementById('th-slider').value = inputValue;
-			});
+	
 
-			document.getElementById('Energy-efficiency').addEventListener('input', function () {
-				const inputValue = this.value;
-				document.getElementById('efficiency-slider').value = inputValue;
-			});
-
-			function updateSliderValue() {
-				const slider = document.getElementById('btc-slider');
-				const BTCFeld = document.getElementById('bitcoin-price');
-				BTCFeld.value = slider.value; // Den Slider-Wert im Feld anzeigen
-
-			}
-			function updateGominingField() {
-				const slider = document.getElementById('gomining-slider');
-				const field = document.getElementById('gomining-price');
-				field.value = slider.value; // Aktualisiert das Eingabefeld basierend auf dem Slider-Wert
-			}
-            function syncSliderWithInput() {				
-                const slider = document.getElementById('btc-slider');
-				const field = document.getElementById('bitcoin-price');
-				slider.value = field.value; // Aktualisiert den Slider basierend auf dem Eingabefeld-Wert
-            }
-			function syncGominingSlider() {
-				const slider = document.getElementById('gomining-slider');
-				const field = document.getElementById('gomining-price');
-				slider.value = field.value; // Aktualisiert den Slider basierend auf dem Eingabefeld-Wert
-			}
 
 			function syncFieldAndSlider(event, fieldId, sliderId) {
 				const field = document.getElementById(fieldId);
@@ -647,23 +793,14 @@ input[type="range"]::-ms-track {
 				}
 			}
 
-            function updateDiscountField() {
-                // Synchronisiert den Slider-Wert mit dem Eingabefeld
-                const slider = document.getElementById('gomining-discount-slider');
-                const field = document.getElementById('gomining-discount');
-                field.value = slider.value; // Setzt den Wert des Feldes auf den Slider-Wert
-            }
 
-            function updateDiscountSlider() {
-                // Synchronisiert das Eingabefeld mit dem Slider-Wert
-                const slider = document.getElementById('gomining-discount-slider');
-                const field = document.getElementById('gomining-discount');
-                slider.value = field.value; // Setzt den Slider-Wert auf den Feld-Wert
-            }
+
 
             function calculateCost() {
+                const BTC = parseFloat(document.getElementById('bitcoin-price-dropdown').value);                
+                
                 const efficiency = parseFloat(document.getElementById('Energy-efficiency').value);
-                const BTC = parseFloat(document.getElementById('bitcoin-price').value);
+
                 const th = parseFloat(document.getElementById('My_TH').value);
                 const dailyReward = parseFloat(document.getElementById('Daily-Reward').value);
                 const costPerKWh = 0.05;
@@ -748,7 +885,7 @@ input[type="range"]::-ms-track {
 
 			function calculateROI() {
 				// Eingabefelder abrufen
-				const bitcoinPrice = parseFloat(document.getElementById('bitcoin-price_ROI').value);
+				const bitcoinPrice = parseFloat(document.getElementById('bitcoin-price-dropdown').value);
 				const gominingPrice = parseFloat(document.getElementById('gomining-price_ROI').value);
 				const myTH = parseFloat(document.getElementById('My_TH_ROI').value);
 				const energyEfficiency = parseFloat(document.getElementById('Energy-efficiency_ROI').value);
@@ -893,14 +1030,29 @@ input[type="range"]::-ms-track {
 				// Überprüfe, ob beide Werte gültig sind, um eine Division durch 0 zu vermeiden
 				if (!isNaN(dailyReward) && !isNaN(myTH) && myTH > 0) {
 					const satoshiPerTH = dailyReward / myTH; // Berechnung
-					document.getElementById('Satoshi-per-TH').value = satoshiPerTH.toFixed(2); // Ergebnis einfügen
+					document.getElementById('sat-TH').value = satoshiPerTH.toFixed(2); // Ergebnis einfügen
 				} else {
-					document.getElementById('Satoshi-per-TH').value = ''; // Leeren, falls ungültig
+					document.getElementById('sat-TH').value = ''; // Leeren, falls ungültig
 				}
 			});
+            function copyWalletAddress() {
+    const walletInput = document.querySelector('footer input[type="text"]');
+    walletInput.select();
+    navigator.clipboard.writeText(walletInput.value).then(
+        () => {
+            alert("Wallet address copied to clipboard!");
+        },
+        () => {
+            alert("Failed to copy wallet address.");
+        }
+    );
+}
+            
+            
+            
 					// Füge einen Event Listener hinzu, der das Feld "Daily-Reward" überwacht
-			document.getElementById('Satoshi-per-TH').addEventListener('input', function () {
-				const satpTH = parseFloat(document.getElementById('Satoshi-per-TH').value); // Wert des Daily-Reward-Feldes
+			document.getElementById('sat-TH').addEventListener('input', function () {
+				const satpTH = parseFloat(document.getElementById('sat-TH').value); // Wert des Daily-Reward-Feldes
 				const myTH = parseFloat(document.getElementById('My_TH').value); // Wert des My_TH-Feldes
 
 				// Überprüfe, ob beide Werte gültig sind, um eine Division durch 0 zu vermeiden
@@ -913,7 +1065,7 @@ input[type="range"]::-ms-track {
 			});	
 					// Füge einen Event Listener hinzu, der das Feld "Daily-Reward" überwacht
 			document.getElementById('My_TH').addEventListener('input', function () {
-				const satpTH = parseFloat(document.getElementById('Satoshi-per-TH').value); // Wert des Daily-Reward-Feldes
+				const satpTH = parseFloat(document.getElementById('sat-TH').value); // Wert des Daily-Reward-Feldes
 				const myTH = parseFloat(document.getElementById('My_TH').value); // Wert des My_TH-Feldes
 
 				// Überprüfe, ob beide Werte gültig sind, um eine Division durch 0 zu vermeiden
@@ -923,7 +1075,20 @@ input[type="range"]::-ms-track {
 				} else {
 					document.getElementById('Daily-Reward').value = '0'; // Leeren, falls ungültig
 				}
-			});				
+			});
+	    					// Füge einen Event Listener hinzu, der das Feld "Daily-Reward" überwacht
+			document.getElementById('th-slider').addEventListener('input', function () {
+				const satpTH = parseFloat(document.getElementById('sat-TH').value); // Wert des Daily-Reward-Feldes
+				const myTH = parseFloat(document.getElementById('My_TH').value); // Wert des My_TH-Feldes
+
+				// Überprüfe, ob beide Werte gültig sind, um eine Division durch 0 zu vermeiden
+				if (!isNaN(satpTH) && !isNaN(myTH) && myTH > 0) {
+					const dailyReward = satpTH * myTH; // Berechnung
+					document.getElementById('Daily-Reward').value = dailyReward.toFixed(2); // Ergebnis einfügen
+				} else {
+					document.getElementById('Daily-Reward').value = '0'; // Leeren, falls ungültig
+				}
+			});
 			document.addEventListener('DOMContentLoaded', () => {
 			// Füge einen Event Listener für alle Eingabefelder hinzu
 			const inputs = document.querySelectorAll('input');
@@ -943,6 +1108,28 @@ input[type="range"]::-ms-track {
 				});
 			});
 		});
+        function setMinerValues(watt) {
+                const pricePerTHField = document.getElementById('price-per-th_ROI');
+                const efficiencyField = document.getElementById('Energy-efficiency_ROI');
+
+                // Preise basierend auf Watt-Stufe
+                const minerData = {
+                    15: { pricePerTH: 31.57, efficiency: 15 },
+                    20: { pricePerTH: 23.17, efficiency: 20 },
+                    28: { pricePerTH: 14.50, efficiency: 28 },
+                    35: { pricePerTH: 8.00, efficiency: 35 }
+                };
+
+                if (minerData[watt]) {
+                    pricePerTHField.value = minerData[watt].pricePerTH.toFixed(2);
+                    efficiencyField.value = minerData[watt].efficiency;
+                } else {
+                    pricePerTHField.value = '';
+                    efficiencyField.value = '';
+                }
+                }
+
+
 
     </script>
 </body>
