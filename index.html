@@ -71,9 +71,14 @@
             border-radius: 8px;
             background-color: #333;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-            text-align: left;
+            //text-align: left;
         }
-
+		.results-container {
+			display: flex; 
+			flex-direction: column;
+            align-items: center;
+		
+		}
 
         .tab-page.active {
             display: block; /* Sichtbarer Tab */
@@ -522,8 +527,6 @@ text-align: center;
 						<label for="My_TH_ROI">My TH:</label>
 						<input type="number" id="My_TH_ROI" value="1" placeholder="10" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI')">
 						<input type="range" id="th-slider_ROI" min="1" max="5000" step="1" value="200" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI'); calculateROI();">
-						<label for="Satoshi-per-TH_ROI">Satoshi per TH (sat/TH):</label>
-						<input type="number" id="Satoshi-per-TH_ROI" value="63" placeholder="z.B. 63">
 
 						<div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
 							<button onclick="setMinerValues(15)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
@@ -678,15 +681,15 @@ text-align: center;
 				});
 		function updateCurrency(currency) {
 				currentCurrency = currency; // Setze die aktuelle Währung
-				generateRevenueTable(document.getElementById('bitcoin-price').value, 62, document.getElementById('gomining-price').value); // Aktualisiere die Tabelle
+				generateRevenueTable(document.getElementById('bitcoin-price-dropdown').value, document.getElementById('sat-TH').value, document.getElementById('gmt-token-price').value); // Aktualisiere die Tabelle
 			}
 
         const tabs = [
             { name: "Calc", id: "Calc" },
 			{ name: "ROI", id: "ROI" },
-            { name: "Mobile View", id: "MobileView" },
+           // { name: "Mobile View", id: "MobileView" },
             { name: "worth it ?", id: "worth" },
-            { name: "Maintenance Solo Mining", id: "maintenance-solo-mining" }
+           // { name: "Maintenance Solo Mining", id: "maintenance-solo-mining" }
         ];
         let currentTab = 0;
 
@@ -894,12 +897,12 @@ text-align: center;
 			function calculateROI() {
 				// Eingabefelder abrufen
 				const bitcoinPrice = parseFloat(document.getElementById('bitcoin-price-dropdown').value);
-				const gominingPrice = parseFloat(document.getElementById('gomining-price_ROI').value);
+				const gominingPrice = parseFloat(document.getElementById('gmt-token-price').value);
 				const myTH = parseFloat(document.getElementById('My_TH_ROI').value);
 				const energyEfficiency = parseFloat(document.getElementById('Energy-efficiency_ROI').value);
 				const gominingDiscount = parseFloat(document.getElementById('gomining-discount_ROI').value);
 				const pricePerTH = parseFloat(document.getElementById('price-per-th_ROI').value);
-				const satoshiPerTH = parseFloat(document.getElementById('Satoshi-per-TH_ROI').value);
+				const satoshiPerTH = parseFloat(document.getElementById('sat-TH').value);
 				// Validierung der Eingaben Satoshi-per-TH_ROI
 				if (
 					isNaN(bitcoinPrice) || isNaN(gominingPrice) ||
