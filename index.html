@@ -63,9 +63,9 @@
 
         /* Inhalt des Containers */
         .tab-page {
-            display: flex;
+            display: none;
             flex-direction: column;
-            align-items: flex-start; /* Elemente linksbündig */
+            align-items: center;
             gap: 15px; /* Abstand zwischen den Elementen */
             padding: 20px;
             border-radius: 8px;
@@ -276,8 +276,10 @@ button:active {
 
 header {
     display: flex;
-    align-items: center; /* Zentriert alle Kinder vertikal */
-    gap: 15px; /* Abstand zwischen Elementen */
+	            flex-direction: row;
+    flex-wrap: wrap; /* Elemente umbrechen, wenn der Platz nicht ausreicht */
+    justify-content: space-between; /* Gleichmäßiger Abstand zwischen Elementen */
+    align-items: center; /* Vertikal zentrieren */
     padding: 10px 20px;
     border-radius: 8px;
     background-color: #333;
@@ -287,13 +289,27 @@ header {
 .header img {
     width: 20px;
     height: 20px;
+	flex-direction: row;
+}
+
+.header div {
+display: flex; 
+align-items: center; 
+gap: 10px;
+}
+
+.header input {
+max-width: 60px;
+text-align: center;
 }
 
 .header select,
+.header input,
 .header span {
     height: 40px;
     line-height: 40px; /* Vertikale Zentrierung von Text */
     display: flex;
+	flex-direction: row;
     align-items: center;
     justify-content: center;
     padding: 0 10px;
@@ -333,7 +349,7 @@ header {
             <!-- Bitcoin Preis Dropdown -->
             <header class="header">
                 <!-- Bitcoin Preis Dropdown -->
-                <div style="display: flex; align-items: center; gap: 10px;">
+             <div >
                     <img src="https://github.com/Cimera311/Gomining_Calculator/raw/main/Bitcoin.svg.png" alt="BTC">
                     <select id="bitcoin-price-dropdown" >
                         <option value="60000">60,000 $</option>
@@ -350,324 +366,316 @@ header {
                         <option value="200000">200,000 $</option>
                     </select>
                 </div>
-            
-                
-                    <!-- GMT Token Preis -->
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <img src="https://github.com/Cimera311/Gomining_Calculator/raw/main/GoMining_Logo.webp" alt="GMT">
-                        <input value="0.400" id="gmt-token-price"  placeholder="0,400"/>
-                        <span>$</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <label for="sat-TH" title="satoshiPerTH">sat per TH:</label>
-                        <input  value=62 id="sat-TH"></input>
+				<!-- GMT Token Preis -->
+				<div >
+					<img src="https://github.com/Cimera311/Gomining_Calculator/raw/main/GoMining_Logo.webp" alt="GMT">
+					<input  value="0.400" id="gmt-token-price"  placeholder="0,400">
+					<span>$</span>
+				</div>
 
-                    </div>
-                    <!-- Aktualisierungssymbol -->
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <button class="circular-button" onclick="fetchBTCPrice();fetchGMTPrice();">&#x21BB;</button>
-                    </div>
+				<div style="display: flex; align-items: center; gap: 10px;">
+					<label title="how much Satoshi Gomining pays for 1 TH" for="sat-TH" >sat/TH:</label>
+					<input style="max-width: 30px; text-align: center" value=62 id="sat-TH">
+					<button class="circular-button" onclick="fetchBTCPrice();fetchGMTPrice();">&#x21BB;</button>
+				</div>
+				<!-- Aktualisierungssymbol -->
+
+			
             </header>
                 
         
-        <div class="tab-navigation">
-            <button class="tab-arrow" onclick="switchTab(-1)">&#9664;</button>
-            <span id="tab-name">Calc</span>
-            <button class="tab-arrow" onclick="switchTab(1)">&#9654;</button>
-        </div>
+			<div class="tab-navigation">
+				<button class="tab-arrow" onclick="switchTab(-1)">&#9664;</button>
+				<span id="tab-name">Calc</span>
+				<button class="tab-arrow" onclick="switchTab(1)">&#9654;</button>
+			</div>
 
-        <!-- Tab Inhalte -->
-        <div id="tab-content">
-            <!-- Investment Calculator Tab -->
-            <div class="tab-page active" id="Calc">
+			<!-- Tab Inhalte -->
+			<div id="tab-content">
+				<!-- Investment Calculator Tab -->
+				<div class="tab-page active" id="Calc">
 
-                
-                
-                <label for="My_TH" title="Die Anzahl der Terahashes, die dein Miner produziert.">My TH: 
-                        <span class="question-circle"
-                            title="Die Anzahl der Terahashes, die dein Miner produziert.">
-                            ?
-                        </span>
-                </label>    
-                <input type="number" id="My_TH" value="216" placeholder="10"oninput="syncFieldAndSlider(event, 'th-slider', 'My_TH'); calculateCost();">
-				<input type="range" id="th-slider" min="1" max="5000" step="1" value="200" oninput="syncFieldAndSlider(event, 'th-slider', 'My_TH'); calculateCost();">
-                <label for="Energy-efficiency">Energy-efficiency (W/TH):</label>
-                <input type="number" id="Energy-efficiency" value="26.14" placeholder="z.B. 20" oninput="syncFieldAndSlider(event, 'Energy-efficiency', 'efficiency-slider')">
-				<input type="range" id="efficiency-slider" min="15" max="35" step="0.01" value="27.71" oninput="syncFieldAndSlider(event, 'Energy-efficiency', 'efficiency-slider'); calculateCost();">
-                <label for="gomining-discount">Gomining Maintenance Discount (%):</label>
-                <input type="number" id="gomining-discount" value="0" min="0" max="20" step="1" oninput="syncFieldAndSlider(event, 'gomining-discount', 'gomining-discount-slider')" placeholder="0%">
-                <input type="range" id="gomining-discount-slider" min="0" max="20" step="0.1" value="0" oninput="syncFieldAndSlider(event, 'gomining-discount', 'gomining-discount-slider'); calculateCost();">
-				<label for="Daily-Reward">My Daily Reward:</label>
-                <input type="number" id="Daily-Reward" value="12400" placeholder="z.B. 6500">
-				
-                <button onclick="calculateCost()">Berechnen</button>
-                <table id="results-table" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
-                    <thead>
-                        <tr>
-                            <th style="border: 1px solid #555; padding: 10px; text-align: left;">Description</th>
-                            <th style="border: 1px solid #555; padding: 10px; text-align: right;">Value ($)</th>
-                            <th style="border: 1px solid #555; padding: 10px; text-align: right;">Value (BTC)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="border: 1px solid #555; padding: 10px;">Daily Revenue</td>
-                            <td id="daily-rewards" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                            <td id="daily-rewards-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #555; padding: 10px;">Daily Electricity Cost</td>
-                            <td id="electricity-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                            <td id="electricity-cost-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #555; padding: 10px;">Daily Service Cost</td>
-                            <td id="service-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                            <td id="service-cost-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #555; padding: 10px;">Daily Total Maintenance Cost</td>
-                            <td id="daily-maintenance-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                            <td id="daily-maintenance-cost-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #555; padding: 10px;">Daily Net Profit</td>
-                            <td id="daily-net-profit" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                            <td id="daily-net-profit-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #555; padding: 10px;">Monthly Revenue</td>
-                            <td id="monthly-rewards" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                            <td id="monthly-rewards-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #555; padding: 10px;">Monthly Total Maintenance Cost</td>
-                            <td id="monthly-maintenance-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                            <td id="monthly-maintenance-cost-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #555; padding: 10px;">Monthly Net Profit</td>
-                            <td id="monthly-net-profit" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                            <td id="monthly-net-profit-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #555; padding: 10px;">Maintenance Cost (%)</td>
-                            <td id="maintenance" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                            <td style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
-                        </tr>
-                        
-                    </tbody>
-                </table>
-                
-                <footer style="margin-top: 20px; padding: 10px; background-color: #2a2a2a; color: #e6e6e6; font-size: 0.9em; text-align: left; border-top: 1px solid #555;">
-                    <h3 style="margin-bottom: 10px; color: #673dec;">Formulas Used</h3>
-                    <ul style="list-style-type: none; padding: 0;">
-                        <li>
-                            <strong>Revenue:</strong> <code>(SAT per TH * BTC Price) / 1e8 * TH</code>
-                        </li>
-                        <li>
-                            <strong>Electricity Cost:</strong> <code>(Efficiency (W/TH) * TH * Cost per kWh * 24) / 1000</code>
-                        </li>
-                        <li>
-                            <strong>Service Cost:</strong> <code>0.0089 $ / BTC Price * TH</code>
-                        </li>
-                        <li>
-                            <strong>Net Revenue:</strong> <code>Revenue - (Electricity Cost + Service Cost)</code>
-                        </li>
-                        <li>
-                            <strong>Net Revenue %:</strong> <code>(Net Revenue / Revenue) * 100</code>
-                        </li>
-                    </ul>
+					<label for="My_TH" title="Die Anzahl der Terahashes, die dein Miner produziert.">My TH: 
+							<span class="question-circle"
+								title="Die Anzahl der Terahashes, die dein Miner produziert.">
+								?
+							</span>
+					</label>    
+					<input type="number" id="My_TH" value="216" placeholder="10" oninput="syncFieldAndSlider(event, 'th-slider', 'My_TH'); calculateCost();">
+					<input type="range" id="th-slider" min="1" max="5000" step="1" value="200" oninput="syncFieldAndSlider(event, 'th-slider', 'My_TH'); calculateCost();">
+					<label for="Energy-efficiency">Energy-efficiency (W/TH):</label>
+					<input type="number" id="Energy-efficiency" value="26.14" placeholder="z.B. 20" oninput="syncFieldAndSlider(event, 'Energy-efficiency', 'efficiency-slider')">
+					<input type="range" id="efficiency-slider" min="15" max="35" step="0.01" value="27.71" oninput="syncFieldAndSlider(event, 'Energy-efficiency', 'efficiency-slider'); calculateCost();">
+					<label for="gomining-discount">Gomining Maintenance Discount (%):</label>
+					<input type="number" id="gomining-discount" value="0" min="0" max="20" step="1" oninput="syncFieldAndSlider(event, 'gomining-discount', 'gomining-discount-slider')" placeholder="0%">
+					<input type="range" id="gomining-discount-slider" min="0" max="20" step="0.1" value="0" oninput="syncFieldAndSlider(event, 'gomining-discount', 'gomining-discount-slider'); calculateCost();">
+					<label for="Daily-Reward">My Daily Reward:</label>
+					<input type="number" id="Daily-Reward" value="12400" placeholder="z.B. 6500">
+					
+					<button onclick="calculateCost()">Berechnen</button>
+					<table id="results-table" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+						<thead>
+							<tr>
+								<th style="border: 1px solid #555; padding: 10px; text-align: left;">Description</th>
+								<th style="border: 1px solid #555; padding: 10px; text-align: right;">Value ($)</th>
+								<th style="border: 1px solid #555; padding: 10px; text-align: right;">Value (BTC)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="border: 1px solid #555; padding: 10px;">Daily Revenue</td>
+								<td id="daily-rewards" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+								<td id="daily-rewards-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid #555; padding: 10px;">Daily Electricity Cost</td>
+								<td id="electricity-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+								<td id="electricity-cost-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid #555; padding: 10px;">Daily Service Cost</td>
+								<td id="service-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+								<td id="service-cost-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid #555; padding: 10px;">Daily Total Maintenance Cost</td>
+								<td id="daily-maintenance-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+								<td id="daily-maintenance-cost-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid #555; padding: 10px;">Daily Net Profit</td>
+								<td id="daily-net-profit" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+								<td id="daily-net-profit-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid #555; padding: 10px;">Monthly Revenue</td>
+								<td id="monthly-rewards" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+								<td id="monthly-rewards-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid #555; padding: 10px;">Monthly Total Maintenance Cost</td>
+								<td id="monthly-maintenance-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+								<td id="monthly-maintenance-cost-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid #555; padding: 10px;">Monthly Net Profit</td>
+								<td id="monthly-net-profit" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+								<td id="monthly-net-profit-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid #555; padding: 10px;">Maintenance Cost (%)</td>
+								<td id="maintenance" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+								<td style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+							</tr>
+							
+						</tbody>
+					</table>
+					
+					<footer style="margin-top: 20px; padding: 10px; background-color: #2a2a2a; color: #e6e6e6; font-size: 0.9em; text-align: left; border-top: 1px solid #555;">
+						<h3 style="margin-bottom: 10px; color: #673dec;">Formulas Used</h3>
+						<ul style="list-style-type: none; padding: 0;">
+							<li>
+								<strong>Revenue:</strong> <code>(SAT per TH * BTC Price) / 1e8 * TH</code>
+							</li>
+							<li>
+								<strong>Electricity Cost:</strong> <code>(Efficiency (W/TH) * TH * Cost per kWh * 24) / 1000</code>
+							</li>
+							<li>
+								<strong>Service Cost:</strong> <code>0.0089 $ / BTC Price * TH</code>
+							</li>
+							<li>
+								<strong>Net Revenue:</strong> <code>Revenue - (Electricity Cost + Service Cost)</code>
+							</li>
+							<li>
+								<strong>Net Revenue %:</strong> <code>(Net Revenue / Revenue) * 100</code>
+							</li>
+						</ul>
 
 
-                </footer>
-                <footer style="margin-top: 20px; padding: 20px; background-color: #2a2a2a; color: #e6e6e6; text-align: center; border-top: 1px solid #555;">
-                    <h3 style="color: #673dec;">Support Us</h3>
-                    <p>If you like our work, feel free to support us by sending GMT tokens:</p>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
+					</footer>
+					<footer style="margin-top: 20px; padding: 20px; background-color: #2a2a2a; color: #e6e6e6; text-align: center; border-top: 1px solid #555;">
+						<h3 style="color: #673dec;">Support Us</h3>
+						<p>If you like our work, feel free to support us by sending GMT tokens:</p>
+						<div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
 
-                        <!-- Wallet-Adresse -->
-                        <span
-                            onclick="copyWalletAddress()"
-                            style="cursor: pointer; color: #673dec; font-weight: bold; font-size: 1.1em; text-decoration: underline;"
-                            title="Click to copy wallet address"
-                        >
-                            0x3229E3118F803d8EaCB52D5f598395F5bf888bad
-                        </span>
-                    </div>
+							<!-- Wallet-Adresse -->
+							<span
+								onclick="copyWalletAddress()"
+								style="cursor: pointer; color: #673dec; font-weight: bold; font-size: 1.1em; text-decoration: underline;"
+								title="Click to copy wallet address"
+							>
+								0x3229E3118F803d8EaCB52D5f598395F5bf888bad
+							</span>
+						</div>
 
-                    <p>Or join us through our referral link:</p>
-                    <a href="https://gomining.com/?ref=ICjK3" target="_blank" style="display: inline-block; margin: 10px;">
-                        <img
-                            src="https://cimera311.github.io/Gomining_Calculator/Gomining.jpg" 
-                                alt="GoMining Referral"
-                                style="width: 150px; height: auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);"
-                        />
-                    </a>
-                    <p>&copy; 2024 HashSense. All rights reserved.</p>
-                    <p>This website is for informational purposes only.</p>
-                </footer>
-            </div>
-            
-            <div class="tab-page" id="ROI">
-
-                    <label for="My_TH_ROI">My TH:</label>
-                    <input type="number" id="My_TH_ROI" value="1" placeholder="10" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI')">
-                    <input type="range" id="th-slider_ROI" min="1" max="5000" step="1" value="200" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI'); calculateROI();">
-                    <label for="Satoshi-per-TH_ROI">Satoshi per TH (sat/TH):</label>
-                    <input type="number" id="Satoshi-per-TH_ROI" value="63" placeholder="z.B. 63">
-
-                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
-                        <button onclick="setMinerValues(15)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-                            15 W/TH
-                        </button>
-                        <button onclick="setMinerValues(20)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-                            20 W/TH
-                        </button>
-                        <button onclick="setMinerValues(28)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-                            28 W/TH
-                        </button>
-                        <button onclick="setMinerValues(35)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-                            35 W/TH
-                        </button>
-                    </div>
-                    
-                    
-
-                    <label for="Energy-efficiency_ROI">Energy-efficiency (W/TH):</label>
-                    <input type="number" id="Energy-efficiency_ROI" value="20" placeholder="z.B. 20" oninput="syncFieldAndSlider(event, 'Energy-efficiency_ROI', 'efficiency-slider_ROI')">
-                    <input type="range" id="efficiency-slider_ROI" min="15" max="35" step="0.01" value="27.71" oninput="syncFieldAndSlider(event, 'Energy-efficiency_ROI', 'efficiency-slider_ROI'); calculateROI();">
-
-                    <label for="gomining-discount_ROI">Gomining Maintenance Discount (%):</label>
-                    <input type="number" id="gomining-discount_ROI" value="0" min="0" max="20" step="1" oninput="syncFieldAndSlider(event, 'gomining-discount_ROI', 'gomining-discount-slider_ROI')">
-                    <input type="range" id="gomining-discount-slider_ROI" min="0" max="20" step="0.1" value="0" oninput="syncFieldAndSlider(event, 'gomining-discount_ROI', 'gomining-discount-slider_ROI'); calculateROI();">
-
-                    <label for="price-per-TH_ROI">Price per TH ($):</label>
-                    <input type="number" id="price-per-th_ROI" value="22.93" placeholder="e.g., 22.93">
-
-                    <button onclick="calculateROI();">Calculate ROI</button>
-
-                    <!-- ROI Results -->
-                    <div class="results-container" style="margin-top: 20px;">
-                        <p><strong>Total Investment:</strong> <span id="total-investment_ROI">$0.00</span></p>
-                        <p><strong>Daily Profit:</strong> <span id="daily-profit_ROI">$0.00</span></p>
-                        <p><strong>Monthly Profit:</strong> <span id="monthly-profit_ROI">$0.00</span></p>
-                        <p><strong>Yearly Profit:</strong> <span id="yearly-profit_ROI">$0.00</span></p>
-                        <p><strong>Days of ROI:</strong> <span id="days-of-roi_ROI">0 Days</span></p>
-                        <p><strong>% of ROI (for a year):</strong> <span id="roi-percentage_ROI">0%</span></p>
-                        <p><strong>Yearly Net BTC:</strong> <span id="yearly-net-btc_ROI">0.00000000 BTC</span></p>
-
-                    </div>
-                    <footer style="margin-top: 20px; padding: 20px; background-color: #2a2a2a; color: #e6e6e6; text-align: center; border-top: 1px solid #555;">
-                        <h3 style="color: #673dec;">Support Us</h3>
-                        <p>If you like our work, feel free to support us by sending GMT tokens:</p>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
-                    
-                        <!-- Wallet-Adresse -->
-                        <span
-                            onclick="copyWalletAddress()"
-                            style="cursor: pointer; color: #673dec; font-weight: bold; font-size: 1.1em; text-decoration: underline;"
-                            title="Click to copy wallet address"
-                        >
-                            0x3229E3118F803d8EaCB52D5f598395F5bf888bad
-                        </span>
-                    </div>
-                    
-                        <p>Or join us through our referral link:</p>
-                        <a href="https://gomining.com/?ref=ICjK3" target="_blank" style="display: inline-block; margin: 10px;">
-                            <img
-                                src="https://cimera311.github.io/Gomining_Calculator/Gomining.jpg" 
-                                    alt="GoMining Referral"
-                                    style="width: 150px; height: auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);"
-                            />
-                        </a>
-                        <p>&copy; 2024 HashSense. All rights reserved.</p>
-                        <p>This website is for informational purposes only.</p>
-                    </footer>
-            </div>
-        
-            <div class="tab-page" id="MobileView">
-                <h2>Mobile Optimized View</h2>
-                <div class="card-container">
-                    <!-- Daily Revenue Card -->
-                    <div class="card">
-                        <div class="card-header">Daily</div>
-                        <div class="card-row">
-                            <span>Revenue:</span>
-                            <span id="daily-revenue">$123.45</span>
-                        </div>
-                        <div class="card-row">
-                            <span>Maintenance:</span>
-                            <span id="daily-maintenance">$23.45</span>
-                        </div>
-                        <div class="card-row">
-                            <span>Net Revenue:</span>
-                            <span id="daily-net">$100.00</span>
-                        </div>
-                    </div>
-                    <!-- Weekly Revenue Card -->
-                    <div class="card">
-                        <div class="card-header">Weekly</div>
-                        <div class="card-row">
-                            <span>Revenue:</span>
-                            <span id="weekly-revenue">$863.15</span>
-                        </div>
-                        <div class="card-row">
-                            <span>Maintenance:</span>
-                            <span id="weekly-maintenance">$164.15</span>
-                        </div>
-                        <div class="card-row">
-                            <span>Net Revenue:</span>
-                            <span id="weekly-net">$699.00</span>
-                        </div>
-                    </div>
-                    <!-- Monthly Revenue Card -->
-                    <div class="card">
-                        <div class="card-header">Monthly</div>
-                        <div class="card-row">
-                            <span>Revenue:</span>
-                            <span id="monthly-revenue">$3703.50</span>
-                        </div>
-                        <div class="card-row">
-                            <span>Maintenance:</span>
-                            <span id="monthly-maintenance">$704.50</span>
-                        </div>
-                        <div class="card-row">
-                            <span>Net Revenue:</span>
-                            <span id="monthly-net">$2999.00</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Gomining Verdienst Tab -->
-            <div class="tab-page" id="worth">
-				<div style="text-align: center; margin-bottom: 20px;">
-					<button onclick="updateCurrency('USD')">USD ($)</button>
-					<button onclick="updateCurrency('BTC')">BTC (₿)</button>
-					<button onclick="updateCurrency('GMT')">GMT</button>
+						<p>Or join us through our referral link:</p>
+						<a href="https://gomining.com/?ref=ICjK3" target="_blank" style="display: inline-block; margin: 10px;">
+							<img src="https://cimera311.github.io/Gomining_Calculator/Gomining.jpg" alt="GoMining Referral" style="width: 150px; height: auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+						</a>
+						<p>&copy; 2024 HashSense. All rights reserved.</p>
+						<p>This website is for informational purposes only.</p>
+					</footer>
 				</div>
-				<table id="revenue-summary" style="width: 100%; border-collapse: collapse;">
-					<thead>
-						<!-- Dynamischer Tabellenkopf -->
-					</thead>
-					<tbody>
-						<!-- Dynamische Zeilen -->
-					</tbody>
-				</table>
 				
-            </div>
+				<div class="tab-page" id="ROI">
+
+						<label for="My_TH_ROI">My TH:</label>
+						<input type="number" id="My_TH_ROI" value="1" placeholder="10" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI')">
+						<input type="range" id="th-slider_ROI" min="1" max="5000" step="1" value="200" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI'); calculateROI();">
+						<label for="Satoshi-per-TH_ROI">Satoshi per TH (sat/TH):</label>
+						<input type="number" id="Satoshi-per-TH_ROI" value="63" placeholder="z.B. 63">
+
+						<div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+							<button onclick="setMinerValues(15)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+								15 W/TH
+							</button>
+							<button onclick="setMinerValues(20)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+								20 W/TH
+							</button>
+							<button onclick="setMinerValues(28)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+								28 W/TH
+							</button>
+							<button onclick="setMinerValues(35)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+								35 W/TH
+							</button>
+						</div>
+						
+						
+
+						<label for="Energy-efficiency_ROI">Energy-efficiency (W/TH):</label>
+						<input type="number" id="Energy-efficiency_ROI" value="20" placeholder="z.B. 20" oninput="syncFieldAndSlider(event, 'Energy-efficiency_ROI', 'efficiency-slider_ROI')">
+						<input type="range" id="efficiency-slider_ROI" min="15" max="35" step="0.01" value="27.71" oninput="syncFieldAndSlider(event, 'Energy-efficiency_ROI', 'efficiency-slider_ROI'); calculateROI();">
+
+						<label for="gomining-discount_ROI">Gomining Maintenance Discount (%):</label>
+						<input type="number" id="gomining-discount_ROI" value="0" min="0" max="20" step="1" oninput="syncFieldAndSlider(event, 'gomining-discount_ROI', 'gomining-discount-slider_ROI')">
+						<input type="range" id="gomining-discount-slider_ROI" min="0" max="20" step="0.1" value="0" oninput="syncFieldAndSlider(event, 'gomining-discount_ROI', 'gomining-discount-slider_ROI'); calculateROI();">
+
+						<label for="price-per-TH_ROI">Price per TH ($):</label>
+						<input type="number" id="price-per-th_ROI" value="22.93" placeholder="e.g., 22.93">
+
+						<button onclick="calculateROI();">Calculate ROI</button>
+
+						<!-- ROI Results -->
+						<div class="results-container" style="margin-top: 20px;">
+							<p><strong>Total Investment:</strong> <span id="total-investment_ROI">$0.00</span></p>
+							<p><strong>Daily Profit:</strong> <span id="daily-profit_ROI">$0.00</span></p>
+							<p><strong>Monthly Profit:</strong> <span id="monthly-profit_ROI">$0.00</span></p>
+							<p><strong>Yearly Profit:</strong> <span id="yearly-profit_ROI">$0.00</span></p>
+							<p><strong>Days of ROI:</strong> <span id="days-of-roi_ROI">0 Days</span></p>
+							<p><strong>% of ROI (for a year):</strong> <span id="roi-percentage_ROI">0%</span></p>
+							<p><strong>Yearly Net BTC:</strong> <span id="yearly-net-btc_ROI">0.00000000 BTC</span></p>
+
+						</div>
+						<footer style="margin-top: 20px; padding: 20px; background-color: #2a2a2a; color: #e6e6e6; text-align: center; border-top: 1px solid #555;">
+							<h3 style="color: #673dec;">Support Us</h3>
+							<p>If you like our work, feel free to support us by sending GMT tokens:</p>
+						<div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
+						
+							<!-- Wallet-Adresse -->
+							<span
+								onclick="copyWalletAddress()"
+								style="cursor: pointer; color: #673dec; font-weight: bold; font-size: 1.1em; text-decoration: underline;"
+								title="Click to copy wallet address"
+							>
+								0x3229E3118F803d8EaCB52D5f598395F5bf888bad
+							</span>
+						</div>
+						
+							<p>Or join us through our referral link:</p>
+							<a href="https://gomining.com/?ref=ICjK3" target="_blank" style="display: inline-block; margin: 10px;">
+								<img src="https://cimera311.github.io/Gomining_Calculator/Gomining.jpg" alt="GoMining Referral" style="width: 150px; height: auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+							</a>
+							<p>&copy; 2024 HashSense. All rights reserved.</p>
+							<p>This website is for informational purposes only.</p>
+						</footer>
+				</div>
+			
+				<div class="tab-page" id="MobileView">
+					<h2>Mobile Optimized View</h2>
+					<div class="card-container">
+						<!-- Daily Revenue Card -->
+						<div class="card">
+							<div class="card-header">Daily</div>
+							<div class="card-row">
+								<span>Revenue:</span>
+								<span id="daily-revenue">$123.45</span>
+							</div>
+							<div class="card-row">
+								<span>Maintenance:</span>
+								<span id="daily-maintenance">$23.45</span>
+							</div>
+							<div class="card-row">
+								<span>Net Revenue:</span>
+								<span id="daily-net">$100.00</span>
+							</div>
+						</div>
+						<!-- Weekly Revenue Card -->
+						<div class="card">
+							<div class="card-header">Weekly</div>
+							<div class="card-row">
+								<span>Revenue:</span>
+								<span id="weekly-revenue">$863.15</span>
+							</div>
+							<div class="card-row">
+								<span>Maintenance:</span>
+								<span id="weekly-maintenance">$164.15</span>
+							</div>
+							<div class="card-row">
+								<span>Net Revenue:</span>
+								<span id="weekly-net">$699.00</span>
+							</div>
+						</div>
+						<!-- Monthly Revenue Card -->
+						<div class="card">
+							<div class="card-header">Monthly</div>
+							<div class="card-row">
+								<span>Revenue:</span>
+								<span id="monthly-revenue">$3703.50</span>
+							</div>
+							<div class="card-row">
+								<span>Maintenance:</span>
+								<span id="monthly-maintenance">$704.50</span>
+							</div>
+							<div class="card-row">
+								<span>Net Revenue:</span>
+								<span id="monthly-net">$2999.00</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- Gomining Verdienst Tab -->
+				<div class="tab-page" id="worth">
+					<div style="text-align: center; margin-bottom: 20px;">
+						<button onclick="updateCurrency('USD')">USD ($)</button>
+						<button onclick="updateCurrency('BTC')">BTC (₿)</button>
+						<button onclick="updateCurrency('GMT')">GMT</button>
+					</div>
+					<table id="revenue-summary" style="width: 100%; border-collapse: collapse;">
+						<thead>
+							<!-- Dynamischer Tabellenkopf -->
+						</thead>
+						<tbody>
+							<!-- Dynamische Zeilen -->
+						</tbody>
+					</table>
+					
+				</div>
 
             <!-- Maintenance Solo Mining Tab -->
 
-        
         </div>
     </div>
+		
     <script>
 		let BitcoinPrice = null; // Speichert den Bitcoin-Preis
 		let GMTPrice = null; // Speichert den Gomining-Token-Preis
 		let currentCurrency = 'USD'; // Standardwährung
 		
+		    document.addEventListener('DOMContentLoaded', () => {
+				fetchBTCPrice();
+				fetchGMTPrice();
+				});
 		function updateCurrency(currency) {
 				currentCurrency = currency; // Setze die aktuelle Währung
 				generateRevenueTable(document.getElementById('bitcoin-price').value, 62, document.getElementById('gomining-price').value); // Aktualisiere die Tabelle
@@ -678,7 +686,7 @@ header {
 			{ name: "ROI", id: "ROI" },
             { name: "Mobile View", id: "MobileView" },
             { name: "worth it ?", id: "worth" },
-            //{ name: "Maintenance Solo Mining", id: "maintenance-solo-mining" }
+            { name: "Maintenance Solo Mining", id: "maintenance-solo-mining" }
         ];
         let currentTab = 0;
 
