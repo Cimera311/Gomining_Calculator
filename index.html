@@ -1142,18 +1142,26 @@ text-align: center;
                 }
 
 		function displayTelegramUsername() {
-		    // Telegram WebApp-API initialisieren
-		    const telegram = window.Telegram.WebApp;
+		    try {
+		        const telegram = window.Telegram.WebApp; // Telegram WebApp-API laden
+		        telegram.ready(); // Signalisiert, dass die App bereit ist
 		
-		    // Telegram-Name abrufen
-		    telegram.ready(); // Signalisiert, dass die Web-App bereit ist
-		    const user = telegram.initDataUnsafe.user;
+		        // Prüfe, ob initData vorhanden ist
+		        console.log("Telegram initData:", telegram.initData);
+		        console.log("Telegram initDataUnsafe:", telegram.initDataUnsafe);
 		
-		    // Benutzername anzeigen
-		    if (user) {
-		        document.getElementById('user-id').textContent = user.username || "No username";
-		    } else {
-		        document.getElementById('user-id').text = "...ID";
+		        const user = telegram.initDataUnsafe.user; // Benutzerinformationen abrufen
+		        console.log("User data:", user); // Debugging: Benutzerdaten anzeigen
+		
+		        if (user) {
+		            // Benutzername anzeigen
+		            document.getElementById('user-id').textContent = user.username || "No username";
+		        } else {
+		            document.getElementById('user-id').textContent = "...ID"; // Fallback
+		        }
+		    } catch (error) {
+		        console.error("Error accessing Telegram API:", error);
+		        document.getElementById('user-id').textContent = "ID";
 		    }
 		}
 		
