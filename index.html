@@ -342,7 +342,134 @@ text-align: center;
 .circular-button:hover {
     background-color: #8a5eff; /* Hover-Effekt */
 }
+/* Farm Management Tab */
+.farm-summary {
+    background-color: #444;
+    color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
 
+.miner-list {
+    background-color: #333;
+    color: #e6e6e6;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.add-miner-button {
+    background-color: #673dec;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.add-miner-button:hover {
+    background-color: #8a5eff;
+}
+
+/* Modal Styling */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+}
+
+.modal-content button {
+    background-color: #673dec;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 10px 5px;
+}
+
+.modal-content button:hover {
+    background-color: #8a5eff;
+}
+
+.miner-cards-container {
+    display: flex;
+    flex-wrap: wrap; /* Kacheln umbrechen, wenn kein Platz mehr ist */
+    gap: 15px; /* Abstand zwischen den Kacheln */
+    margin-top: 20px;
+}
+
+.miner-card {
+    background-color: #444;
+    color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    width: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: left;
+    position: relative;
+}
+
+.miner-card h4 {
+    margin: 0 0 10px;
+    font-size: 1.2em;
+}
+
+.miner-card p {
+    margin: 5px 0;
+}
+
+.miner-card .card-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.card-buttons button {
+    background-color: #673dec;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.card-buttons button:hover {
+    background-color: #8a5eff;
+}
 
 
     </style>
@@ -397,6 +524,45 @@ text-align: center;
 
 			<!-- Tab Inhalte -->
 			<div id="tab-content">
+
+                <div class="tab-page" id="farm-management">
+                    <h2>Farm Management</h2>
+                    
+                    <!-- Farm Zusammenfassung -->
+                    <div class="farm-summary">
+                        <p><strong>Total TH:</strong> <span id="total-th">0</span></p>
+                        <p><strong>Average Efficiency:</strong> <span id="avg-efficiency">0.00</span> W/TH</p>
+                        <p><strong>Total Cost:</strong> <span id="total-cost">$0.00</span></p>
+                    </div>
+                    
+                    <!-- Miner-Kacheln -->
+                    <div id="miner-cards-container" class="miner-cards-container">
+                        <!-- Dynamisch generierte Miner-Kacheln -->
+                    </div>
+                
+                    <!-- + Button -->
+                    <button class="add-miner-button" onclick="openAddMinerModal()">+ Add Miner</button>
+                </div>
+                
+                <!-- Modal für Miner hinzufügen -->
+                <div class="modal" id="add-miner-modal" style="display: none;">
+                    <div class="modal-content">
+                        <h3 id="modal-title">Add Miner</h3>
+                        <label for="miner-th">TH:</label>
+                        <input type="number" id="miner-th" placeholder="Enter TH">
+                        
+                        <label for="miner-efficiency">Efficiency (W/TH):</label>
+                        <input type="number" id="miner-efficiency" placeholder="Enter Efficiency">
+                        
+                        <label for="miner-cost">Cost ($):</label>
+                        <input type="number" id="miner-cost" placeholder="Enter Cost">
+                        
+                        <button onclick="saveMiner()">Save Miner</button>
+                        <button onclick="closeAddMinerModal()">Cancel</button>
+                    </div>
+                </div>
+                
+                
 				<!-- Investment Calculator Tab -->
 				<div class="tab-page active" id="Calc">
 
@@ -687,7 +853,7 @@ text-align: center;
         const tabs = [
             { name: "Calc", id: "Calc" },
 			{ name: "ROI", id: "ROI" },
-           // { name: "Mobile View", id: "MobileView" },
+            { name: "farm-management", id: "farm-management" },
             { name: "worth it ?", id: "worth" },
            // { name: "Maintenance Solo Mining", id: "maintenance-solo-mining" }
         ];
@@ -1140,6 +1306,108 @@ text-align: center;
                 }
                 }
 
+
+
+
+                // -------------------------------------------------------------
+                let miners = [];
+let editIndex = null;
+
+function openAddMinerModal(index = null) {
+    const modal = document.getElementById('add-miner-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const thInput = document.getElementById('miner-th');
+    const efficiencyInput = document.getElementById('miner-efficiency');
+    const costInput = document.getElementById('miner-cost');
+
+    if (index !== null) {
+        // Bearbeiten
+        modalTitle.innerText = 'Edit Miner';
+        const miner = miners[index];
+        thInput.value = miner.th;
+        efficiencyInput.value = miner.efficiency;
+        costInput.value = miner.cost;
+        editIndex = index;
+    } else {
+        // Neuer Miner
+        modalTitle.innerText = 'Add Miner';
+        thInput.value = '';
+        efficiencyInput.value = '';
+        costInput.value = '';
+        editIndex = null;
+    }
+
+    modal.style.display = 'flex';
+}
+
+function closeAddMinerModal() {
+    document.getElementById('add-miner-modal').style.display = 'none';
+}
+
+function saveMiner() {
+    const th = parseFloat(document.getElementById('miner-th').value);
+    const efficiency = parseFloat(document.getElementById('miner-efficiency').value);
+    const cost = parseFloat(document.getElementById('miner-cost').value);
+
+    if (isNaN(th) || isNaN(efficiency) || isNaN(cost)) {
+        alert('Please fill all fields correctly!');
+        return;
+    }
+
+    if (editIndex !== null) {
+        // Bearbeiten
+        miners[editIndex] = { th, efficiency, cost };
+    } else {
+        // Neuer Miner
+        miners.push({ th, efficiency, cost });
+    }
+
+    closeAddMinerModal();
+    updateFarm();
+}
+
+function deleteMiner(index) {
+    miners.splice(index, 1);
+    updateFarm();
+}
+
+function updateFarm() {
+    const minerCardsContainer = document.getElementById('miner-cards-container');
+    minerCardsContainer.innerHTML = '';
+
+    let totalTH = 0;
+    let totalEfficiency = 0;
+    let totalCost = 0;
+
+    miners.forEach((miner, index) => {
+        totalTH += miner.th;
+        totalEfficiency += miner.efficiency;
+        totalCost += miner.cost;
+
+        // Kachel erstellen
+        const card = document.createElement('div');
+        card.classList.add('miner-card');
+
+        card.innerHTML = `
+            <h4>Miner ${index + 1}</h4>
+            <p><strong>TH:</strong> ${miner.th}</p>
+            <p><strong>Efficiency:</strong> ${miner.efficiency} W/TH</p>
+            <p><strong>Cost:</strong> $${miner.cost.toFixed(2)}</p>
+            <div class="card-buttons">
+                <button onclick="openAddMinerModal(${index})">Edit</button>
+                <button onclick="deleteMiner(${index})">Delete</button>
+            </div>
+        `;
+
+        minerCardsContainer.appendChild(card);
+    });
+
+    const avgEfficiency = miners.length > 0 ? totalEfficiency / miners.length : 0;
+
+    document.getElementById('total-th').innerText = totalTH.toFixed(2);
+    document.getElementById('avg-efficiency').innerText = avgEfficiency.toFixed(2);
+    document.getElementById('total-cost').innerText = `$${totalCost.toFixed(2)}`;
+}
 
 
     </script>
