@@ -1,4 +1,9 @@
-bot/userdata.db
-bot/__pycache__/
-bot/*.pyc
+# Python Cache-Dateien ignorieren
+__pycache__/
+*.pyc
 
+# Datenbank ignorieren
+bot/userdata.db
+
+# Config-Datei mit Token ignorieren
+bot/config.py
