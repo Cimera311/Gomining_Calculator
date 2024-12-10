@@ -354,6 +354,7 @@ text-align: center;
             <!-- Bitcoin Preis Dropdown -->
             <header class="header">
                 <!-- Bitcoin Preis Dropdown -->
+		  <p id="user-id"></p>  
              <div >
                     <img src="https://github.com/Cimera311/Gomining_Calculator/raw/main/Bitcoin.svg.png" alt="BTC">
                     <select id="bitcoin-price-dropdown" >
@@ -1140,7 +1141,25 @@ text-align: center;
                 }
                 }
 
-
+		function displayTelegramUsername() {
+		    // Telegram WebApp-API initialisieren
+		    const telegram = window.Telegram.WebApp;
+		
+		    // Telegram-Name abrufen
+		    telegram.ready(); // Signalisiert, dass die Web-App bereit ist
+		    const user = telegram.initDataUnsafe.user;
+		
+		    // Benutzername anzeigen
+		    if (user) {
+		        document.getElementById('user-id').textContent = user.username || "No username";
+		    } else {
+		        document.getElementById('user-id').textContent = "Unable to retrieve user info.";
+		    }
+		}
+		
+		// Funktion aufrufen, wenn die Seite geladen ist
+		document.addEventListener("DOMContentLoaded", displayTelegramUsername);
+		
 
     </script>
 </body>
