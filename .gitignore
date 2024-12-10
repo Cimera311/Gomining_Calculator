@@ -1,1 +1,4 @@
+bot/userdata.db
+bot/__pycache__/
+bot/*.pyc
 
