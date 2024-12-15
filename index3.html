@@ -92,7 +92,8 @@
             max-width: 600px;
         }
 
-        input {
+        input,
+        select {
             display: block;
             width: calc(100% - 40px); /* Verhindert Überschreiben des Containers */
             max-width: 600px;
@@ -599,18 +600,39 @@ text-align: center;
                 <div class="tab-page" id="Invest-calculator">
 
 
-					<label for="Energy-efficiency">New NFT Miner Energy-efficiency (W/TH) Level:</label>
-					<select type="number" id="Energy-efficiency" value="20" >
+					<label for="Energy-efficiency-I">New NFT Miner Energy-efficiency (W/TH) Level:</label>
+					<select type="number" id="Energy-efficiency-I" value="20" >
                         <option value="15">15 W/TH</option>
                         <option value="20">20 W/TH</option>
                     </select>
+                    <label for="gomining-discount">Investment:</label>
+					<input type="number" id="Investment-I" value="0" min="0" max="10000" step="1" oninput="syncFieldAndSlider(event, 'Investment-I', 'Investment-slider-I')" placeholder="0%">
+					<input type="range" id="Investment-slider-I" min="0" max="10000" step="100" value="1000" oninput="syncFieldAndSlider(event, 'Investment-I', 'Investment-slider-I'); calculateCost();">
 					<label for="gomining-discount">Gomining Maintenance Discount (%):</label>
-					<input type="number" id="gomining-discount" value="0" min="0" max="20" step="1" oninput="syncFieldAndSlider(event, 'gomining-discount', 'gomining-discount-slider')" placeholder="0%">
-					<input type="range" id="gomining-discount-slider" min="0" max="20" step="0.1" value="0" oninput="syncFieldAndSlider(event, 'gomining-discount', 'gomining-discount-slider'); calculateCost();">
-
+					<input type="number" id="gomining-discount-I" value="0" min="0" max="20" step="1" oninput="syncFieldAndSlider(event, 'gomining-discount-I', 'gomining-discount-slider-I')" placeholder="0%">
+					<input type="range" id="gomining-discount-slider-I" min="0" max="20" step="0.1" value="0" oninput="syncFieldAndSlider(event, 'gomining-discount-I', 'gomining-discount-slider-I'); calculateCost();">
+                    <button onclick="calculateInvest()">Calculate</button>
 		
 					<div class="card-container">
 						<!-- Daily Revenue Card -->
+                        <div class="card">
+							<div class="card-row">
+								<span title="Final-TH">Final TH level</span>
+								<span id="My-Th-I">1</span>
+							</div>
+							<div class="card-row">
+								<span title="Service costs for your TH/s a day">Service(C2):</span>
+								<span id="daily-Service">$0</span>
+							</div>
+							<div class="card-row">
+								<span title="Amount of Satoshi accrued to the token holder at a rate of your TH/s a day.">Reward (PR):</span>
+								<span id="daily-Reward">$0</span>
+							</div>
+                            <div class="card-row">
+								<span title="PR - C1 - C2 = Reward">Reward net:</span>
+								<span id="daily-net">$0</span>
+							</div>
+						</div>
 						<div class="card">
 							<div class="card-header">Daily</div>
 							<div class="card-row">
@@ -1292,7 +1314,58 @@ text-align: center;
                     efficiencyField.value = '';
                 }
                 }
+                const priceMatrix = [
+                    { minTH: 1, pricePerTH: 26.99 },
+                    { minTH: 2, pricePerTH: 26.50 },
+                    { minTH: 4, pricePerTH: 25.00 },
+                    { minTH: 8, pricePerTH: 24.50 },
+                    { minTH: 16, pricePerTH: 23.00 },
+                    { minTH: 32, pricePerTH: 22.50 },
+                    { minTH: 64, pricePerTH: 21.00 },
+                    { minTH: 128, pricePerTH: 20.50 },
+                    { minTH: 256, pricePerTH: 19.00 },
+                    { minTH: 512, pricePerTH: 18.50 },
+                    { minTH: 1024, pricePerTH: 18.00 },
+                ];
 
+                calculateInvest()
+                {
+                    const result = calculateTHAndCost(document.getElementById('Investment-I'));
+                    document.getElementById('My-TH-I').textContent = result.TH
+                }
+                function calculateTHAndCost(dollarValue) {
+                    let remainingDollars = dollarValue; // Verfügbares Budget
+                    let totalTH = 0; // Gesamt-TH-Wert
+                    let totalCost = 0; // Tatsächlich ausgegebene Dollar
+
+                    // Iteriere durch die Preisstaffelung
+                    for (let i = 0; i < priceMatrix.length; i++) {
+                        const { minTH, pricePerTH } = priceMatrix[i];
+                        const nextTH = i + 1 < priceMatrix.length ? priceMatrix[i + 1].minTH : Infinity; // Grenze für die nächste Stufe
+
+                        // Berechne, wie viele TH in dieser Staffel gekauft werden können
+                        const availableTH = Math.min(
+                            Math.floor(remainingDollars / pricePerTH), // TH, die wir uns leisten können
+                            nextTH - minTH // TH, die in dieser Staffel verfügbar sind
+                        );
+
+                        if (availableTH > 0) {
+                            const costForThisTH = availableTH * pricePerTH; // Kosten für diese TH
+                            totalTH += availableTH; // TH hinzufügen
+                            totalCost += costForThisTH; // Kosten addieren
+                            remainingDollars -= costForThisTH; // Restbudget anpassen
+                        }
+
+                        // Breche ab, wenn kein Budget mehr vorhanden ist
+                        if (remainingDollars <= 0) break;
+                    }
+
+                    return {
+                        th: totalTH, // Gesamte TH
+                        cost: totalCost, // Tatsächlich verbrauchte Dollar
+                        remainingDollars, // Übriges Budget (falls vorhanden)
+                    };
+                }
 
 		
 
