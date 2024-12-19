@@ -1064,8 +1064,10 @@ header {
                 }
                 
                 // Daily calculations
-                const dailyElectricityCostBTC = (costPerKWh * 24) / 1000 / BTC * efficiency * th 
-                const dailyElectricityCost = dailyElectricityCostBTC * BTC * ((100 - discount) / 100);
+				const dailyElectricityCost = ((efficiency * th * 0.05 * 24) / 1000 ) * ((100 - discount) / 100); // Kosten für Strom
+                const dailyElectricityCostBTC = dailyElectricityCost / BTC 
+
+
                 const dailyServiceCostBTC = (daily_cost / BTC )* th ;
                 const dailyServiceCost = dailyServiceCostBTC * BTC * ((100 - discount) / 100);
                 const dailyTotalMaintenanceCost = dailyElectricityCost + dailyServiceCost;
@@ -1170,10 +1172,10 @@ header {
 				// Berechnungen
 				const totalInvestment = pricePerTH * myTH;
 				const dailyRevenue = (satoshiPerTH * myTH * bitcoinPrice) / 1e8; // 
-				const electricityCost = (energyEfficiency * myTH * 0.05 * 24) / 1000; // Kosten für Strom
+				const electricityCost = ((energyEfficiency * myTH * 0.05 * 24) / 1000 ) * ((100 - gominingDiscount) / 100); // Kosten für Strom
 				const serviceCostBTC = (0.0089 / bitcoinPrice) * myTH; // Servicekosten pro TH
 				const dailyServiceCost = serviceCostBTC * bitcoinPrice * ((100 - gominingDiscount) / 100);
-				const totalMaintenanceCost = (electricityCost + dailyServiceCost) * ((100 - gominingDiscount) / 100);
+				const totalMaintenanceCost = (electricityCost + dailyServiceCost) 
 				const dailyProfit = dailyRevenue - totalMaintenanceCost;
 
 				const monthlyProfit = dailyProfit * 30; // Monatlicher Gewinn
