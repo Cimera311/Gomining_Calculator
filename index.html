@@ -418,6 +418,57 @@ header {
 .button-group button:hover {
     background-color: #5329ba;
 }
+/* Zentrierung für einzelne Buttons */
+.single-button-container {
+    display: flex;
+    justify-content: center; /* Zentriert horizontal */
+    align-items: center; /* Zentriert vertikal */
+    margin: 10px auto; /* Abstand und automatische Zentrierung */
+}
+
+.single-button-container button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #673dec;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.single-button-container button:hover {
+    background-color: #5329ba;
+}
+.wallet-address-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #333;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    overflow-x: auto; /* Ermöglicht horizontales Scrollen */
+    white-space: nowrap; /* Verhindert Umbruch */
+}
+
+.wallet-address {
+    flex: 1;
+    color: #e6e6e6;
+    font-family: monospace; /* Für klare Darstellung der Adresse */
+    font-size: 1em;
+}
+
+.wallet-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+}
 
     </style>
 </head>
@@ -497,8 +548,11 @@ header {
 					<input type="range" id="gomining-discount-slider" min="0" max="20" step="0.1" value="0" oninput="syncFieldAndSlider(event, 'gomining-discount', 'gomining-discount-slider'); calculateCost();">
 					<label for="Daily-Reward">My Daily Reward:</label>
 					<input type="number" id="Daily-Reward" value="12400" placeholder="z.B. 6500">
-					
-					<button onclick="calculateCost()">Berechnen</button>
+					<div class="single-button-container">
+                        <button onclick="calculateCost()">Calculate</button>
+                    </div>
+                    
+
 					<table id="results-table" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
 						<thead>
 							<tr>
@@ -532,6 +586,21 @@ header {
 								<td style="border: 1px solid #555; padding: 10px;">Daily Net Profit</td>
 								<td id="daily-net-profit" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
 								<td id="daily-net-profit-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+							</tr>
+                            <tr>
+								<td style="border: 1px solid #555; padding: 10px;">weekly Revenue</td>
+								<td id="weekly-rewards" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+								<td id="weekly-rewards-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid #555; padding: 10px;">weekly Total Maintenance Cost</td>
+								<td id="weekly-maintenance-cost" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+								<td id="weekly-maintenance-cost-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid #555; padding: 10px;">weekly Net Profit</td>
+								<td id="weekly-net-profit" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
+								<td id="weekly-net-profit-btc" style="border: 1px solid #555; padding: 10px; text-align: right;">-</td>
 							</tr>
 							<tr>
 								<td style="border: 1px solid #555; padding: 10px;">Monthly Revenue</td>
@@ -579,28 +648,6 @@ header {
 
 
 					</footer>
-					<footer style="margin-top: 20px; padding: 20px; background-color: #2a2a2a; color: #e6e6e6; text-align: center; border-top: 1px solid #555;">
-						<h3 style="color: #673dec;">Support Us</h3>
-						<p>If you like our work, feel free to support us by sending GMT tokens:</p>
-						<div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
-
-							<!-- Wallet-Adresse -->
-							<span
-								onclick="copyWalletAddress()"
-								style="cursor: pointer; color: #673dec; font-weight: bold; font-size: 1.1em; text-decoration: underline;"
-								title="Click to copy wallet address"
-							>
-								0x3229E3118F803d8EaCB52D5f598395F5bf888bad
-							</span>
-						</div>
-
-						<p>Or join us through our referral link:</p>
-						<a href="https://gomining.com/?ref=ICjK3" target="_blank" style="display: inline-block; margin: 10px;">
-							<img src="https://cimera311.github.io/Gomining_Calculator/Gomining.jpg" alt="GoMining Referral" style="width: 150px; height: auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-						</a>
-						<p>&copy; 2024 HashSense. All rights reserved.</p>
-						<p>This website is for informational purposes only.</p>
-					</footer>
 				</div>
 				
 				<div class="tab-page" id="ROI" >
@@ -643,8 +690,10 @@ header {
 
 						<label for="price-per-TH_ROI">Price per TH ($):</label>
 						<input type="number" id="price-per-th_ROI" value="22.93" placeholder="e.g., 22.93">
-
-						<button onclick="calculateROI();">Calculate ROI</button>
+                        <div class="single-button-container">
+                            <button onclick="calculateROI();">Calculate ROI</button>
+                        </div>
+						
 
 						<!-- ROI Results -->
 						<div class="results-container" style="margin-top: 20px;">
@@ -657,28 +706,6 @@ header {
 							<p><strong>Yearly Net BTC:</strong> <span id="yearly-net-btc_ROI">0.00000000 BTC</span></p>
 
 						</div>
-						<footer style="margin-top: 20px; padding: 20px; background-color: #2a2a2a; color: #e6e6e6; text-align: center; border-top: 1px solid #555;">
-							<h3 style="color: #673dec;">Support Us</h3>
-							<p>If you like our work, feel free to support us by sending GMT tokens:</p>
-						<div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
-						
-							<!-- Wallet-Adresse -->
-							<span
-								onclick="copyWalletAddress()"
-								style="cursor: pointer; color: #673dec; font-weight: bold; font-size: 1.1em; text-decoration: underline;"
-								title="Click to copy wallet address"
-							>
-								0x3229E3118F803d8EaCB52D5f598395F5bf888bad
-							</span>
-						</div>
-						
-							<p>Or join us through our referral link:</p>
-							<a href="https://gomining.com/?ref=ICjK3" target="_blank" style="display: inline-block; margin: 10px;">
-								<img src="https://cimera311.github.io/Gomining_Calculator/Gomining.jpg" alt="GoMining Referral" style="width: 150px; height: auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-							</a>
-							<p>&copy; 2024 HashSense. All rights reserved.</p>
-							<p>This website is for informational purposes only.</p>
-						</footer>
 				</div>
 
 
@@ -731,36 +758,9 @@ header {
                                 <li>
                                     <strong>Reward Fund Conversion:</strong> <code>Reward Fund (Satoshi) * 0.00000001 = Reward Fund in BTC</code>
                                 </li>
-                                <li>
-                                    <strong>Power Costs (Daily, Weekly, Monthly):</strong> <code>(Efficiency * My TH * Cost per kWh * Hours) / 1000</code>
-                                </li>
-                                <li>
-                                    <strong>Service Costs:</strong> <code>Service Cost/TH in USD * My TH</code>
-                                </li>
                             </ul>
                         </footer>
-					<footer style="margin-top: 20px; padding: 20px; background-color: #2a2a2a; color: #e6e6e6; text-align: center; border-top: 1px solid #555;">
-						<h3 style="color: #673dec;">Support Us</h3>
-						<p>If you like our work, feel free to support us by sending GMT tokens:</p>
-						<div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
 
-							<!-- Wallet-Adresse -->
-							<span
-								onclick="copyWalletAddress()"
-								style="cursor: pointer; color: #673dec; font-weight: bold; font-size: 1.1em; text-decoration: underline;"
-								title="Click to copy wallet address"
-							>
-								0x3229E3118F803d8EaCB52D5f598395F5bf888bad
-							</span>
-						</div>
-
-						<p>Or join us through our referral link:</p>
-						<a href="https://gomining.com/?ref=ICjK3" target="_blank" style="display: inline-block; margin: 10px;">
-							<img src="https://cimera311.github.io/Gomining_Calculator/Gomining.jpg" alt="GoMining Referral" style="width: 150px; height: auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-						</a>
-						<p>&copy; 2024 HashSense. All rights reserved.</p>
-						<p>This website is for informational purposes only.</p>
-					</footer>
 				</div>
 
                 <div class="tab-page" id="New Miner Invest">
@@ -777,8 +777,9 @@ header {
 					<label for="gomining-discount">Gomining Maintenance Discount (%):</label>
 					<input type="number" id="gomining-discount-I" value="0" min="0" max="20" step="1" oninput="syncFieldAndSlider(event, 'gomining-discount-I', 'gomining-discount-slider-I')" placeholder="0%">
 					<input type="range" id="gomining-discount-slider-I" min="0" max="20" step="0.1" value="0" oninput="syncFieldAndSlider(event, 'gomining-discount-I', 'gomining-discount-slider-I'); calculateInvest(parseFloat(document.getElementById('Investment-I').value),parseFloat(document.getElementById('Energy-efficiency-I').value));">
-                    <button  onclick="calculateInvest(parseFloat(document.getElementById('Investment-I').value),parseFloat(document.getElementById('Energy-efficiency-I').value))" >Calculate</button>
-		
+                    <div class="single-button-container">
+                        <button  onclick="calculateInvest(parseFloat(document.getElementById('Investment-I').value),parseFloat(document.getElementById('Energy-efficiency-I').value))" >Calculate</button>
+                    </div>
 
 
                     
@@ -855,28 +856,6 @@ header {
 
 
 					</footer>
-					<footer style="margin-top: 20px; padding: 20px; background-color: #2a2a2a; color: #e6e6e6; text-align: center; border-top: 1px solid #555;">
-						<h3 style="color: #673dec;">Support Us</h3>
-						<p>If you like our work, feel free to support us by sending GMT tokens:</p>
-						<div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px;">
-
-							<!-- Wallet-Adresse -->
-							<span
-								onclick="copyWalletAddress()"
-								style="cursor: pointer; color: #673dec; font-weight: bold; font-size: 1.1em; text-decoration: underline;"
-								title="Click to copy wallet address"
-							>
-								0x3229E3118F803d8EaCB52D5f598395F5bf888bad
-							</span>
-						</div>
-
-						<p>Or join us through our referral link:</p>
-						<a href="https://gomining.com/?ref=ICjK3" target="_blank" style="display: inline-block; margin: 10px;">
-							<img src="https://cimera311.github.io/Gomining_Calculator/Gomining.jpg" alt="GoMining Referral" style="width: 150px; height: auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-						</a>
-						<p>&copy; 2024 HashSense. All rights reserved.</p>
-						<p>This website is for informational purposes only.</p>
-					</footer>
 				</div>
 				<div class="tab-page" id="MobileView">
 					<h2>Mobile Optimized View</h2>
@@ -950,7 +929,25 @@ header {
 					
 				</div>
 
-            <!-- Maintenance Solo Mining Tab -->
+				<footer style="margin-top: 20px; padding: 20px; background-color: #2a2a2a; color: #e6e6e6; text-align: center; border-top: 1px solid #555;">
+					<h3 style="color: #673dec;">Support Us</h3>
+					<p>If you like our work, feel free to support us by sending GMT tokens on BNB Smart Chain:</p>
+					<div class="wallet-address-container">
+						<img class="wallet-icon" src="https://github.com/Cimera311/Gomining_Calculator/raw/main/GoMining_Logo.webp" alt="Wallet Icon">
+						<span class="wallet-address">0x3229E3118F803d8EaCB52D5f598395F5bf888bad</span>
+
+					</div>
+					<div class="single-button-container">
+					<button onclick="copyToClipboard('0x3229E3118F803d8EaCB52D5f598395F5bf888bad')" style="background-color: #673dec; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer;">Copy adress</button>        
+					</div>
+
+					<p>Or join us through our referral link:</p>
+					<a href="https://gomining.com/?ref=ICjK3" target="_blank" style="display: inline-block; margin: 10px;">
+						<img src="https://cimera311.github.io/Gomining_Calculator/Gomining.jpg" alt="GoMining Referral" style="width: 150px; height: auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+					</a>
+					<p>&copy; 2024 HashSense. All rights reserved.</p>
+					<p>This website is for informational purposes only.</p>
+				</footer>
 
         </div>
     </div>
@@ -1073,7 +1070,11 @@ header {
                 const dailyTotalMaintenanceCost = dailyElectricityCost + dailyServiceCost;
                 const dailyRewardsInUSD = (dailyReward * 0.00000001) * BTC;
                 const dailyNetProfitInUSD = dailyRewardsInUSD - dailyTotalMaintenanceCost;
-               
+                
+                const weeklyRewardsInUSD = dailyRewardsInUSD * 7;
+                const weeklyMaintenanceCostInUSD = dailyTotalMaintenanceCost * 7;
+                const weeklyNetProfitInUSD = weeklyRewardsInUSD - weeklyMaintenanceCostInUSD;
+                
                 const monthlyRewardsInUSD = dailyRewardsInUSD * 30;
                 const monthlyMaintenanceCostInUSD = dailyTotalMaintenanceCost * 30;
                 const monthlyNetProfitInUSD = monthlyRewardsInUSD - monthlyMaintenanceCostInUSD;
@@ -1084,6 +1085,9 @@ header {
                 const dailyServiceCostInBTC = dailyServiceCost / BTC;
                 const dailyMaintenanceCostInBTC = dailyTotalMaintenanceCost / BTC;
                 const dailyNetProfitInBTC = dailyNetProfitInUSD / BTC;
+                const weeklyRewardsInBTC = dailyRewardsInBTC * 7;
+                const weeklyMaintenanceCostInBTC = weeklyMaintenanceCostInUSD / BTC;
+                const weeklyNetProfitInBTC = weeklyNetProfitInUSD / BTC;
                 const monthlyRewardsInBTC = dailyRewardsInBTC * 30;
                 const monthlyMaintenanceCostInBTC = monthlyMaintenanceCostInUSD / BTC;
                 const monthlyNetProfitInBTC = monthlyNetProfitInUSD / BTC;
@@ -1104,6 +1108,12 @@ header {
                 document.getElementById('daily-maintenance-cost-btc').innerText = `${dailyMaintenanceCostInBTC.toFixed(8)}`;
                 document.getElementById('daily-net-profit').innerText = `${dailyNetProfitInUSD.toFixed(2)}`;
                 document.getElementById('daily-net-profit-btc').innerText = `${dailyNetProfitInBTC.toFixed(8)}`;
+                document.getElementById('weekly-rewards').innerText = `${weeklyRewardsInUSD.toFixed(2)}`;
+                document.getElementById('weekly-rewards-btc').innerText = `${weeklyRewardsInBTC.toFixed(8)}`;
+                document.getElementById('weekly-maintenance-cost').innerText = `${weeklyMaintenanceCostInUSD.toFixed(2)}`;
+                document.getElementById('weekly-maintenance-cost-btc').innerText = `${weeklyMaintenanceCostInBTC.toFixed(8)}`;
+                document.getElementById('weekly-net-profit').innerText = `${weeklyNetProfitInUSD.toFixed(2)}`;
+                document.getElementById('weekly-net-profit-btc').innerText = `${weeklyNetProfitInBTC.toFixed(8)}`;
                 document.getElementById('monthly-rewards').innerText = `${monthlyRewardsInUSD.toFixed(2)}`;
                 document.getElementById('monthly-rewards-btc').innerText = `${monthlyRewardsInBTC.toFixed(8)}`;
                 document.getElementById('monthly-maintenance-cost').innerText = `${monthlyMaintenanceCostInUSD.toFixed(2)}`;
@@ -1790,6 +1800,13 @@ header {
                     } else if (mwReward > soloReward) {
                         mwRewardInput.style.color = 'green';
                     }
+                }
+                function copyToClipboard(text) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        alert('Wallet address copied to clipboard!');
+                    }).catch(err => {
+                        alert('Failed to copy: ', err);
+                    });
                 }
 
     </script>
