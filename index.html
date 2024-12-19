@@ -73,13 +73,20 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
             text-align: left;
         }
-		.results-container {
+		.results-container
+        {
 			display: flex; 
 			flex-direction: column;
             align-items: center;
 		
 		}
 
+        .tab-page button {
+			display: flex; 
+            justify-content: center;
+            align-items: center;
+		
+		}
         .tab-page.active {
             display: block; /* Sichtbarer Tab */
         }
@@ -93,7 +100,8 @@
         }
 
         input,
-        select {
+        select
+           {
             display: block;
             width: calc(100% - 40px); /* Verhindert Überschreiben des Containers */
             max-width: 600px;
@@ -389,7 +397,27 @@ header {
 .circular-button:hover {
     background-color: #8a5eff; /* Hover-Effekt */
 }
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
 
+.button-group button {
+    background-color: #673dec;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.button-group button:hover {
+    background-color: #5329ba;
+}
 
     </style>
 </head>
@@ -427,7 +455,7 @@ header {
 				<!-- <div class="header-item" style="display: flex; align-items: center; gap: 10px;">-->
                 <div class="header-item"  >
 					<label title="how much Satoshi Gomining pays for 1 TH" for="sat-TH" >sat per TH:</label>
-					<input value=59 id="sat-TH">
+					<input value=61 id="sat-TH">
 				</div>
                 <div class="header-item" >
 					<button class="circular-button" onclick="fetchBTCPrice();fetchGMTPrice();">&#x21BB;</button>
@@ -448,10 +476,17 @@ header {
 			<div id="tab-content">
 				<!-- Investment Calculator Tab -->
 				<div class="tab-page active" id="Calc">
-
+                    <div class="button-group">
+                        <button onclick="updateMyTHMW(-100,'th-slider','My_TH')">-100 TH</button>
+                        <button onclick="updateMyTHMW(-10,'th-slider','My_TH')">-10 TH</button>
+                        <button onclick="updateMyTHMW(-1,'th-slider','My_TH')">-1 TH</button>
+                        <button onclick="updateMyTHMW(1,'th-slider','My_TH')">+1 TH</button>
+                        <button onclick="updateMyTHMW(10,'th-slider','My_TH')">+10 TH</button>
+                        <button onclick="updateMyTHMW(100,'th-slider','My_TH')">+100 TH</button>
+                    </div>
 					<label for="My_TH" title="Die Anzahl der Terahashes, die dein Miner produziert.">My TH: 
 							<span class="question-circle" title="Die Anzahl der Terahashes, die dein Miner produziert.">?</span>
-					</label>    
+					</label>
 					<input type="number" id="My_TH" value="216" placeholder="10" oninput="syncFieldAndSlider(event, 'th-slider', 'My_TH'); calculateCost();">
 					<input type="range" id="th-slider" min="1" max="5000" step="1" value="200" oninput="syncFieldAndSlider(event, 'th-slider', 'My_TH'); calculateCost();">
 					<label for="Energy-efficiency">Energy-efficiency (W/TH):</label>
@@ -568,13 +603,20 @@ header {
 					</footer>
 				</div>
 				
-				<div class="tab-page" id="ROI">
-
+				<div class="tab-page" id="ROI" >
+                        <div class="button-group">
+                            <button onclick="updateMyTHMW(-100,'th-slider_ROI','My_TH_ROI')">-100 TH</button>
+                            <button onclick="updateMyTHMW(-10,'th-slider_ROI','My_TH_ROI')">-10 TH</button>
+                            <button onclick="updateMyTHMW(-1,'th-slider_ROI','My_TH_ROI')">-1 TH</button>
+                            <button onclick="updateMyTHMW(1,'th-slider_ROI','My_TH_ROI')">+1 TH</button>
+                            <button onclick="updateMyTHMW(10,'th-slider_ROI','My_TH_ROI')">+10 TH</button>
+                            <button onclick="updateMyTHMW(100,'th-slider_ROI','My_TH_ROI')">+100 TH</button>
+                        </div>
 						<label for="My_TH_ROI">My TH:</label>
 						<input type="number" id="My_TH_ROI" value="1" placeholder="10" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI')">
 						<input type="range" id="th-slider_ROI" min="1" max="5000" step="1" value="200" oninput="syncFieldAndSlider(event, 'My_TH_ROI', 'th-slider_ROI'); calculateROI();">
 
-						<div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+						<div class="button-group" style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
 							<button onclick="setMinerValues(15)" style="background-color: #673dec; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
 								15 W/TH
 							</button>
@@ -639,32 +681,64 @@ header {
 						</footer>
 				</div>
 
-                <div class="tab-page" id="New2 Miner Invest">
+
+                <div class="tab-page" id="miner wars">
+
+                        <div>
+                            <label  for="Reward-fund_MW">Estimated reward fund cycle:</label>
+                            <input  id="Reward-fund_MW" value="6,32095969">
+                        </div>
+                        <div class="button-group">
+                            <button onclick="updateMyTHMW(-100,'th-slider_MW','My_TH_MW')">-100 TH</button>
+                            <button onclick="updateMyTHMW(-10,'th-slider_MW','My_TH_MW')">-10 TH</button>
+                            <button onclick="updateMyTHMW(-1,'th-slider_MW','My_TH_MW')">-1 TH</button>
+                            <button onclick="updateMyTHMW(1,'th-slider_MW','My_TH_MW')">+1 TH</button>
+                            <button onclick="updateMyTHMW(10,'th-slider_MW','My_TH_MW')">+10 TH</button>
+                            <button onclick="updateMyTHMW(100,'th-slider_MW','My_TH_MW')">+100 TH</button>
+                        </div>
+                        <label for="My_TH_MW" title="Die Anzahl der Terahashes, die dein Miner produziert.">My TH: 
+                                <span class="question-circle" title="Die Anzahl der Terahashes, die dein Miner produziert.">?</span>
+                        </label>   
+                        <input type="number" id="My_TH_MW" value="207" placeholder="10" oninput="syncFieldAndSlider(event, 'th-slider_MW', 'My_TH_MW'); calculateWeeklyRewardSolo(); calculateWeeklyMWReward();">
+                        <input type="range" id="th-slider_MW" min="1" max="5000" step="1" value="207" oninput="syncFieldAndSlider(event, 'th-slider_MW', 'My_TH_MW'); calculateWeeklyRewardSolo();calculateWeeklyMWReward() ;">
+                        <label for="My-share-MW">MY TH share (%):</label>
+                        <input type="number" id="My-share-MW" value="10" min="0" max="100" step="0,01" oninput="syncFieldAndSlider(event, 'Blocksshare_MW', 'Blocksshare-slider_MW'); calculateWeeklyMWReward();" placeholder="0%">
+                        <label for="My-Clan_MW">TH of my clan:</label>
+                        <input type="number" id="My-Clan_MW" value="318114" placeholder="z.B. 150000" oninput="syncFieldAndSlider(event, 'My-Clan_MW', 'My-Clan-slider_MW'); calculateWeeklyMWReward();">
+                        <input type="range" id="My-Clan-slider_MW" min="1" max="500000" step="1000" value="318114" oninput="syncFieldAndSlider(event, 'My-Clan_MW', 'My-Clan-slider_MW'); calculateWeeklyMWReward();">
+                        <label for="gomining-discount_MW">Blocks share (%):</label>
+                        <input type="number" id="Blocksshare_MW" value="22.78" min="0" max="100" step="0,01" oninput="syncFieldAndSlider(event, 'Blocksshare_MW', 'Blocksshare-slider_MW'); calculateWeeklyMWReward() ;highlightLargerInput();" placeholder="0%">
+                        <input type="range" id="Blocksshare-slider_MW" min="0" max="100" step="0.01" value="20" oninput="syncFieldAndSlider(event, 'Blocksshare_MW', 'Blocksshare-slider_MW');calculateWeeklyMWReward() ;highlightLargerInput();">
+                        <label for="Weekly-Solo-Reward_MW">My weekly solo reward:</label>
+                        <input type="number" id="Weelky-Solo-Reward_MW" value="90097" placeholder="z.B. 50000" oninput="highlightLargerInput();">
+                        <label for="Weekly-mw-Reward_MW">My weekly miner wars reward:</label>
+                        <input type="number" id="Weelky-mw-Reward_MW" value="12400" placeholder="z.B. 6500" oninput="highlightLargerInput();">
+                        
 
 
-
-					<footer style="margin-top: 20px; padding: 10px; background-color: #2a2a2a; color: #e6e6e6; font-size: 0.9em; text-align: left; border-top: 1px solid #555;">
-						<h3 style="margin-bottom: 10px; color: #673dec;">Formulas Used</h3>
-						<ul style="list-style-type: none; padding: 0;">
-							<li>
-								<strong>Revenue:</strong> <code>(SAT per TH * BTC Price) / 1e8 * TH</code>
-							</li>
-							<li>
-								<strong>Electricity Cost:</strong> <code>(Efficiency (W/TH) * TH * Cost per kWh * 24) / 1000</code>
-							</li>
-							<li>
-								<strong>Service Cost:</strong> <code>0.0089 $ / BTC Price * TH</code>
-							</li>
-							<li>
-								<strong>Net Revenue:</strong> <code>Revenue - (Electricity Cost + Service Cost)</code>
-							</li>
-							<li>
-								<strong>Net Revenue %:</strong> <code>(Net Revenue / Revenue) * 100</code>
-							</li>
-						</ul>
-
-
-					</footer>
+                        <footer style="margin-top: 20px; padding: 10px; background-color: #2a2a2a; color: #e6e6e6; font-size: 0.9em; text-align: left; border-top: 1px solid #555;">
+                            <h3 style="margin-bottom: 10px; color: #673dec;">Formulas Used</h3>
+                            <ul style="list-style-type: none; padding: 0;">
+                                <li>
+                                    <strong>Weekly Solo Reward:</strong> <code>(SAT/TH * My TH * 7 days)</code>
+                                </li>
+                                <li>
+                                    <strong>Weekly Miner Wars Reward:</strong> <code>((Reward Fund in Satoshi * Block Share %) / Clan TH) * My TH</code>
+                                </li>
+                                <li>
+                                    <strong>Block Share:</strong> <code>My TH / Clan TH</code>
+                                </li>
+                                <li>
+                                    <strong>Reward Fund Conversion:</strong> <code>Reward Fund (Satoshi) * 0.00000001 = Reward Fund in BTC</code>
+                                </li>
+                                <li>
+                                    <strong>Power Costs (Daily, Weekly, Monthly):</strong> <code>(Efficiency * My TH * Cost per kWh * Hours) / 1000</code>
+                                </li>
+                                <li>
+                                    <strong>Service Costs:</strong> <code>Service Cost/TH in USD * My TH</code>
+                                </li>
+                            </ul>
+                        </footer>
 					<footer style="margin-top: 20px; padding: 20px; background-color: #2a2a2a; color: #e6e6e6; text-align: center; border-top: 1px solid #555;">
 						<h3 style="color: #673dec;">Support Us</h3>
 						<p>If you like our work, feel free to support us by sending GMT tokens:</p>
@@ -692,7 +766,7 @@ header {
                 <div class="tab-page" id="New Miner Invest">
 
 
-					<label for="Energy-efficiency-I">Miner Energy-efficiency (W/TH) Level:</label>
+					<label for="Energy-efficiency-I">Secondary NFT Miner Energy-efficiency (W/TH) Level:</label>
 					<select type="number" id="Energy-efficiency-I" value="20" >
                         <option value="15">15 W/TH</option>
                         <option value="20">20 W/TH</option>
@@ -889,6 +963,8 @@ header {
 		    document.addEventListener('DOMContentLoaded', () => {
 				fetchBTCPrice();
 				fetchGMTPrice();
+                calculateWeeklyRewardSolo();
+                calculateWeeklyMWReward();
 				});
 		function updateCurrency(currency) {
 				currentCurrency = currency; // Setze die aktuelle Währung
@@ -899,7 +975,7 @@ header {
             { name: "Calc", id: "Calc" },
 			{ name: "ROI", id: "ROI" },
             { name: "New Miner Invest", id: "New Miner Invest" },
-            //{ name: "Secondary Market Miner Invest", id: "Secondary Market Miner Invest" },
+            { name: "miner wars", id: "miner wars" },
             { name: "worth it ?", id: "worth" },
            // { name: "Maintenance Solo Mining", id: "maintenance-solo-mining" }
         ];
@@ -1292,10 +1368,10 @@ header {
 
                 // Preise basierend auf Watt-Stufe
                 const minerData = {
-                    15: { pricePerTH: 31.57, efficiency: 15 },
-                    20: { pricePerTH: 23.17, efficiency: 20 },
-                    28: { pricePerTH: 14.50, efficiency: 28 },
-                    35: { pricePerTH: 8.00, efficiency: 35 }
+                    15: { pricePerTH: 38.99, efficiency: 15 },
+                    20: { pricePerTH: 26.77, efficiency: 20 },
+                    28: { pricePerTH: 18.55, efficiency: 28 },
+                    35: { pricePerTH: 11.88, efficiency: 35 }
                 };
 
                 if (minerData[watt]) {
@@ -1307,48 +1383,32 @@ header {
                 }
                 }
                 const priceMatrix = {
-		    "15": [
-			{ minTH: 1, pricePerTH: 34.52, minerCost: 40.99 },
-			{ minTH: 2, pricePerTH: 34.44 },
-			{ minTH: 4, pricePerTH: 34.36 },
-			{ minTH: 8, pricePerTH: 34.28 },
-			{ minTH: 16, pricePerTH: 34.20 },
-			{ minTH: 32, pricePerTH: 34.12 },
-			{ minTH: 48, pricePerTH: 34.04 },
-			{ minTH: 64, pricePerTH: 33.96 },
-			{ minTH: 96, pricePerTH: 33.89 },
-			{ minTH: 128, pricePerTH: 33.81 },
-			{ minTH: 192, pricePerTH: 33.73 },
-			{ minTH: 256, pricePerTH: 33.66 },
-			{ minTH: 384, pricePerTH: 33.58 },
-			{ minTH: 512, pricePerTH: 33.51 },
-			{ minTH: 768, pricePerTH: 33.44 },
-			{ minTH: 1024, pricePerTH: 33.37 },
-			{ minTH: 1536, pricePerTH: 33.29 },
-			{ minTH: 2560, pricePerTH: 33.22 },
-			{ minTH: 3584, pricePerTH: 33.15 },
-		    ],
-		    "20": [
-		        { minTH: 1, pricePerTH: 24.34, minerCost: 27.99 },
-		        { minTH: 2, pricePerTH: 24.25 },
-		        { minTH: 4, pricePerTH: 24.17 },
-		        { minTH: 8, pricePerTH: 24.09 },
-		        { minTH: 16, pricePerTH: 24.01 },
-		        { minTH: 32, pricePerTH: 23.93 },
-		        { minTH: 48, pricePerTH: 23.86 },
-		        { minTH: 64, pricePerTH: 23.78 },
-		        { minTH: 96, pricePerTH: 23.70 },
-		        { minTH: 128, pricePerTH: 23.62 },
-		        { minTH: 192, pricePerTH: 23.55 },
-		        { minTH: 256, pricePerTH: 23.47 },
-		        { minTH: 384, pricePerTH: 23.40 },
-		        { minTH: 512, pricePerTH: 23.33 },
-		        { minTH: 768, pricePerTH: 23.25 },
-		        { minTH: 1024, pricePerTH: 23.18 },
-		        { minTH: 1536, pricePerTH: 23.11 },
-		        { minTH: 2560, pricePerTH: 23.04 },
-		        { minTH: 3584, pricePerTH: 22.97 },
-		    ],
+                    "15": [
+                        { minTH: 1, pricePerTH: 31.57, minerCost: 36.99 },
+                        { minTH: 2, pricePerTH: 31.49 },
+                        { minTH: 4, pricePerTH: 31.41 },
+                        { minTH: 8, pricePerTH: 31.33 },
+                        { minTH: 16, pricePerTH: 31.25 },
+                        { minTH: 32, pricePerTH: 31.17 },
+                        { minTH: 64, pricePerTH: 31.02 },
+                        { minTH: 128, pricePerTH: 30.87 },
+                        { minTH: 256, pricePerTH: 30.72 },
+                        { minTH: 512, pricePerTH: 30.57 },
+                        { minTH: 1024, pricePerTH: 30.42 },
+                    ],
+                    "20": [
+                        { minTH: 1, pricePerTH: 23.25, minerCost: 26.99 },
+                        { minTH: 2, pricePerTH: 23.17 },
+                        { minTH: 4, pricePerTH: 23.09 },
+                        { minTH: 8, pricePerTH: 23.01 },
+                        { minTH: 16, pricePerTH: 22.93 },
+                        { minTH: 32, pricePerTH: 22.85 },
+                        { minTH: 64, pricePerTH: 22.70 },
+                        { minTH: 128, pricePerTH: 22.55 },
+                        { minTH: 256, pricePerTH: 22.40 },
+                        { minTH: 512, pricePerTH: 22.25 },
+                        { minTH: 1024, pricePerTH: 22.10 },
+                    ],
                     "28": [
                         { minTH: 1, pricePerTH: 16.30 },
                         { minTH: 2, pricePerTH: 16.22 },
@@ -1649,6 +1709,87 @@ header {
                         usd: dailyRevenueUSD,
                         gmt: dailyRevenueGMT
                     };
+                }
+
+                function calculateWeeklyRewardSolo() {
+                    // Hole die Werte aus den entsprechenden Feldern
+                    const satPerTH = parseFloat(document.getElementById('sat-TH').value);
+                    const myTH = parseFloat(document.getElementById('My_TH_MW').value);
+
+                    // Überprüfe, ob die Eingabewerte gültig sind
+                    if (isNaN(satPerTH) || isNaN(myTH)) {
+                        alert('Bitte geben Sie gültige Werte für Satoshi pro TH und My TH ein.');
+                        return;
+                    }
+
+                    // Berechne den wöchentlichen Reward
+                    const weeklyReward = satPerTH * myTH * 7;
+
+                    // Schreibe den berechneten Wert in das Feld
+                    document.getElementById('Weelky-Solo-Reward_MW').value = weeklyReward.toFixed(0);
+                }
+                function calculateWeeklyMWReward() {
+                    // Hole die Eingabewerte
+                    const rewardFund = parseFloat(document.getElementById('Reward-fund_MW').value);
+                    const blockShare = parseFloat(document.getElementById('Blocksshare_MW').value) / 100; // Prozent zu Dezimal
+                    const clanTH = parseFloat(document.getElementById('My-Clan_MW').value);
+                    const myTH = parseFloat(document.getElementById('My_TH_MW').value);
+
+                    // Überprüfe die Eingaben
+                    if (isNaN(rewardFund) || isNaN(blockShare) || isNaN(clanTH) || isNaN(myTH) || clanTH === 0) {
+                        alert('Bitte geben Sie gültige Werte ein und stellen Sie sicher, dass Clan TH nicht 0 ist.');
+                        return;
+                    }
+
+                    // Berechnung
+                    const myShare = (myTH / clanTH) * 100; // Prozentualer Anteil
+                    // Umrechnung von rewardFund in Satoshi und Berechnung des wöchentlichen Miner Wars Rewards
+                    const weeklyMWReward = (rewardFund * 100000000 * blockShare / clanTH) * myTH;
+
+
+                    // Werte ins Feld schreiben
+                    document.getElementById('Weelky-mw-Reward_MW').value = weeklyMWReward.toFixed(0);
+                    document.getElementById('My-share-MW').value = myShare.toFixed(2);
+                }
+                function updateMyTHMW(change, slider, input) {
+                    const myTHInput = document.getElementById(input);
+                    const thSlider = document.getElementById(slider);
+
+                    // Aktuellen Wert aus dem Input-Feld holen
+                    let currentTH = parseInt(myTHInput.value) || 0;
+
+                    // Neuen Wert berechnen
+                    let newTH = currentTH + change;
+
+                    // Sicherstellen, dass der Wert innerhalb der Slider-Min/Max-Grenzen bleibt
+                    const minTH = parseInt(thSlider.min);
+                    const maxTH = parseInt(thSlider.max);
+                    newTH = Math.max(minTH, Math.min(maxTH, newTH));
+
+                    // Aktualisiere das Input-Feld und den Slider
+                    myTHInput.value = newTH;
+                    thSlider.value = newTH;
+                    myTHInput.dispatchEvent(new Event('input')); // Löst das 'oninput'-Event aus
+                    // Führe die Berechnung aus
+                    calculateWeeklyRewardSolo();
+                }
+                function highlightLargerInput() {
+                    const soloRewardInput = document.getElementById('Weelky-Solo-Reward_MW');
+                    const mwRewardInput = document.getElementById('Weelky-mw-Reward_MW');
+
+                    const soloReward = parseInt(soloRewardInput.value) || 0;
+                    const mwReward = parseInt(mwRewardInput.value) || 0;
+
+                    // Zurücksetzen der Farben
+                    soloRewardInput.style.color = '';
+                    mwRewardInput.style.color = '';
+
+                    // Größeren Wert hervorheben
+                    if (soloReward > mwReward) {
+                        soloRewardInput.style.color = 'green';
+                    } else if (mwReward > soloReward) {
+                        mwRewardInput.style.color = 'green';
+                    }
                 }
 
     </script>
