@@ -1048,15 +1048,16 @@ header {
 
 
             function calculateCost() {
-                const BTC = parseFloat(document.getElementById('bitcoin-price-dropdown').value);                
-                
-                const efficiency = parseFloat(document.getElementById('Energy-efficiency').value);
+                const BTC = parseFloat(document.getElementById('bitcoin-price-dropdown').value);       
 
-                const th = parseFloat(document.getElementById('My_TH').value);
+				const th = parseFloat(document.getElementById('My_TH').value);
+                const efficiency = parseFloat(document.getElementById('Energy-efficiency').value);
+                const discount = parseFloat(document.getElementById('gomining-discount').value);
+
                 const dailyReward = parseFloat(document.getElementById('Daily-Reward').value);
                 const costPerKWh = 0.05;
                 const daily_cost = 0.0089;
-                const discount = parseFloat(document.getElementById('gomining-discount').value);
+
                 if (isNaN(efficiency) || isNaN(th) || isNaN(BTC) || isNaN(dailyReward)) {
                     alert("Please fill out all fields!");
                     return;
@@ -1170,8 +1171,9 @@ header {
 				const totalInvestment = pricePerTH * myTH;
 				const dailyRevenue = (satoshiPerTH * myTH * bitcoinPrice) / 1e8; // 
 				const electricityCost = (energyEfficiency * myTH * 0.05 * 24) / 1000; // Kosten für Strom
-				const serviceCost = (0.0089 / bitcoinPrice) * myTH; // Servicekosten pro TH
-				const totalMaintenanceCost = (electricityCost + serviceCost) * ((100 - gominingDiscount) / 100);
+				const serviceCostBTC = (0.0089 / bitcoinPrice) * myTH; // Servicekosten pro TH
+				const dailyServiceCost = serviceCostBTC * bitcoinPrice * ((100 - gominingDiscount) / 100);
+				const totalMaintenanceCost = (electricityCost + dailyServiceCost) * ((100 - gominingDiscount) / 100);
 				const dailyProfit = dailyRevenue - totalMaintenanceCost;
 
 				const monthlyProfit = dailyProfit * 30; // Monatlicher Gewinn
