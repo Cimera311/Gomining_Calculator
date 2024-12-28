@@ -81,7 +81,8 @@
 		
 		}
 
-        .tab-page button {
+        .tab-page button
+         {
 			display: flex; 
             justify-content: center;
             align-items: center;
@@ -370,6 +371,13 @@ header {
     .header-button {
         margin-top: 10px; /* Abstand nach oben */
     }
+    .tab-arrow {
+        padding: 5px 10px; /* Weniger Padding, damit es nicht zu groß wirkt */
+        font-size: 1em; /* Schriftgröße anpassen */
+        height: 100%; /* Passt die Höhe dynamisch an die Schrift an */
+        display: flex;
+        align-items: center; /* Zentriert die Pfeile vertikal */
+    }
 }
 
 .header img {
@@ -469,6 +477,28 @@ header {
     width: 24px;
     height: 24px;
 }
+.tab-description {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: #a6a6a6;
+    text-align: center;
+    font-style: italic; /* Optionale stilistische Änderung */
+}
+.tab-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex-grow: 1;
+}
+
+#tab-description {
+    font-size: 0.9rem;
+    color: #a6a6a6;
+    margin-top: 5px; /* Kleiner Abstand zum Tab-Namen */
+    font-style: italic; /* Optional: kursiver Text */
+}
+
 
     </style>
 </head>
@@ -526,16 +556,21 @@ header {
             </header>
                 
         
-			<div class="tab-navigation">
-				<button class="tab-arrow" onclick="switchTab(-1)">&#9664;</button>
-				<span id="tab-name">Calc</span>
-				<button class="tab-arrow" onclick="switchTab(1)">&#9654;</button>
-			</div>
+            <div class="tab-navigation">
+                <button class="tab-arrow" onclick="switchTab(-1)">&#9664;</button>
+                <div class="tab-info">
+                    <span id="tab-name">Calc</span>
+                    <span id="tab-description">Hier kannst du deine Miner-Einstellungen konfigurieren und deine Einnahmen berechnen.</span>
+                </div>
+                <button class="tab-arrow" onclick="switchTab(1)">&#9654;</button>
+            </div>
+            
 
 			<!-- Tab Inhalte -->
 			<div id="tab-content">
 				<!-- Investment Calculator Tab -->
 				<div class="tab-page active" id="Calc">
+                 
                     <div class="button-group">
                         <button onclick="updateMyTHMW(-100,'th-slider','My_TH')">-100 TH</button>
                         <button onclick="updateMyTHMW(-10,'th-slider','My_TH')">-10 TH</button>
@@ -774,7 +809,7 @@ header {
 
                 <div class="tab-page" id="New Miner Invest">
 
-
+                    <span id="tab-description">Calculated by Buying a new 1TH miner and Upgrading it.</span>
 					<label for="Energy-efficiency-I">Secondary NFT Miner Energy-efficiency (W/TH) Level:</label>
 					<select type="number" id="Energy-efficiency-I" value="20" >
                         <option value="15">15 W/TH</option>
@@ -977,22 +1012,24 @@ header {
 				generateRevenueTable(document.getElementById('bitcoin-price-dropdown').value, document.getElementById('sat-TH').value, document.getElementById('gmt-token-price').value); // Aktualisiere die Tabelle
 			}
 
-        const tabs = [
-            { name: "Calc", id: "Calc" },
-			{ name: "ROI", id: "ROI" },
-            { name: "New Miner Invest", id: "New Miner Invest" },
-            { name: "miner wars", id: "miner wars" },
-            { name: "worth it ?", id: "worth" },
-           // { name: "Maintenance Solo Mining", id: "maintenance-solo-mining" }
-        ];
-        let currentTab = 0;
+            const tabs = [
+                { name: "Solo-Mining", id: "Calc", description: "Configure your miner settings and calculate your daily, weekly, and monthly earnings for Solo Mining." },
+                { name: "Secondary Market ROI", id: "ROI", description: "Calculate the return on investment (ROI) and yearly profitability buying a miner." },
+                { name: "New Miner Invest", id: "New Miner Invest", description: "Compare miner efficiency and costs to plan your future investments." },
+                { name: "Miner wars", id: "miner wars", description: "Analyze weekly rewards. Solo mining vs. miner wars." },
+                //{ name: "worth it ?", id: "worth", description: "Compare earnings and costs in different currencies." }
+            ];
 
-        function switchTab(direction) {
-            document.getElementById(tabs[currentTab].id).classList.remove("active");
-            currentTab = (currentTab + direction + tabs.length) % tabs.length;
-            document.getElementById("tab-name").innerText = tabs[currentTab].name;
-            document.getElementById(tabs[currentTab].id).classList.add("active");
-        }
+            let currentTab = 0;
+            function switchTab(direction) {
+                document.getElementById(tabs[currentTab].id).classList.remove("active");
+                currentTab = (currentTab + direction + tabs.length) % tabs.length;
+                document.getElementById("tab-name").innerText = tabs[currentTab].name;
+                document.getElementById("tab-description").innerText = tabs[currentTab].description;
+                document.getElementById(tabs[currentTab].id).classList.add("active");
+            }
+
+
 
         function updateBTCPrice() {
             const dropdown = document.getElementById('bitcoin-price-dropdown');
