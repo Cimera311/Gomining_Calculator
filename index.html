@@ -498,7 +498,21 @@ header {
     margin-top: 5px; /* Kleiner Abstand zum Tab-Namen */
     font-style: italic; /* Optional: kursiver Text */
 }
+#bottom-image {
+    display: block;
+    width: 150px; /* Größe anpassen */
+    height: auto;
+    border-radius: 20px; /* Abgerundete Ecken */
+    margin: 20px auto; /* Zentriert das Bild */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Schatten für einheitliches Design */
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
+#bottom-image:hover {
+    transform: scale(1.05); /* Leichter Vergrößerungseffekt */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6); /* Stärkerer Schatten */
+}
 
     </style>
 </head>
@@ -989,6 +1003,9 @@ header {
 					<a href="https://gomining.com/?ref=ICjK3" target="_blank" style="display: inline-block; margin: 10px;">
 						<img src="https://cimera311.github.io/Gomining_Calculator/Gomining.jpg" alt="GoMining Referral" style="width: 150px; height: auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
 					</a>
+					<a href="https://app.gomining.com/miner-wars/mining/select-pool?inviteToClan=2232" target="_blank">
+    <img id="bottom-image" src="image_5594.jpg" alt="Join Us!!!">
+</a>
 					<p>&copy; 2024 HashSense. All rights reserved.</p>
 					<p>This website is for informational purposes only.</p>
 				</footer>
