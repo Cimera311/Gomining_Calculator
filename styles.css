@@ -1,0 +1,1261 @@
+  /* Allgemeine Dark-Mode-Einstellungen */
+        body {
+            background-color: #0e0f1f; /* Dark background */
+            color: #e6e6e6; /* Helles Grau für Text */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .main-container {
+            width: 100%;
+            max-width: 100%;
+            background-color: #0e0f1f;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        .header {
+            background-color: #242533;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 20px 20px 0 0;
+        }
+                /* Preisleiste (oberer Header) */
+        .header:first-of-type {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 15px;
+            background-color: #1e1f2c;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+        /* Aktionsleiste (unterer Header) */
+        .header:nth-of-type(2) {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            padding: 15px 20px;
+            background-color: #242533;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .content {
+            padding: 0px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        /* Buttons in der MinerCard */
+        .card {
+            position: relative; /* Notwendig für absolute Positionierung der Buttons */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background: #242533;
+            border-radius: 12px;
+            border: 2px solid #444;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            min-width: 220px; /* Etwas breiter für bessere Darstellung */
+        }
+        /* Stil für den Label-Tag oben (#00001) */
+        .card-label {
+            background-color: #6a5acd;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: bold;
+            position: absolute;
+            top: -12px;
+            left: 10px;
+        }
+        .farm-card {
+            background-color: #242533;
+            padding: 20px;
+            border-radius: 20px;
+            flex-direction: column;
+            width: 100%;
+            text-align: center;
+            margin: 20px auto 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            border: 1px solid #555;
+            position: relative;
+        }
+        .input-container, .input-container-farm {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2px; /* Abstand zwischen den Feldern */
+        }
+        .input-container label, .input-container-farm label {
+            font-size: 0.85em;
+            color: #bbb;
+            margin-bottom: 3px;
+        }
+        .input-container input, .input-container-farm input {
+            width: 90%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #555;
+            background-color: #242533;
+            color: #e6e6e6;
+            font-size: 1em;
+            text-align: center;
+        }
+        /* Stil für die Buttons */
+        .delete-btn,
+        .copy-btn {
+            position: absolute;
+            top: 5px;
+            background-color: transparent;
+            color: #e6e6e6;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        /* X-Button (Löschen) */
+        .delete-btn {
+            right: 10px;
+        }
+
+        /* Kopier-Button */
+        .copy-btn {
+            right: 35px;
+        }
+        /* Button-Hover-Effekt */
+        .delete-btn:hover,
+        .copy-btn:hover {
+            color: #9333ea; /* Lila für besseren Effekt */
+        }
+        /* Stil für die Karte mit den Buttons */
+        /* Stil für die Buttons in den Karten */
+        .card button {
+            background: transparent;
+            border: none;
+            color: #bbb;
+            font-size: 1em;
+            cursor: pointer;
+            position: absolute;
+            padding: 5px;
+            transition: color 0.2s ease-in-out;
+        }
+
+.card button:hover {
+    color: #fff;
+}
+
+/* Kompakter Abstand zwischen den Eingabefeldern */
+.card input:not(:last-child) {
+    margin-bottom: 6px;
+}
+
+/* Optimierte Darstellung der Hinzufügen-Karte */
+.add-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #e6e6e6;
+    cursor: pointer;
+    background-color: #3a3a3a; /* Sanfterer Kontrast */
+    border: 2px dashed #673dec;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.add-card:hover {
+    border-color: #9333ea;
+    color: #9333ea;
+    background-color: #484848;
+}
+
+        .view-btn {
+            background-color: #444;
+            border: 2px solid #555;
+            padding: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        
+        .view-btn.active {
+            background-color: #9333ea;
+            border-color: #673dec;
+            transform: scale(1.1);
+        }
+        #currencySwitcher {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .currency-btn {
+            background-color: #444;
+            border: 2px solid #555;
+            padding: 8px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            color: #e6e6e6;
+        }
+
+        .currency-btn.active {
+            background-color: #9333ea;
+            border-color: #673dec;
+            transform: scale(1.1);
+        }
+
+        /* Stil für editierbare Tabellenfelder */
+        .editable-field {
+            width: 100%;
+            background-color: #222;
+            color: white;
+            border: 1px solid #444;
+            text-align: center;
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        .editable-field:focus {
+            outline: none;
+            border-color: #673dec; /* Lila Highlight beim Bearbeiten */
+        }
+
+
+        /* Hauptcontainer */
+        .main-container {
+            width: 100%;
+            max-width: 90%; /* Begrenzte Breite */
+            margin: 0 auto; /* Zentrierung */
+            padding: 20px;
+            box-sizing: border-box; /* Innenabstand berücksichtigen */
+        }
+
+        /* Navigation oben */
+        .tab-navigation {
+            display: flex;
+            justify-content: space-between; /* Gleicher Abstand zwischen Pfeilen und Titel */
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .tab-arrow {
+            background-color: rgb(103, 45, 236);
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+        }
+
+        .tab-arrow:hover {
+            background-color: rgb(123, 65, 256); /* Hellerer Effekt beim Hover */
+        }
+
+        #tab-name {
+            font-weight: bold;
+            font-size: 1.5em;
+            text-align: center;
+            flex-grow: 1; /* Erzwingt mittige Ausrichtung */
+        }
+
+        /* Inhalt des Containers */
+        .tab-page {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px; /* Abstand zwischen den Elementen */
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #333;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+		.results-container
+        {
+			display: flex; 
+			flex-direction: column;
+            align-items: center;
+		
+		}
+
+        .tab-page button
+         {
+			display: flex; 
+            justify-content: center;
+            align-items: center;
+		
+		}
+        .tab-page.active {
+            display: block; /* Sichtbarer Tab */
+        }
+
+        /* Felder und Labels */
+        label {
+            display: block;
+            text-align: left; /* Linksbündig */
+            margin: 15px auto 5px;
+            max-width: 600px;
+        }
+
+        input,
+        select
+           {
+            display: block;
+            width: calc(100% - 40px); /* Verhindert Überschreiben des Containers */
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 10px;
+            font-size: 1em;
+            background-color: #242533;
+            color: #e6e6e6;
+            border: 1px solid #555;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: rgb(103, 45, 236);
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+        /* Einheitliches Styling für die lila Hauptbuttons */
+        .main-btn {
+            background-color: #673dec;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            min-width: 160px;
+            justify-content: center;
+        }
+
+        .main-btn:hover {
+            background-color: #8a5eff;
+            transform: translateY(-2px);
+        }
+
+        .main-btn:active {
+            background-color: #5526c6;
+            transform: scale(0.98);
+        }
+        button:hover {
+            background-color: rgb(123, 65, 256);
+        }
+		table {
+			border-spacing: 0;
+			width: 100%;
+			background-color: #242533;
+			color: #e6e6e6;
+		}
+
+		th {
+			background-color: #444;
+			color: #fff;
+			font-weight: bold;
+		}
+
+		td {
+			text-align: right;
+		}
+		/* Stil für beide Slider (Standard-Styling) */
+input[type="range"] {
+    -webkit-appearance: none; /* Entfernt das Standard-Slider-Design */
+    width: calc(100% - 40px); /* Breite anpassen */
+    max-width: 600px;
+    margin: 10px auto;
+    cursor: pointer;
+}
+
+/* Slider-Spur */
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px; /* Breitere Linie */
+    background: #673dec; /* Lila Farbe */
+    border-radius: 2px; /* Leicht abgerundet */
+}
+
+/* Slider-Punkt (Thumb) */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Entfernt Standard-Styling */
+    width: 16px; /* Punktbreite */
+    height: 16px; /* Punkthöhe */
+    background: #ffffff; /* Weißer Punkt */
+    border: 2px solid #673dec; /* Lila Rand */
+    border-radius: 50%; /* Kreisform */
+    cursor: pointer; /* Zeiger beim Hover */
+    box-shadow: 0px 0px 5px rgba(103, 61, 236, 0.7); /* Dezenter Leuchteffekt */
+    margin-top: -6px; /* Vertikale Zentrierung */
+}
+
+/* Hover-Effekt für Slider-Punkt */
+input[type="range"]::-webkit-slider-thumb:hover {
+    background: #673dec; /* Lila Punkt beim Hover */
+    border: 2px solid #ffffff; /* Weißer Rand beim Hover */
+    box-shadow: 0px 0px 10px rgba(103, 61, 236, 1); /* Stärkerer Leuchteffekt */
+}
+
+/* Für Firefox */
+input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    border: 2px solid #673dec;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px rgba(103, 61, 236, 0.7);
+}
+
+/* Spur für Firefox */
+input[type="range"]::-moz-range-track {
+    height: 4px;
+    background: #673dec;
+    border-radius: 2px;
+}
+
+/* Für IE */
+input[type="range"]::-ms-thumb {
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    border: 2px solid #673dec;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px rgba(103, 61, 236, 0.7);
+    margin-top: -6px;
+}
+
+/* Spur für IE */
+input[type="range"]::-ms-track {
+    height: 4px;
+    background: #673dec;
+    border-radius: 2px;
+    border: none;
+}
+.card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 90%; /* Optimiert für Smartphones */
+    margin: 0 auto;
+}
+
+.card {
+    background-color: #242533;
+    border-radius: 10px;
+    /* padding: 5px; */
+    box-shadow: 0 0px 2px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.card-header {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #673dec;
+}
+
+.card-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1em;
+}
+
+.card-row span {
+    font-weight: bold;
+}
+/* 
+.miner-card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.miner-card {
+    background-color: rgba(58, 58, 58, 0.9);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    aspect-ratio: 1 / 1;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.miner-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.miner-card-header {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #8a5eff;
+}
+
+.miner-card-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1em;
+    padding: 4px 0;
+}
+
+.miner-card-row span {
+    font-weight: bold;
+}
+
+/* Input-Felder kompakter gestalten 
+.miner-card input {
+    width: 80%;
+    padding: 8px;
+    background-color: #444;
+    color: #e6e6e6;
+    border: 1px solid #555;
+    border-radius: 6px;
+    text-align: center;
+} */
+
+select {
+    padding: 10px;
+    background-color: #242533;
+    color: #e6e6e6;
+    border: 1px solid #555;
+    border-radius: 4px;
+    font-size: 1em;
+}
+select:hover {
+    background-color: #3a3a3a;
+}
+button:hover {
+    background-color: #8a5eff; /* Helleres Lila beim Hover */
+    box-shadow: 0px 4px 8px rgba(103, 61, 236, 0.3);
+}
+
+button:active {
+    background-color: #5526c6; /* Dunkleres Lila beim Klick */
+}
+.question-circle {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: #673dec;
+    color: white;
+    font-size: 0.8em;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.question-circle:hover {
+    background-color: #8a5eff; /* Hellerer Lila beim Hover */
+}
+
+/* Header-Container */
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    max-width: 100%; /* Maximale Breite auf 100% beschränken */
+    margin: 0 auto; /* Zentrierung */
+}
+
+/* Einzelne Header-Items */
+.header-item {
+    flex: 1; /* Gleichmäßige Breite */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px; /* Mindestbreite */
+    max-width: 300px; /* Maximalbreite für Spalten */
+    padding: 5px 10px;
+    background-color: #444;
+    border-radius: 5px;
+
+}
+
+/* Label-Styling */
+.header-item label {
+    margin-right: 10px;
+    white-space: nowrap;
+    text-align: center;
+    justify-content: center;
+}
+
+/* Input und Select */
+.header-item select,
+.header-item input {
+    flex: 1;
+    padding: 5px;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* Button */
+.header-button {
+    flex: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #673dec;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+/* Responsives Verhalten: Wechsel zu Column */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: center; /* Zentriert die Items */
+    }
+
+    .header-item {
+    width: calc(100% - 40px); /* Volle Breite minus Padding */
+    max-width: 100%; /* Sicherstellen, dass sie nicht breiter als der Header sind */
+    padding: 5px 5px; /* Gleiche Padding-Werte */
+    box-sizing: border-box; /* Padding wird in die Breite eingerechnet */
+}
+
+
+    .header-button {
+        margin-top: 10px; /* Abstand nach oben */
+    }
+    .tab-arrow {
+        padding: 5px 10px; /* Weniger Padding, damit es nicht zu groß wirkt */
+        font-size: 1em; /* Schriftgröße anpassen */
+        height: 100%; /* Passt die Höhe dynamisch an die Schrift an */
+        display: flex;
+        align-items: center; /* Zentriert die Pfeile vertikal */
+    }
+}
+
+.header img {
+    width: 20px;
+    height: 20px;
+	flex-direction: row;
+    padding: 5px 10px; /* Gleiche Padding-Werte */
+}
+.circular-button {
+    background-color: #673dec;
+    border: none;
+    border-radius: 50%; /* Rund */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    margin: 0; /* Entfernt zusätzliche Abstände */
+    vertical-align: middle; /* Gleiche Basislinie wie Text */
+}
+
+.circular-button:hover {
+    background-color: #8a5eff; /* Hover-Effekt */
+}
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.button-group button {
+    background-color: #673dec;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.button-group button:hover {
+    background-color: #5329ba;
+}
+/* Zentrierung für einzelne Buttons */
+.single-button-container {
+    display: flex;
+    justify-content: center; /* Zentriert horizontal */
+    align-items: center; /* Zentriert vertikal */
+    margin: 10px auto; /* Abstand und automatische Zentrierung */
+}
+
+.single-button-container button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #673dec;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.single-button-container button:hover {
+    background-color: #5329ba;
+}
+.wallet-address-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #333;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    overflow-x: auto; /* Ermöglicht horizontales Scrollen */
+    white-space: nowrap; /* Verhindert Umbruch */
+}
+
+.wallet-address {
+    flex: 1;
+    color: #e6e6e6;
+    font-family: monospace; /* Für klare Darstellung der Adresse */
+    font-size: 1em;
+}
+
+.wallet-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+}
+.tab-description {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: #a6a6a6;
+    text-align: center;
+    font-style: italic; /* Optionale stilistische Änderung */
+}
+.tab-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex-grow: 1;
+}
+
+#tab-description {
+    font-size: 0.9rem;
+    color: #a6a6a6;
+    margin-top: 5px; /* Kleiner Abstand zum Tab-Namen */
+    font-style: italic; /* Optional: kursiver Text */
+}
+.view-container {
+  background-color: #242533; /* Beibehaltung des Farbschemas */
+  color: #e6e6e6;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1rem auto;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.view-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #673dec;
+  margin-bottom: 10px;
+}
+
+.view-switch {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.view-button {
+  background-color: #673dec;
+  color: #fff;
+  border: 2px solid #673dec;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.view-button:hover {
+  background-color: #e6e6e6;
+  color: #673dec;
+}
+/* Container für scrollbare Tabellen */
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Aktiviert horizontales Scrollen */
+    display: block; /* Stellt sicher, dass das div den Inhalt umschließt */
+    max-width: 100%;
+    padding-bottom: 10px; /* Platz für den Scrollbalken */
+}
+
+/* Die eigentliche Tabelle */
+#miner-table, #farm-table {
+    width: max-content; /* Sorgt dafür, dass die Tabelle größer sein kann als der Container */
+    min-width: 100%; /* Verhindert, dass sie zu klein wird */
+    border-collapse: collapse;
+    background-color: #242533;
+    color: #e6e6e6;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Tabellenzellen verhindern Umbrüche */
+#miner-table th, #miner-table td, #farm-table th, #farm-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #444;
+    white-space: nowrap; /* Verhindert Umbrüche in den Tabellenzellen */
+}
+
+
+/* Tabellenkopf bleibt fixiert */
+#miner-table thead, #farm-table thead {
+    background-color: #673dec;
+    color: white;
+    font-weight: bold;
+}
+
+/* Tabellenzellen */
+#miner-table th, #miner-table td, #farm-table th, #farm-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #444;
+    white-space: nowrap; /* Verhindert Umbrüche in den Tabellenzellen */
+}
+
+/* Abwechselnde Farben für Zeilen */
+#miner-table tbody tr:nth-child(even), #farm-table tbody tr:nth-child(even) {
+    background-color: #333;
+}
+
+/* Hover-Effekt für Zeilen */
+#miner-table tbody tr:hover, #farm-table tbody tr:hover {
+    transform: scale(1.02);
+    background-color: #9333ea;
+}
+
+/* Ecken abrunden */
+#miner-table th:first-child, #farm-table th:first-child {
+    border-top-left-radius: 12px;
+}
+
+#miner-table th:last-child, #farm-table th:last-child {
+    border-top-right-radius: 12px;
+}
+
+/* Modal Hintergrund */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Inhalt des Modals */
+.modal-content {
+    background-color: #242533;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    text-align: center;
+    color: #e6e6e6;
+}
+
+/* Schließen-Button */
+.close {
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+    color: #e6e6e6;
+}
+
+.close:hover {
+    color: #9333ea;
+}
+
+/* Buttons im Modal */
+.modal-buttons {
+    margin-top: 15px;
+}
+
+.modal-buttons button {
+    background-color: #673dec;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.modal-buttons button:hover {
+    background-color: #5329ba;
+}
+/* Modal Hintergrund */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Inhalt des Modals */
+.modal-content {
+    background-color: #242533;
+    padding: 20px;
+    border-radius: 8px;
+    width: 450px;
+    text-align: center;
+    color: #e6e6e6;
+}
+
+/* Schließen-Button */
+.close {
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+    color: #e6e6e6;
+}
+
+.close:hover {
+    color: #9333ea;
+}
+
+/* Container für die Tabelle */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Tabellen-Styling */
+#preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #242533;
+    color: #e6e6e6;
+}
+
+#preview-table th, #preview-table td {
+    padding: 10px;
+    border: 1px solid #555;
+    text-align: center;
+    white-space: nowrap;
+}
+
+#preview-table th {
+    background-color: #673dec;
+    color: white;
+}
+
+/* Buttons im Modal */
+.modal-buttons {
+    margin-top: 15px;
+}
+
+.modal-buttons button {
+    background-color: #673dec;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.modal-buttons button:hover {
+    background-color: #5329ba;
+}
+th {
+    cursor: pointer;
+    position: relative;
+}
+
+th::after {
+    content: " ⇅";
+    font-size: 12px;
+    color: #aaa;
+    position: absolute;
+    right: 10px;
+}
+
+th.sorted-asc::after {
+    content: " ▲";
+    color: #fff;
+}
+
+th.sorted-desc::after {
+    content: " ▼";
+    color: #fff;
+}
+/* Haupt-Aktionsbereich */
+.header-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px 20px;
+    background-color: #242533;
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+  
+  /* Button-Zeile */
+  .action-center {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  
+  .action-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding: 0 10px;
+    position: relative;
+  }
+  .toggle-group.left {
+    justify-content: flex-start;
+  }
+  
+  .toggle-group.right {
+    justify-content: flex-end;
+  }
+  
+  
+  /* Container für links und rechts */
+  .toggle-group {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .toggle-btn {
+    background-color: #2e2f3d;
+    color: #ccc;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    height: 28px;
+  }
+  
+  .toggle-btn:hover {
+    background-color: #3f4053;
+    color: white;
+  }
+  
+  .toggle-btn.active {
+    background-color: #a05aff;
+    color: #fff;
+    font-weight: 500;
+  }
+  .card-field {
+    background-color: #1e1f2c;
+    border: 1px solid #2f3043;
+    border-radius: 12px;
+    padding: 12px 16px;
+    width: 25%;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .card-title {
+    font-size: 0.7rem;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+  }
+  
+  .card-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .card-content.aligned {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+  
+  .icon-wrap {
+    flex-shrink: 0;
+    width: 24px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .card-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .value-wrap select,
+  .value-wrap input,
+  .value-wrap span {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+    background: transparent;
+    border: none;
+    text-align: left;
+    padding: 0;
+    width: 100%;
+  }
+  
+  
+  .card-field select {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 4px 8px;
+    appearance: none;
+    cursor: pointer;
+  }
+  .card-content input {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1.25rem;        /* ← größerer Text */
+    font-weight: bold;
+    padding: 4px 8px;
+    width: 90px;               /* ← breiter */
+    text-align: right;
+    text-align: center;
+
+  }
+  
+  .refresh-btn {
+    background-color: #2e2f3d;
+    border: 1px solid #444657;
+    color: #cfcfcf;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    height: fit-content;
+    align-self: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .refresh-btn:hover {
+    background-color: #3f4152;
+    color: white;
+    transform: rotate(20deg);
+  }
+  .card-content select {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding: 4px 0;
+    appearance: none;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  /* optional: auf gleiche Breite wie Text bringen */
+  .card-content select option {
+    background-color: #1e1f2c;
+    color: white;
+    font-size: 1rem;
+  }
+  
+  /* optional: eigenen Pfeil verstecken */
+  .card-content select::-ms-expand {
+    display: none;
+  }
+  
+  /* Chrome, Safari, Edge */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+  
