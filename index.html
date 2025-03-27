@@ -522,51 +522,59 @@ header {
 
             <!-- Bitcoin Preis Dropdown -->
             <header class="header">
-                <!-- Set current BTC price and reward per 1 TH. This settings will affect both calculator forms.-->
-
-                <div class="header-item">
-                    <img src="https://github.com/Cimera311/Gomining_Calculator/raw/main/Bitcoin.svg.png" alt="BTC">
-                    <select id="bitcoin-price-dropdown" onchange="updateBTCPrice();">
-                        <option value="10000">10,000 $</option>
-                        <option value="20000">20,000 $</option>
-                        <option value="30000">30,000 $</option>    
-			<option value="40000">40,000 $</option>
-                        <option value="50000">50,000 $</option>
-                        <option value="60000">60,000 $</option>   
-                        <option value="70000">70,000 $</option>
-                        <option value="80000">80,000 $</option>
-                        <option value="90000">90,000 $</option>
-			<option id="currentp" value="0">current price</option>
-                        <option value="100000">100,000 $</option>
-                        <option value="110000">110,000 $</option>
-                        <option value="120000">120,000 $</option>
-                        <option value="130000">130,000 $</option>
-                        <option value="140000">140,000 $</option>
-                        <option value="150000">150,000 $</option>
-                        <option value="160000">160,000 $</option>
-                        <option value="200000">200,000 $</option>
-			<option value="250000">250,000 $</option>
-			<option value="300000">300,000 $</option>
-			<option value="400000">400,000 $</option>   
-                    </select>
+                <div class="card-field">
+                    <div class="card-title">CURRENT BITCOINPRICE</div>
+                    <div class="card-content aligned">
+                        <div class="icon-wrap">
+                         <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="BTC" class="card-icon">
+                        </div>
+                        <div class="value-wrap">
+                            <select id="bitcoin-price-dropdown" onchange="updateBTCPrice();">
+                                <option value="10000">10,000 $</option>
+                                <option value="20000">20,000 $</option>
+                                <option value="30000">30,000 $</option>    
+                                <option value="40000">40,000 $</option>
+                                <option value="50000">50,000 $</option>
+                                <option value="60000">60,000 $</option>   
+                                <option value="70000">70,000 $</option>
+                                <option value="80000">80,000 $</option>
+                                <option value="90000">90,000 $</option>
+                                <option id="currentp" value="0">current price</option>
+                                <option value="100000">100,000 $</option>
+                                <option value="110000">110,000 $</option>
+                                <option value="120000">120,000 $</option>
+                                <option value="130000">130,000 $</option>
+                                <option value="140000">140,000 $</option>
+                                <option value="150000">150,000 $</option>
+                                <option value="160000">160,000 $</option>
+                                <option value="200000">200,000 $</option>
+                                <option value="250000">250,000 $</option>
+                                <option value="300000">300,000 $</option>
+                                <option value="400000">400,000 $</option>   
+                            </select>
+                        </div>
                 </div>
-				<!-- GMT Token Preis -->
-                <div class="header-item">
-					<img src="https://github.com/Cimera311/Gomining_Calculator/raw/main/GoMining_Logo.webp" alt="GMT">
-					<input  value="0.400" id="gmt-token-price"  placeholder="0,400">
-				</div>
+              </div>
+              <div class="card-field">
+                <div class="card-title">CURRENT GMT PRICE</div>
+                <div class="card-content aligned">
+                    <div class="icon-wrap">
+                        <img src="https://github.com/Cimera311/Gomining_Calculator/raw/main/GoMining_Logo.webp" alt="GMT" class="card-icon">
+                    </div>
+                    <div class="value-wrap">
+                        <input type="number" id="gmt-token-price" placeholder="0.4269" step="0.0001">
+                    </div>
+                </div>
+                  </div>
+                  <div class="card-field">
+                    <div class="card-title">SAT PER TH</div>
+                    <div class="card-content">
+                        <img src="https://cryptologos.cc/logos/sats-ordinals-sats-logo.png" alt="⚡" class="card-icon">
+                      <input type="number" id="sat-TH" value="58" min="0" step="1">
+                    </div>
+                  </div>
+                  <button class="refresh-btn" onclick="fetchBTCPrice(); fetchGMTPrice();">🔄</button>
 
-				<!-- <div class="header-item" style="display: flex; align-items: center; gap: 10px;">-->
-                <div class="header-item"  >
-					<label title="how much Satoshi Gomining pays for 1 TH" for="sat-TH" >sat per TH:</label>
-					<input value=56 id="sat-TH">
-				</div>
-                <div class="header-item" >
-					<button class="circular-button" onclick="fetchBTCPrice();fetchGMTPrice();">&#x21BB;</button>
-				</div>
-				<!-- Aktualisierungssymbol -->
-
-			
             </header>
                 
         
