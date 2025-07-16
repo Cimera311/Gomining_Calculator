@@ -105,7 +105,7 @@ const priceMatrixdatei = {
         {"minTH":3584,"pricePerTH":22.64}
     ],
     "20": [
-        {"minTH":1,"pricePerTH":25.12,"minerCost":25.99},
+        {"minTH":1,"pricePerTH":25.12,"minerCost":26.99},
         {"minTH":2,"pricePerTH":24.91},
         {"minTH":4,"pricePerTH":24.69},
         {"minTH":8,"pricePerTH":24.48},
